@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://plastiza-site.vercel.app/sitemap.xml
