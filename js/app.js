@@ -1484,6 +1484,9 @@ const right=()=>{const g=h.querySelector('.hxg-b')||h,w=document.createTreeWalke
 const L=h.getBoundingClientRect().left,R0=right(),fs=parseFloat(getComputedStyle(h).fontSize),room=lim-36-L;if(R0-L>room){h.style.setProperty('font-size',(fs*room/(R0-L)).toFixed(1)+'px','important')}}
 new MutationObserver(()=>requestAnimationFrame(hxFit)).observe(document.getElementById('view'),{childList:true});
 let hxT;addEventListener('resize',()=>{clearTimeout(hxT);hxT=setTimeout(hxFit,100)});document.fonts&&document.fonts.ready.then(hxFit);
+
+/* product page accordions: only one open at a time */
+document.addEventListener('toggle',e=>{const d=e.target;if(!(d instanceof HTMLDetailsElement)||!d.open)return;const g=d.closest('.pda');if(!g)return;g.querySelectorAll('details[open]').forEach(x=>{if(x!==d&&x.closest('.pda')===g)x.open=false})},true);
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
