@@ -3450,3 +3450,10 @@ html body #view .pri-hv .pri-t{margin-top:22px!important}
 /* hide native play overlays on background videos */
 .hv-v::-webkit-media-controls,.pri-v video::-webkit-media-controls,.hv-v::-webkit-media-controls-start-playback-button,.pri-v video::-webkit-media-controls-start-playback-button,.hv-v::-webkit-media-controls-overlay-play-button,.pri-v video::-webkit-media-controls-overlay-play-button,.hv-v::-webkit-media-controls-panel,.pri-v video::-webkit-media-controls-panel{display:none!important;-webkit-appearance:none!important;opacity:0!important}
 .hv-v,.pri-v video{pointer-events:none}
+
+.hv-img,.pri-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* dark theme hero: deeper background */
+:root[data-theme="dark"] .hx-tex::before{opacity:.025!important}
+:root[data-theme="dark"] .hx-tex::after{opacity:.035!important}
+:root[data-theme="dark"] .hx-fd{background:linear-gradient(180deg,rgba(17,17,19,0) 0%,rgba(17,17,19,.6) 60%,#111113 100%)!important}
+:root[data-theme="dark"] #view .hx.hx2 .hqf input[name=phone],:root[data-theme="dark"] .pri-q input[name=phone]{background:rgba(255,255,255,.06)!important;color:#fff!important;border-color:rgba(255,255,255,.14)!important}
