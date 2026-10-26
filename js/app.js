@@ -786,7 +786,7 @@ TICK.splice(5,0,{uk:'Комплектація будівельних об’єк
 SV5.uk.num='напрями';
 
 /* capacity section: TPA showcase (numbers editable) */
-const CAP={n:3,kgh:45,hours:16,days:22,model:'Wittmann Battenfeld MacroPower 800',kn:8000,img:"assets/img/sections/tpa-macropower-800.webp"};
+const CAP={n:12,kgh:45,hours:16,days:22,model:'Wittmann Battenfeld MacroPower 800',kn:8000,img:"assets/img/sections/tpa-macropower-800.webp"};
 function secCap(){const u=lang==='uk',m=CAP.kgh*CAP.hours*CAP.days/1000,tot=m*CAP.n,f=v=>v.toLocaleString(u?'uk-UA':'en-US',{maximumFractionDigits:1});
 return `<section class="cap"><div class="s5-top cap-top"><div>${secLab(u?'Потужності':'Capacity')}<h2 class="s5-h">${u?'Потужності<br>виробництва':'Production<br>capacity'}</h2></div><div class="s5-tr"><p class="cap-k">${u?'Термопластавтомати<br>для лиття під тиском':'Injection molding<br>machines'}</p></div></div>
 <div class="cap-st"><span class="cap-bg" aria-hidden="true">MACROPOWER</span><img src="${CAP.img}" alt="${u?'Термопластавтомат':'Injection molding machine'} ${CAP.model}" loading="lazy"><span class="cap-tag cap-t1">${u?'Вузол змикання':'Clamping unit'}<br><span style="text-transform:none">${f(CAP.kn)} kN</span></span><span class="cap-tag cap-t2">${u?'Робот-маніпулятор':'Take-out robot'}</span><span class="cap-tag cap-t3">${u?'Вузол упорскування':'Injection unit'}</span></div>
@@ -1334,11 +1334,140 @@ else{
 return `<figure class="apx"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${u?'Схема застосування':'Application diagram'}">${defs}${g}</svg><figcaption>${cap}</figcaption></figure>`}
 const _product14=product;product=function(){let h=_product14();const {p,vi}=pvParse(R.a);if(!p)return h;const u=lang==='uk';
 const acc=`<details class="pda-i"><summary><span>${u?'Застосування':'Application'}</span><i aria-hidden="true"></i></summary>${apSvg(p,vi)}</details>`;
-const m=u?'Доставка та оплата</span>':'Delivery &amp; payment</span>',k=h.indexOf(u?'Доставка та оплата</span>':'Delivery & payment</span>');if(k<0)return h;const d=h.lastIndexOf('<details',k);return h.slice(0,d)+acc+h.slice(d)};
+const key=u?'Ціни та фасування':'Prices';let k=h.indexOf(key);if(k<0)k=h.indexOf(u?'Доставка та оплата</span>':'Delivery & payment</span>');if(k<0)return h;const d=h.lastIndexOf('<details',k);h=h.slice(0,d)+acc+h.slice(d);
+const pi=h.indexOf(key);if(pi>-1){const ds=h.lastIndexOf('<details',pi);const tag=h.slice(ds,h.indexOf('>',ds)+1);h=h.slice(0,ds)+tag.replace(/\sopen(="[^"]*")?/,'')+h.slice(ds+tag.length)}return h};
 /* PDF language independent of site language */
 var pdfLang=null;
 const _pdfPage3=pdfPage;pdfPage=function(){const site=lang,pl=pdfLang||site;const hs=_pdfPage3();if(pl===site)return hs;let hd;lang=pl;try{hd=_pdfPage3()}finally{lang=site}const a=hs.indexOf('<div class="pdf-doc'),b=hd.indexOf('<div class="pdf-doc');if(a<0||b<0)return hs;return hs.slice(0,a)+hd.slice(b).replace('<div class="pdf-doc','<div lang="'+pl+'" class="pdf-doc')};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(b){e.preventDefault();e.stopPropagation();if(b.dataset.pl!==(pdfLang||lang)){pdfLang=b.dataset.pl;const y=scrollY;render();scrollTo(0,y)}return}if(e.target.closest('[data-l]'))pdfLang=null},true);
+
+/* ===== Hero v6: content left, looping production video right ===== */
+const HV_SRC='assets/hero/hero-loop.mp4',HV_POSTER='assets/hero/poster.jpg';
+const _homeV6=home;home=function(){let h=_homeV6();const u=lang==='uk';
+const ring=(u?'ЛИТТЯ ПЛАСТИКУ • ПРЕСФОРМИ • ФІКСАТОРИ • ':'INJECTION MOLDING • MOLDS • SPACERS • ').repeat(1);
+const panel=`<div class="hv"><div class="hv-f"><video class="hv-v" src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline preload="auto" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video><span class="hv-sh" aria-hidden="true"></span>
+<span class="hv-lb">[ ${u?'Власний цех':'Own production'} ]</span>
+<button class="hv-card" data-cap-go><span class="hv-ck">[ ${u?'Потужності':'Capacity'} ]</span><span class="hv-cn"><b><small>×</small>${CAP.n}</b><span class="hv-cl">${u?'термопласт&shy;автоматів<br>у нашому цеху':'injection molding<br>machines in our shop'}</span><span class="hv-cs">${u?'ТПА<br>у цеху':'IMMs<br>in our shop'}</span></span><img class="hv-ci" src="${CAP.img}" alt="" draggable="false"><i aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button></div>
+<button class="hv-ring" data-go="about" aria-label="${u?'Про виробництво':'About production'}"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="hvr" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#hvr" textLength="286" lengthAdjust="spacing">${ring}</textPath></text></svg><i class="hv-ra" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button></div>`;
+h=h.replace('<section class="hx">','<section class="hx hx2"><div class="hx-tex" aria-hidden="true"><i class="hx-fd"></i></div>');const k=h.indexOf('<div class="hx-sp"');h=k>-1?h.slice(0,k)+panel+h.slice(k):h.replace('<div class="hqi">',panel+'<div class="hqi">');
+const ms=`<div class="hqm"><span>${u?'або напишіть нам':'or message us'}</span><div>${[['WhatsApp','#25D366'],['Telegram','#229ED9'],['Viber','#7360F2']].map(([nm,cl])=>{const m=MSGR.find(x=>x[0]===nm);return `<a href="${m[1]}" target="_blank" rel="noopener" style="--mc:${cl}" aria-label="${nm}" title="${nm}">${m[2]}</a>`}).join('')}</div></div>`;
+h=h.replace(/<input name="name"[^>]*>/,`<input name="name" type="hidden" value="${u?'Консультація з головної':'Hero consultation'}">`);return h};
+
+/* PDF: one continuous page (electronic catalog, no page breaks) */
+document.addEventListener('click',e=>{if(!e.target.closest('[data-print]'))return;const d=document.querySelector('#view .pdf-doc');if(!d)return;e.preventDefault();e.stopPropagation();
+const r=d.getBoundingClientRect(),W=Math.ceil(r.width),H=Math.ceil(d.scrollHeight)+2;let ps=document.getElementById('pdfpage');if(!ps){ps=document.createElement('style');ps.id='pdfpage';document.head.appendChild(ps)}const old=ps.textContent;
+ps.textContent=`@page{size:${W}px ${H}px;margin:0}@media print{html.pq-cont #view .pdf-doc{width:${W}px!important;min-width:${W}px!important;max-width:${W}px!important}}`;
+document.documentElement.classList.add('pq-cont');const done=()=>{document.documentElement.classList.remove('pq-cont');ps.textContent=old;removeEventListener('afterprint',done)};addEventListener('afterprint',done);
+try{window.print()}catch(_){done()}},true);
+
+/* hero capacity card → about page, capacity section */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cap-go]');if(!b)return;e.preventDefault();e.stopPropagation();go('about');
+let n=0;const t=()=>{const c=document.querySelector('#view .cap');if(!c){if(++n<40)return setTimeout(t,50);return}const hh=(document.querySelector('.top')||{}).offsetHeight||64;setTimeout(()=>scrollTo({top:c.getBoundingClientRect().top+scrollY-hh-8,behavior:'smooth'}),120)};setTimeout(t,30)},true);
+
+/* ===== Phone mask + email/phone validation for all forms ===== */
+const isPh=el=>el&&el.tagName==='INPUT'&&(el.type==='tel'||el.name==='phone');
+function fmtPh(v){let d=v.replace(/\D/g,'');const intl=/^\s*\+/.test(v)&&d&&!'380'.startsWith(d.slice(0,3))&&!d.startsWith('380');
+if(intl){d=d.slice(0,15);return '+'+d}
+if(!d)return /\+/.test(v)?'+':'';if(d.startsWith('80'))d='3'+d;else if(d.startsWith('0'))d='38'+d;else if(!'380'.startsWith(d.slice(0,Math.min(3,d.length))))d='380'+d;d=d.slice(0,12);
+let o='+'+d.slice(0,3);if(d.length>3)o+=' ('+d.slice(3,5);if(d.length>5)o+=') '+d.slice(5,8);if(d.length>8)o+='-'+d.slice(8,10);if(d.length>10)o+='-'+d.slice(10,12);return o}
+document.addEventListener('beforeinput',e=>{const el=e.target;if(!isPh(el)||!e.data)return;if(/[^\d+\s()\-]/.test(e.data))e.preventDefault()},true);
+document.addEventListener('input',e=>{const el=e.target;if(!isPh(el))return;const prev=el.dataset.pv||'',pd=prev.replace(/\D/g,'');let v=el.value;
+if(e.inputType&&e.inputType.startsWith('delete')&&v.replace(/\D/g,'')===pd&&pd){const c=el.selectionStart||v.length;let i=c-1;while(i>=0&&!/\d/.test(v[i]))i--;if(i>=0)v=v.slice(0,i)+v.slice(i+1)}
+const f=fmtPh(v);el.value=f;el.dataset.pv=f;el.removeAttribute('aria-invalid');try{el.setSelectionRange(f.length,f.length)}catch(_){}},true);
+document.addEventListener('focusin',e=>{const el=e.target;if(isPh(el)){el.setAttribute('inputmode','tel');if(!el.getAttribute('maxlength'))el.setAttribute('maxlength','20')}},true);
+const EMRE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+window.addEventListener('submit',e=>{const f=e.target;if(!(f instanceof HTMLFormElement))return;const u=lang==='uk';let msg='',bad=null;
+f.querySelectorAll('input').forEach(i=>{if(bad||i.type==='hidden'||i.hidden||i.offsetParent===null)return;const v=i.value.trim();if(!v)return;
+if(isPh(i)){const d=v.replace(/\D/g,'');const ok=v.startsWith('+380')?d.length===12:d.length>=10&&d.length<=15;if(!ok){bad=i;msg=u?'Вкажіть повний номер телефону, наприклад +380 (67) 123-45-67.':'Enter a full phone number, e.g. +380 (67) 123-45-67.'}}
+else if(i.type==='email'&&!EMRE.test(v)){bad=i;msg=u?'Вкажіть коректний email, наприклад name@company.com.':'Enter a valid email, e.g. name@company.com.'}});
+if(!bad)return;e.preventDefault();e.stopImmediatePropagation();bad.setAttribute('aria-invalid','true');const er=f.querySelector('.lf-err');if(er){er.textContent=msg;er.hidden=false}else{bad.setCustomValidity(msg);bad.reportValidity();bad.addEventListener('input',()=>bad.setCustomValidity(''),{once:true})}bad.focus()},true);
+/* ===== Application diagrams v2: technical drawing style ===== */
+function apSvg(p,vi){const u=lang==='uk',v=p.v[vi]||p.v[0],vs=String(Array.isArray(v[0])?v[0][u?0:1]:v[0]);
+const nums=vs.match(/\d+/g)||[],mm=u?'мм':'mm',id=p.id,nm=title(p);
+const W=640,H=330;
+const T=(x,y,t,a='start',c='aq-t')=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${t}</text>`;
+const arrow=(x,y,dx,dy)=>{const L=7,w=3.2,n=Math.hypot(dx,dy)||1,ux=dx/n,uy=dy/n;return `<path class="aq-ar" d="M${x} ${y}L${(x-ux*L-uy*w).toFixed(1)} ${(y-uy*L+ux*w).toFixed(1)}L${(x-ux*L+uy*w).toFixed(1)} ${(y-uy*L-ux*w).toFixed(1)}Z"/>`};
+const dimV=(x,y1,y2,lab,side=1,key=1)=>{const c=key?'aq-dk':'aq-d';return `<g class="${c}"><path d="M${x} ${y1}V${y2}M${x-14} ${y1}H${x+6}M${x-14} ${y2}H${x+6}"/>${arrow(x,y1,0,-1)}${arrow(x,y2,0,1)}</g>`+T(x+12*side,(y1+y2)/2+5,lab,side>0?'start':'end',key?'aq-t aq-tk':'aq-t')};
+const dimH=(y,x1,x2,lab,key=1)=>{const c=key?'aq-dk':'aq-d';return `<g class="${c}"><path d="M${x1} ${y}H${x2}M${x1} ${y-12}V${y+6}M${x2} ${y-12}V${y+6}"/>${arrow(x1,y,-1,0)}${arrow(x2,y,1,0)}</g>`+T((x1+x2)/2,y-9,lab,'middle',key?'aq-t aq-tk':'aq-t')};
+const co=(n,x,y,lx,ly)=>`<path class="aq-ld" d="M${x} ${y}L${lx} ${ly}"/><circle cx="${x}" cy="${y}" r="2.6" class="aq-ldd"/><circle cx="${lx}" cy="${ly}" r="11" class="aq-co${n===1?' aq-co1':''}"/>`+T(lx,ly+4.2,n,'middle','aq-con'+(n===1?' aq-con1':''));
+const brk=(x,y1,y2)=>{const m=(y1+y2)/2;return `<path class="aq-brk" d="M${x} ${y1-8}V${m-12}L${x-7} ${m-4}L${x+7} ${m+4}L${x} ${m+12}V${y2+8}"/>`};
+const defs=`<defs>
+<pattern id="aqc" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.1" class="aq-ag"/><circle cx="16" cy="17" r="1.4" class="aq-ag"/><circle cx="21" cy="6" r=".8" class="aq-ag"/><path d="M9 18l3.2-5.4 3.2 5.4z" class="aq-agt"/><path d="M19 23l2-3.4 2 3.4z" class="aq-agt"/></pattern>
+<pattern id="aqw" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" class="aq-hl"/></pattern>
+<pattern id="aqe" width="30" height="16" patternUnits="userSpaceOnUse"><path d="M2 14l6-6M6 14l6-6M10 14l6-6" class="aq-hl"/><ellipse cx="23" cy="6" rx="3.5" ry="2.4" class="aq-pb"/></pattern>
+<pattern id="aqg" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" class="aq-gr"/></pattern></defs>`;
+const conc=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="aq-cf"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#aqc)"/>`;
+const ply=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="aq-pf"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#aqw)"/><rect x="${x}" y="${y}" width="${w}" height="${h}" class="aq-po"/>`;
+let g=`<rect width="${W}" height="${H}" fill="url(#aqg)"/>`,cap='',ttl='',L=[];const cover=nums.length?(id===2?nums.join(' / '):vs.split('/')[0].replace(/-/g,'–'))+' '+mm:'';const bar=vs.includes('/')?vs.split('/')[1].replace('-','–'):'';
+const LG={fix:['fix',nm],bar:['bar',u?'Арматура (переріз / вздовж)':'Rebar (section / along)'],con:['con',u?'Бетон':'Concrete'],ply:['ply',u?'Щит опалубки':'Formwork panel'],soil:['soil',u?'Сипка основа + плівка':'Loose base + membrane'],deck:['ply',u?'Тверда основа / настил опалубки':'Hard base / formwork deck'],tie:['tie',u?'Стяжний гвинт і шайба':'Tie rod and waler plate'],tube:['tube',u?'Дистанційна труба':'Spacer tube'],hole:['tube',u?'Отвір від стяжки':'Tie hole']};
+if([1,2,4,5].includes(id)){
+ ttl=u?'Переріз плити':'Slab section';const base=252,top=86,ry=base-62,cx=320;
+ g+=conc(30,top,580,base-top)+`<path class="aq-edge" d="M30 ${top}H610M30 ${base}H610"/>`+brk(30,top,base)+brk(610,top,base);
+ if(id===1){g+=`<rect x="30" y="${base}" width="580" height="44" fill="url(#aqe)"/><path class="aq-mem" d="M30 ${base+2}H610"/>`}
+ else g+=ply(30,base,580,22);
+ // top mesh
+ g+=`<rect x="30" y="${top+30}" width="580" height="7" rx="3.5" class="aq-rb"/>`;for(let x=58;x<=600;x+=48)g+=`<circle cx="${x}" cy="${top+24}" r="6.5" class="aq-rs"/>`;
+ // bottom mesh
+ g+=`<rect x="30" y="${ry-4}" width="580" height="8" rx="4" class="aq-rb"/>`;for(let x=82;x<=600;x+=48)if(Math.abs(x-cx)>30)g+=`<circle cx="${x}" cy="${ry-11}" r="7" class="aq-rs"/>`;
+ // fixator
+ if(id===1)g+=`<path class="aq-fx" d="M${cx-64} ${base}L${cx-34} ${base-15}H${cx+34}L${cx+64} ${base}Z"/><path class="aq-fx" d="M${cx-13} ${base-15}V${ry+4}H${cx-17}V${ry-9}L${cx-8} ${ry-9}V${ry+4}H${cx+8}V${ry-9}L${cx+17} ${ry-9}V${ry+4}H${cx+13}V${base-15}Z"/><path class="aq-fxl" d="M${cx-30} ${base-7}H${cx+30}"/>`;
+ if(id===2)g+=`<path class="aq-fx" d="M${cx-30} ${base}L${cx-20} ${ry+5}H${cx-10}A10 10 0 0 0 ${cx+10} ${ry+5}H${cx+20}L${cx+30} ${base}Z"/><path class="aq-fxl" d="M${cx-24} ${base-16}H${cx+24}M${cx-22} ${base-32}H${cx+22}"/>`;
+ if(id===4)g+=`<path class="aq-fx" d="M${cx-24} ${base}L${cx-14} ${ry+6}C${cx-14} ${ry-14} ${cx+14} ${ry-14} ${cx+14} ${ry+6}L${cx+24} ${base}Z"/><path class="aq-fxl" d="M${cx} ${ry+14}V${base-8}"/>`;
+ if(id===5)g+=`<path class="aq-fx" d="M${cx-40} ${base}H${cx+40}L${cx+27} ${ry+12}H${cx+13}V${ry-12}H${cx-13}V${ry+12}H${cx-27}Z"/><path class="aq-fxl" d="M${cx-30} ${base-10}H${cx+30}"/>`;
+ g+=`<circle cx="${cx}" cy="${ry-11}" r="7" class="aq-rs"/>`;
+ g+=dimV(560,ry+4,base,(u?'захисний шар ':'cover ')+cover,-1,1);
+ if(bar)g+=T(82+48*6+14,ry-26,'Ø '+bar+' '+mm,'start','aq-t');
+ g+=co(1,cx-(id===1?44:id===5?30:22),base-8,cx-120,base-30)+co(2,130,ry-11,130,top+64)+co(3,470,top+60,470,top+60)+co(4,200,base+(id===1?24:11),200,base+(id===1?24:11));
+ L=[LG.fix,LG.bar,LG.con,id===1?LG.soil:LG.deck];
+ cap={1:u?`«Настил» стоїть на сипкій основі: широка опора не дає йому занурюватися, а стійка тримає нижню сітку на висоті ${cover} — це і є захисний шар бетону під арматурою.`:`The chair sits on a loose base; its wide foot prevents sinking and keeps the bottom mesh ${cover} above the base — the concrete cover.`,
+ 2:u?`«Стійка» ставиться на тверду основу під нижню сітку плити. Ступінчаста висота (${cover}) дозволяє одним виробом отримати кілька варіантів захисного шару.`:`The chair stands on a hard base under the bottom mesh; stepped heights (${cover}) give several cover options with one part.`,
+ 4:u?`«Защіпка» защіпається на стрижень нижньої сітки й тримає його на висоті ${cover} над основою.`:`The clip snaps onto the bottom bar and holds it ${cover} above the base.`,
+ 5:u?`«Засувка» фіксує стрижень у пазу й тримає нижню сітку на висоті ${cover}; широка основа розподіляє навантаження каркаса.`:`The slider locks the bar in its slot and holds the mesh ${cover} above the base; the wide foot spreads the load.`}[id];
+}
+else if(id===3){
+ ttl=u?'Вертикальний переріз стіни':'Wall vertical section';const px=70,pw=26,x2=570,top=40,bot=300,bx=px+pw+64,R=64,cy=170;
+ g+=ply(px,top,pw,bot-top)+ply(x2,top,pw,bot-top)+conc(px+pw,top,x2-px-pw,bot-top)+`<path class="aq-edge" d="M${px+pw} ${top}H${x2}M${px+pw} ${bot}H${x2}"/>`;
+ g+=`<rect x="${bx-4}" y="${top}" width="8" height="${bot-top}" rx="4" class="aq-rb"/><rect x="${bx+56}" y="${top}" width="8" height="${bot-top}" rx="4" class="aq-rb"/>`;for(let y=70;y<=280;y+=52)g+=`<circle cx="${bx+30}" cy="${y}" r="6.5" class="aq-rs"/>`;
+ g+=`<circle cx="${bx}" cy="${cy}" r="${R}" class="aq-fx"/><circle cx="${bx}" cy="${cy}" r="${R-10}" class="aq-con-bg"/>`;for(let a=0;a<12;a++){const t=a*Math.PI/6;g+=`<path class="aq-fxs" d="M${(bx+14*Math.cos(t)).toFixed(1)} ${(cy+14*Math.sin(t)).toFixed(1)}L${(bx+(R-10)*Math.cos(t)).toFixed(1)} ${(cy+(R-10)*Math.sin(t)).toFixed(1)}"/>`}
+ g+=`<circle cx="${bx}" cy="${cy}" r="15" class="aq-fx"/><rect x="${bx-4}" y="${cy-30}" width="8" height="60" rx="4" class="aq-rb"/>`;
+ g+=dimH(26,px+pw,bx-4,(u?'захисний шар ':'cover ')+cover,1);
+ if(bar)g+=T(bx+74,26,'Ø '+bar+' '+mm,'start','aq-t');
+ g+=co(1,bx+R*.71,cy-R*.71,bx+R+58,cy-R-4)+co(2,bx+60,276,bx+150,276)+co(3,470,120,470,120)+co(4,px+13,92,px+13,92);
+ L=[LG.fix,LG.bar,LG.con,LG.ply];
+ cap=u?`«Зірочка» защіпається на вертикальний стрижень і впирається ободом у щит опалубки. Радіус колеса задає захисний шар ${cover} до поверхні стіни чи колони.`:`The wheel spacer clips onto a vertical bar and rolls against the formwork; its radius sets a ${cover} cover to the wall face.`;
+}
+else{
+ const x1=160,x2=480,y=170,top=60,bot=280;
+ if(id===6||id===9){
+  ttl=u?'Горизонтальний переріз стіни':'Wall plan section';
+  g+=ply(x1-24,top,24,bot-top)+ply(x2,top,24,bot-top)+conc(x1,top,x2-x1,bot-top)+`<path class="aq-edge" d="M${x1} ${top}H${x2}M${x1} ${bot}H${x2}"/>`;
+  g+=`<rect x="${x1+20}" y="${y-10}" width="${x2-x1-40}" height="20" class="${id===9?'aq-fx':'aq-tb'}"/>`;
+  g+=`<path class="${id===6?'aq-fx':'aq-tb'}" d="M${x1} ${y-22}L${x1+22} ${y-12}V${y+12}L${x1} ${y+22}Z M${x2} ${y-22}L${x2-22} ${y-12}V${y+12}L${x2} ${y+22}Z"/>`;
+  g+=`<rect x="56" y="${y-3}" width="528" height="6" rx="3" class="aq-rb"/><path class="aq-tie" d="M${x1-24} ${y-32}h-14v64h14ZM${x2+24} ${y-32}h14v64h-14ZM${x1-38} ${y-14}h-22v28h22ZM${x2+38} ${y-14}h22v28h-22Z"/>`;
+  g+=dimH(36,x1,x2,u?'товщина стіни = довжина труби':'wall thickness = tube length',1);
+  g+=co(1,id===6?x1+10:320,id===6?y+16:y+8,id===6?x1+60:320,id===6?y+66:y+66)+co(2,id===6?320:x1+10,id===6?y+8:y+16,id===6?320:x1+60,y+66)+co(3,x2-60,bot-30,x2-60,bot-30)+co(4,x1-12,top+24,x1-12,top+24)+co(5,x1-49,y,x1-49,y+64);
+  L=id===6?[LG.fix,LG.tube,LG.con,LG.ply,LG.tie]:[LG.fix,['fix2',u?'Конус':'Cone'],LG.con,LG.ply,LG.tie];
+  if(id===6)L[1]=LG.tube;
+  cap=id===9?(u?'«Труба» надягається на стяжний гвинт між щитами: тримає відстань між ними (товщину стіни) і не дає бетону схопити гвинт — після заливки його легко витягнути.':'The spacer tube slides over the tie rod between panels, keeping their spacing and protecting the rod so it can be pulled out after pouring.')
+   :(u?'«Конус» надягається на кінці труби Ø 22 мм біля щита: збільшує площу опори, не пускає бетон у трубу й формує акуратний вхід отвору.':'The cone fits on the ends of the Ø22 tube at the panel, widening the bearing area, keeping concrete out and forming a neat hole entry.');
+ } else {
+  ttl=u?'Стіна після зняття опалубки':'Wall after stripping';
+  g+=conc(x1,top,x2-x1,bot-top)+`<path class="aq-edge" d="M${x1} ${top}V${bot}M${x2} ${top}V${bot}"/>`;
+  g+=`<rect x="${x1}" y="${y-12}" width="${x2-x1}" height="24" class="aq-tb"/>`;
+  const plug=(x,dir)=>id===7?`<path class="aq-fx" d="M${x-dir*6} ${y-17}h${dir*10}v34h${-dir*10}z M${x+dir*4} ${y-12}l${dir*9} 3v18l${-dir*9} 3zM${x+dir*13} ${y-11}l${dir*9} 3v16l${-dir*9} 3zM${x+dir*22} ${y-10}l${dir*9} 3v14l${-dir*9} 3z"/>`:`<path class="aq-fx" d="M${x-dir*4} ${y-16}h${dir*4}v4h${dir*26}v24h${-dir*26}v4h${-dir*4}z"/>`;
+  g+=plug(x1,1)+plug(x2,-1);
+  g+=T(x1-16,y+5,u?'фасад':'face','end','aq-t')+T(x2+16,y+5,u?'фасад':'face','start','aq-t');
+  g+=dimV(x1+60,y-12,y+12,'Ø 24 '+mm,1,1);
+  g+=co(1,x2-14,y+14,x2-60,y+70)+co(2,320,y+6,320,y+70)+co(3,400,top+36,400,top+36);
+  L=[LG.fix,LG.hole,LG.con];
+  cap=id===7?(u?'«Корок-ялинка» щільно забивається в отвір Ø 24 мм — у невикористані отвори щитів опалубки або в отвори стін після зняття опалубки. Ребра-«ялинка» не дають йому випасти.':'The fir-tree plug is driven into Ø24 holes — unused formwork holes or tie holes in the wall after stripping; its ribs hold it in place.')
+   :(u?'«Корок» закриває отвір Ø 24 мм від стяжного гвинта з обох боків стіни: не пускає вологу всередину й вирівнює поверхню під оздоблення.':'The plug seals the Ø24 tie hole on both faces of the wall, keeping moisture out and leaving a clean surface.');
+ }
+}
+const sw={fix:'<i class="aq-s aq-s-fix"></i>',fix2:'<i class="aq-s aq-s-fix"></i>',bar:'<i class="aq-s aq-s-bar"></i>',con:'<i class="aq-s aq-s-con"></i>',ply:'<i class="aq-s aq-s-ply"></i>',soil:'<i class="aq-s aq-s-soil"></i>',tie:'<i class="aq-s aq-s-tie"></i>',tube:'<i class="aq-s aq-s-tube"></i>'};
+const leg=`<ol class="aq-lg">${L.map((x,i)=>`<li><span class="aq-n${i===0?' aq-n1':''}">${i+1}</span>${sw[x[0]]||''}<span>${x[1]}</span></li>`).join('')}</ol>`;
+return `<figure class="apx aq"><div class="aq-hd"><span>${u?'Схема':'Diagram'} · ${ttl}</span><span>${u?'без масштабу':'not to scale'}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${(u?'Схема застосування: ':'Application diagram: ')+ttl}">${defs}${g}</svg>${leg}<figcaption>${cap}</figcaption></figure>`}
+
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
