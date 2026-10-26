@@ -3358,3 +3358,12 @@ html body #view .hx.hx2 .hv-cn>span{font-size:11.5px;line-height:1.25}
 html body #view .hx.hx2 .hv-ci{width:76px!important;margin:8px 0 -2px 0!important}
 html body #view .hx.hx2 .hv-card>i{display:none!important}
 }
+
+/* mobile hero: H1 in two lines, framed ticker */
+@media (max-width:760px){
+html body #view .hx.hx2 .h1l2{white-space:nowrap}
+html body #view .hx.hx2 #hxh{font-size:calc((100vw - 32px)/11.4)!important;line-height:.98!important;letter-spacing:-.02em}
+html body #view .hx.hx2 #hxh .nw{white-space:nowrap}
+html body #view .hx.hx2 .hv{margin:18px 0 16px!important}
+html body #view .hx.hx2 .tk.hxtk{background:color-mix(in srgb,var(--ink) 3%,var(--bg,#f2f2f7))!important;border-top:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;margin-top:18px!important}
+}
