@@ -47,7 +47,7 @@ plastiza/
 
 ## Домен
 
-У `index.html`, `robots.txt` і `sitemap.xml` вказано `https://plastiza-site.vercel.app`.
+У `index.html`, `robots.txt` і `sitemap.xml` вказано `https://plastiza.vercel.app`.
 Якщо адреса інша або підключено власний домен, замініть її в цих трьох файлах.
 
 ## Що лишається зробити перед запуском
