@@ -3367,3 +3367,15 @@ html body #view .hx.hx2 #hxh .nw{white-space:nowrap}
 html body #view .hx.hx2 .hv{margin:18px 0 16px!important}
 html body #view .hx.hx2 .tk.hxtk{background:color-mix(in srgb,var(--ink) 3%,var(--bg,#f2f2f7))!important;border-top:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;margin-top:18px!important}
 }
+
+/* mobile hero: equal vertical rhythm, ticker outline only */
+@media (max-width:760px){
+html body #view .hx.hx2{--hg:22px;min-height:0!important}
+html body #view .hx.hx2>.hx-in{justify-content:flex-start!important;gap:0!important;min-height:0!important}
+html body #view .hx.hx2 #hxh{margin-bottom:0!important}
+html body #view .hx.hx2 .hv{margin:var(--hg) 0 0!important}
+html body #view .hx.hx2 .hqi{margin:var(--hg) 0 0!important;padding:0!important}
+html body #view .hx.hx2 .hqi .hqf{gap:8px!important}
+html body #view .hx.hx2 .tk.hxtk{margin-top:var(--hg)!important;margin-bottom:0!important;background:transparent!important}
+html body #view .hx.hx2 .hx-p{margin-top:var(--hg)!important;padding-top:0!important}
+}
