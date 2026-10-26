@@ -3379,3 +3379,5 @@ html body #view .hx.hx2 .hqi .hqf{gap:8px!important}
 html body #view .hx.hx2 .tk.hxtk{margin-top:var(--hg)!important;margin-bottom:0!important;background:transparent!important}
 html body #view .hx.hx2 .hx-p{margin-top:var(--hg)!important;padding-top:0!important}
 }
+
+@media (max-width:760px){html body #view .st6{padding-bottom:28px!important}html body #view .st6+div:empty{margin-top:44px!important}}
