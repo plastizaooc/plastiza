@@ -3119,3 +3119,23 @@ html body .pq-cv-c a,html body .pq-end a{color:#fff!important;font:inherit!impor
 .pq-seg button[aria-pressed="true"]{background:var(--btn);color:var(--btni)}
 .pdf-bar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 @media print{.pq-sw{display:none!important}}
+
+/* mobile footer v5: menu order, compact right column, nav stretched */
+html body footer .fl-pdf{display:none!important}
+@media (max-width:700px){
+html body footer .fw{align-items:stretch!important}
+html body footer .f-nav{display:flex!important;flex-direction:column!important;align-self:stretch!important;justify-content:flex-start!important}
+html body footer .f-nav h4{margin-bottom:0!important}
+html body footer .f-nav .f-ls{display:flex!important;flex-direction:column!important;flex:1;justify-content:space-between!important;padding-top:14px}
+html body footer .f-nav .f-ls>.fl{min-height:0!important;padding:0!important;margin:0!important;line-height:1.3!important;align-items:flex-start!important}
+html body footer .f-nav .f-ls>.fl2{display:none!important}
+html body footer .f-nav .fl-pdf{display:flex!important}
+html body footer .f-nav [data-go="home"]{order:1}html body footer .f-nav [data-go="catalog"]{order:2}html body footer .f-nav [data-go="about"]{order:3}html body footer .f-nav [data-go="oem"]{order:4}html body footer .f-nav .fl-pdf{order:5}html body footer .f-nav [data-go="delivery"]{order:6}html body footer .f-nav [data-go="faq"]{order:7}html body footer .f-nav [data-go="blog"]{order:8}html body footer .f-nav [data-go="contacts"]{order:9}
+html body footer .f-side{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-self:start!important;gap:26px!important}
+html body footer .f-side>div{margin:0!important;padding:0!important}
+html body footer .f-side h4,html body footer .f-side .fh4{margin:0 0 6px!important}
+html body footer .f-side .fl{min-height:0!important;padding:5px 0!important}
+html body footer .f-hrs{display:flex!important;flex-direction:column;gap:3px}
+html body footer .f-hrs h4{margin-bottom:5px!important}
+html body footer .f-hrs .fad{min-height:0!important;margin:0!important;padding:0!important;line-height:1.35!important;display:block!important}
+}
