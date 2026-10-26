@@ -1345,7 +1345,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(b
 const HV_SRC='assets/hero/hero-loop.mp4',HV_POSTER='assets/hero/poster.jpg';
 const _homeV6=home;home=function(){let h=_homeV6();const u=lang==='uk';
 const ring=(u?'ЛИТТЯ ПЛАСТИКУ • ПРЕСФОРМИ • ФІКСАТОРИ • ':'INJECTION MOLDING • MOLDS • SPACERS • ').repeat(1);
-const panel=`<div class="hv"><div class="hv-f"><video class="hv-v" src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline preload="auto" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video><span class="hv-sh" aria-hidden="true"></span>
+const panel=`<div class="hv"><div class="hv-f"><video class="hv-v" src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video><span class="hv-sh" aria-hidden="true"></span>
 <span class="hv-lb">[ ${u?'Власний цех':'Own production'} ]</span>
 <button class="hv-card" data-cap-go><span class="hv-ck">[ ${u?'Потужності':'Capacity'} ]</span><span class="hv-cn"><b><small>×</small>${CAP.n}</b><span class="hv-cl">${u?'термопласт&shy;автоматів<br>у нашому цеху':'injection molding<br>machines in our shop'}</span><span class="hv-cs">${u?'ТПА<br>у цеху':'IMMs<br>in our shop'}</span></span><img class="hv-ci" src="${CAP.img}" alt="" draggable="false"><i aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button></div>
 <button class="hv-ring" data-go="about" aria-label="${u?'Про виробництво':'About production'}"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="hvr" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#hvr" textLength="286" lengthAdjust="spacing">${ring}</textPath></text></svg><i class="hv-ra" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button></div>`;
@@ -1490,11 +1490,18 @@ document.addEventListener('toggle',e=>{const d=e.target;if(!(d instanceof HTMLDe
 
 /* ===== About hero v2: statement left, 3x2 grid right with video ===== */
 const _aboutHV=about;about=function(){let h=_aboutHV();const u=lang==='uk';
-const v=`<div class="pri-v"><video src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline preload="auto" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video><span class="pri-vl">[ ${u?'Власний цех':'Own production'} ]</span></div>`;
+const v=`<div class="pri-v"><video src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video><span class="pri-vl">[ ${u?'Власний цех':'Own production'} ]</span></div>`;
 h=h.replace('<section class="pri pri-1">','<section class="pri pri-1 pri-hv">');const dsc=u?'Проєктуємо та виготовляємо пресформи, ллємо пластикові вироби під тиском і випускаємо власну лінійку фіксаторів арматури. Беремося за деталі будь-якої складності — від пробної партії до серійного виробництва — і доставляємо їх у будь-яку точку України та Європи.':'We design and build injection molds, mold plastic parts and produce our own line of rebar spacers. We take on parts of any complexity — from a trial batch to serial production — and deliver them anywhere in Ukraine and Europe.';
 const qf=`<div class="pri-q"><form class="hqf" novalidate aria-label="${u?'Отримати консультацію':'Request a call'}"><input name="name" type="hidden" value="${u?'Консультація зі сторінки виробництва':'Production page consultation'}"><input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${u?'Телефон':'Phone'}" autocomplete="tel"><button class="btn" type="submit">${u?'Отримати консультацію':'Request a call'}</button><p class="lf-err" role="alert" hidden></p></form></div>`;
 h=h.replace(/(<div class="pri-l">[\s\S]*?<\/p>)(<\/div>)/,'$1'+qf+'<p class="pri-d">'+dsc+'</p>$2');
 h=h.replace(/(<div class="pri-r pri-row">[\s\S]*?)(<\/div><\/section>)/,'$1'+v+'$2');return h};
+
+/* background videos: behave like a looping animated image (force muted autoplay, no play button) */
+function bgVideos(){document.querySelectorAll('#view .hv-v, #view .pri-v video').forEach(v=>{v.muted=true;v.defaultMuted=true;v.playsInline=true;v.setAttribute('muted','');v.controls=false;v.removeAttribute('controls');
+if(!v.dataset.bg){v.dataset.bg=1;v.addEventListener('pause',()=>{if(!document.hidden)setTimeout(()=>v.play().catch(()=>{}),50)})}
+if(v.paused){const p=v.play();p&&p.catch(()=>{})}})}
+new MutationObserver(()=>requestAnimationFrame(bgVideos)).observe(document.getElementById('view'),{childList:true});
+['touchstart','pointerdown','scroll','visibilitychange'].forEach(ev=>addEventListener(ev,()=>{if(!document.hidden)bgVideos()},{passive:true}));
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}

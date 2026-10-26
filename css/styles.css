@@ -3446,3 +3446,7 @@ html body #view .pri-hv .pri-t{margin-top:22px!important}
 .pri-q .lf-err{grid-column:1/-1;margin:4px 0 0;font-size:13px;color:#e5484d}
 :root[data-theme="dark"] .pri-q input[name=phone]{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.14)}
 @media (max-width:520px){.pri-q .hqf{grid-template-columns:1fr!important}.pri-q .btn{width:100%}}
+
+/* hide native play overlays on background videos */
+.hv-v::-webkit-media-controls,.pri-v video::-webkit-media-controls,.hv-v::-webkit-media-controls-start-playback-button,.pri-v video::-webkit-media-controls-start-playback-button,.hv-v::-webkit-media-controls-overlay-play-button,.pri-v video::-webkit-media-controls-overlay-play-button,.hv-v::-webkit-media-controls-panel,.pri-v video::-webkit-media-controls-panel{display:none!important;-webkit-appearance:none!important;opacity:0!important}
+.hv-v,.pri-v video{pointer-events:none}
