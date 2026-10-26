@@ -1343,7 +1343,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(b
 
 /* ===== Hero v6: content left, looping production video right ===== */
 const HV_SRC='assets/hero/hero-loop.mp4',HV_POSTER='assets/hero/poster.jpg',HV_ANIM='assets/hero/hero-m.webp';
-const hvSmall=()=>{try{return matchMedia('(max-width:1100px)').matches}catch(_){return false}};
+const hvSmall=()=>false;
 const _homeV6=home;home=function(){let h=_homeV6();const u=lang==='uk';
 const ring=(u?'ЛИТТЯ ПЛАСТИКУ • ПРЕСФОРМИ • ФІКСАТОРИ • ':'INJECTION MOLDING • MOLDS • SPACERS • ').repeat(1);
 const panel=`<div class="hv"><div class="hv-f">${hvSmall()?`<img class="hv-v hv-img" src="${HV_ANIM}" alt="" decoding="async" fetchpriority="high">`:`<video class="hv-v" src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video>`}<span class="hv-sh" aria-hidden="true"></span>
