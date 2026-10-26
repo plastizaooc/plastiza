@@ -1476,6 +1476,14 @@ const fs=parseFloat(getComputedStyle(h).fontSize);if(fs<24)return;h.classList.ad
 let n=0;while(n++<12&&h.scrollWidth>h.clientWidth+1&&k>.5){k-=.03;h.style.setProperty('font-size',(fs*k).toFixed(1)+'px','important')}})}
 new MutationObserver(()=>requestAnimationFrame(uhFit)).observe(document.getElementById('view'),{childList:true});
 let uhT;addEventListener('resize',()=>{clearTimeout(uhT);uhT=setTimeout(uhFit,120)});document.fonts&&document.fonts.ready.then(uhFit);
+
+/* hero H1 (desktop): shrink to fit the left column, never overlap the video */
+function hxFit(){const h=document.querySelector('#view .hx.hx2 #hxh');if(!h)return;h.style.removeProperty('font-size');if(innerWidth<1101)return;
+const col=h.closest('.hx-in'),cs=getComputedStyle(col),lim=col.getBoundingClientRect().left+col.clientWidth-parseFloat(cs.paddingRight);
+const right=()=>{const g=h.querySelector('.hxg-b')||h,w=document.createTreeWalker(g,NodeFilter.SHOW_TEXT);let m=0,t;while(t=w.nextNode()){if(t.parentElement.closest('.hx-dyn,.sr'))continue;const r=document.createRange();r.selectNodeContents(t);for(const b of r.getClientRects())if(b.width)m=Math.max(m,b.right)}return m};
+const L=h.getBoundingClientRect().left,R0=right(),fs=parseFloat(getComputedStyle(h).fontSize),room=lim-36-L;if(R0-L>room){h.style.setProperty('font-size',(fs*room/(R0-L)).toFixed(1)+'px','important')}}
+new MutationObserver(()=>requestAnimationFrame(hxFit)).observe(document.getElementById('view'),{childList:true});
+let hxT;addEventListener('resize',()=>{clearTimeout(hxT);hxT=setTimeout(hxFit,100)});document.fonts&&document.fonts.ready.then(hxFit);
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
