@@ -1468,6 +1468,14 @@ const sw={fix:'<i class="aq-s aq-s-fix"></i>',fix2:'<i class="aq-s aq-s-fix"></i
 const leg=`<ol class="aq-lg">${L.map((x,i)=>`<li><span class="aq-n${i===0?' aq-n1':''}">${i+1}</span>${sw[x[0]]||''}<span>${x[1]}</span></li>`).join('')}</ol>`;
 return `<figure class="apx aq"><div class="aq-hd"><span>${u?'Схема':'Diagram'} · ${ttl}</span><span>${u?'без масштабу':'not to scale'}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${(u?'Схема застосування: ':'Application diagram: ')+ttl}">${defs}${g}</svg>${leg}<figcaption>${cap}</figcaption></figure>`}
 
+
+/* UA headings: Unbounded is wider — tag headings and scale them to fit */
+const UH_SEL='#view h1:not(.sr),#view h2';
+function uhFit(){const on=false;document.querySelectorAll(UH_SEL).forEach(h=>{if(h.closest('.pdf-doc,.pa-b,.aq'))return;h.style.removeProperty('font-size');h.classList.remove('uh');if(!on)return;
+const fs=parseFloat(getComputedStyle(h).fontSize);if(fs<24)return;h.classList.add('uh');let k=.8;h.style.setProperty('font-size',(fs*k).toFixed(1)+'px','important');
+let n=0;while(n++<12&&h.scrollWidth>h.clientWidth+1&&k>.5){k-=.03;h.style.setProperty('font-size',(fs*k).toFixed(1)+'px','important')}})}
+new MutationObserver(()=>requestAnimationFrame(uhFit)).observe(document.getElementById('view'),{childList:true});
+let uhT;addEventListener('resize',()=>{clearTimeout(uhT);uhT=setTimeout(uhFit,120)});document.fonts&&document.fonts.ready.then(uhFit);
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
