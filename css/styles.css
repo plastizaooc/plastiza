@@ -3760,7 +3760,7 @@ dialog::backdrop{background:rgba(8,10,14,.5)!important;-webkit-backdrop-filter:b
 :root[data-theme="dark"] #qcp .qcp-m a{background:rgba(255,255,255,.08)!important}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #qcp .qcp-m a{background:rgba(255,255,255,.08)!important}}
 /* footer addresses side by side */
-@media (min-width:600px) and (max-width:1100px){
+@media (min-width:600px) and (max-width:760px){
 html body footer .fpills{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;width:100%!important}
 html body footer .f-adr{width:100%!important;grid-column:1/-1!important}
 html body footer .fpills .fpill{width:100%!important;max-width:none!important;justify-content:center!important;margin:0!important;box-sizing:border-box}
@@ -3778,3 +3778,14 @@ html body .dv-rt2 .rt-halo{fill:#0B35B8;opacity:.12}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dv-rt2 .rt-pin path,:root:not([data-theme="light"]) .dv-rt2 .rt-halo{fill:#5A86FF}}
 @media (prefers-reduced-motion:reduce){html body .dv-rt2 .rt-l{animation:none}}
 .sm-m svg{width:24px!important;height:24px!important}
+
+/* tablet footer: addresses under nav, bottom aligned with working hours */
+@media (min-width:761px) and (max-width:1100px){
+html body footer .fw{grid-template-areas:"mot mot" "nav side" "adr side"!important;grid-template-rows:auto auto 1fr!important}
+html body footer .f-side{grid-area:side!important;align-self:stretch!important;display:flex!important;flex-direction:column!important}
+html body footer .f-side .f-hrs{margin-top:auto!important}
+html body footer .f-side .f-hrs .fad:last-child{padding-bottom:0!important;margin-bottom:0!important;line-height:1.2!important;min-height:0!important}
+html body footer .f-adr{grid-area:adr!important;align-self:end!important;margin:0!important;padding:0!important}
+html body footer .f-adr .fpills{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:8px!important}
+}
+@media (min-width:900px) and (max-width:1100px){html body footer .fw:has(.f-prod){grid-template-areas:"mot mot mot" "nav prod side" "adr adr side"!important}}
