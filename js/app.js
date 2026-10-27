@@ -1700,13 +1700,13 @@ function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="
 <p class="lf-err" role="alert" hidden></p>
 <div class="rq-b"><button class="btn" type="submit">${T.send}</button></div></div>
 <div class="rq-pick" hidden></div></form>`}
-function rqOpen(subj){let d=document.getElementById('rqd');if(!d){d=document.createElement('dialog');d.id='rqd';d.className='rqd';document.body.appendChild(d);
+function rqOpen(subj,src){let d=document.getElementById('rqd');if(!d){d=document.createElement('dialog');d.id='rqd';d.className='rqd';document.body.appendChild(d);
  d.addEventListener('click',e=>{if(e.target===d)d.close()});d.addEventListener('close',()=>{ccClose&&ccClose()})}
- RQ.items=[];if(R.p==='product'){try{const {p,vi}=pvParse(R.a);if(p)RQ.items.push({id:p.id,vi:vi||0,q:1})}catch(_){}}
+ RQ.items=[];if(R.p==='product'&&src&&!src.closest('header,#side,#qcp')){try{const {p,vi}=pvParse(R.a);if(p)RQ.items.push({id:p.id,vi:vi||0,q:1})}catch(_){}}
  d.innerHTML=rqHtml();d.showModal();if(typeof ccEnhance==='function')ccEnhance(d)}
 function rqRefresh(){const d=document.getElementById('rqd');if(!d)return;d.querySelector('.rq-items').innerHTML=rqItemsHtml()}
 function rqCount(){const d=document.getElementById('rqd'),n=d.querySelectorAll('.rq-pick input[type=checkbox]:checked').length;d.querySelector('.rq-cnt').textContent=rqT().sel(n)}
-document.addEventListener('click',e=>{const r=e.target.closest('[data-rfq]');if(!r)return;e.preventDefault();e.stopImmediatePropagation();rqOpen(r.dataset.rfq)},true);
+document.addEventListener('click',e=>{const r=e.target.closest('[data-rfq]');if(!r)return;e.preventDefault();e.stopImmediatePropagation();rqOpen(r.dataset.rfq,r)},true);
 document.addEventListener('click',e=>{const d=e.target.closest('#rqd');if(!d)return;
  if(e.target.closest('[data-rq-close]')){d.close();return}
  if(e.target.closest('[data-rq-open]')){const pk=d.querySelector('.rq-pick');pk.innerHTML=rqPickHtml();pk.hidden=false;d.querySelector('.rq-main').hidden=true;rqCount();d.scrollTop=0;return}
