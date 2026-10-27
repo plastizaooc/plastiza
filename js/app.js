@@ -1629,6 +1629,9 @@ document.addEventListener('click',e=>{const c=e.target.closest('#qcp .qcp-call')
 const sync=()=>{const p=document.getElementById('qcp');const on=!!(p&&!p.hidden&&p.classList.contains('on'));sc.classList.toggle('on',on);document.documentElement.classList.toggle('qc-lock',on&&innerWidth<=760)};
 const p=document.getElementById('qcp');if(p)new MutationObserver(sync).observe(p,{attributes:true,attributeFilter:['class','hidden']});
 sc.addEventListener('click',()=>{if(typeof qc==='function')qc(false)})})();
+
+/* catalog page: add complete-supply band + supply process before FAQ */
+const _catalogSP=catalog;catalog=function(){let h=_catalogSP();const fq=bd('w',secFaq()),i=h.indexOf(fq);const add=supplyBand()+bd('sp7-bd',supplyProc());return i>-1?h.slice(0,i)+add+h.slice(i):h+add};
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
