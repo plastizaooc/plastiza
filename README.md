@@ -1,5 +1,7 @@
 # PLASTIZA — сайт
 
+> ⚠️ **ТИМЧАСОВИЙ ДОМЕН plastiza.org — індексацію вимкнено.** На всіх сторінках `noindex, nofollow` (meta + заголовок X-Robots-Tag у vercel.json). При переході на основний домен клієнта: `INDEXING=True` і новий `DOMAIN` у build.py, прибрати X-Robots-Tag з vercel.json, додати `Sitemap:` у robots.txt, оновити sitemap.xml і змінну `SITE_URL` у Vercel, подати сайт у Google Search Console.
+
 Статичний сайт без збірки: відкривається будь-яким вебсервером і деплоїться на Vercel / Netlify / GitHub Pages «як є».
 
 ## Структура

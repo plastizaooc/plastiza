@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 
 export const TOKEN = () => (process.env.TG_BOT_TOKEN || '').trim();
 export const CHATS = () => (process.env.TG_CHAT_ID || '').split(/[\s,;]+/).filter(Boolean);
-export const SITE = (process.env.SITE_URL || 'https://plastiza.vercel.app').replace(/\/$/, '');
+export const SITE = (process.env.SITE_URL || 'https://plastiza.org').replace(/\/$/, '');
 
 export const esc = (s) => String(s ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 export const attr = (s) => esc(s).replace(/"/g, '&quot;');

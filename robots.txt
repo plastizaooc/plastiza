@@ -1,5 +1,4 @@
+# TEMPORARY DOMAIN plastiza.org — site is closed from indexing (noindex on every page).
+# When moving to the main domain: restore indexing and add the Sitemap line.
 User-agent: *
-Disallow: /admin
 Allow: /
-
-Sitemap: https://plastiza.vercel.app/sitemap.xml
