@@ -1560,7 +1560,7 @@ const [pr,rest]=ccList();
 const item=c=>`<li role="option" data-iso="${c[0]}" aria-selected="${c[0]===cur[0]}" tabindex="-1">${ccFlag(c)}<b>${c[0]}</b><span class="phd-n">${ccName(c[0])}</span><span class="phd-c">+${c[1]}</span></li>`;
 const d=document.createElement('div');d.id='phdd';d.className='phd';
 d.innerHTML=`<div class="phd-s"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5 17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input type="search" placeholder="${u?'Пошук країни або коду':'Search country or code'}" aria-label="${u?'Пошук країни':'Search country'}" autocomplete="off"></div><ul role="listbox">${pr.map(item).join('')}<li class="phd-sep" role="presentation"></li>${rest.map(item).join('')}</ul>`;
-document.body.appendChild(d);
+(btn.closest('dialog[open]')||document.body).appendChild(d);
 const sheet=false;if(sheet&&window.visualViewport){const vv=visualViewport;const fitVV=()=>{if(!document.body.contains(d)){vv.removeEventListener('resize',fitVV);vv.removeEventListener('scroll',fitVV);return}const kb=Math.max(0,innerHeight-vv.height-vv.offsetTop);d.style.setProperty('bottom',kb+'px','important');d.style.setProperty('max-height',Math.min(560,vv.height*.85)+'px','important')};vv.addEventListener('resize',fitVV);vv.addEventListener('scroll',fitVV)}if(sheet){d.classList.add('phd-sheet');const sc=document.createElement('div');sc.className='phd-scrim';sc.id='phdscrim';document.body.insertBefore(sc,d);document.documentElement.classList.add('phd-lock')}
 const pos=()=>{if(sheet)return;const r=w.getBoundingClientRect(),vh=innerHeight,below=vh-r.bottom-16,above=r.top-16,up=below<240&&above>below+40;const H=Math.round(Math.min(380,Math.max(200,up?above:below)));
 d.style.width=Math.min(Math.max(r.width,320),innerWidth-24)+'px';d.style.maxHeight=H+'px';d.style.left=Math.min(Math.max(12,r.left),innerWidth-12-d.offsetWidth)+'px';
@@ -1662,6 +1662,68 @@ new MutationObserver(stkAll).observe(document.getElementById('view'),{childList:
 const _dvP2=deliveryP;deliveryP=function(){let h=_dvP2();const u=lang==='uk';
 h=h.replace(/(<div class="dv-t dv-pk"[^>]*>[\s\S]*?<b>)([^<]*)(<\/b>)/,(m,a,b,c)=>a+(u?'Самовивіз<br>зі складу':'Pickup<br>from warehouse')+c);
 h=h.replace(/(<div class="dv-t dv-hi">[\s\S]*?<b>[^<]*<\/b>)/,`$1<span class="dv-hi-d">${u?'Підберемо спосіб під ваш об’єкт':'We’ll match delivery to your site'}</span>`);return h};
+
+/* ===== Request-a-quote mini-quiz ===== */
+const RQ={items:[]};
+const rqT=()=>lang==='uk'?{
+ h:'Запит на розрахунок',sub:'Залиште контакти та оберіть продукцію — менеджер розрахує вартість і зв’яжеться з вами в робочий час.',
+ nm:'Ім’я або компанія',list:'Сформуйте перелік продукції',add:'Додати продукцію',or:'або',
+ file:'Прикріпіть специфікацію чи кошторис',fileh:'PDF, Excel, Word або фото — до 10 МБ',
+ send:'Надіслати запит',cancel:'Скасувати',packs:'уп.',pack:(n,u)=>`${n} ${u} в упаковці`,rm:'Прибрати',
+ pick:'Оберіть продукцію',pickh:'Позначте потрібні розміри — кількість упаковок вкажете в переліку.',apply:'Додати обране',back:'Назад',
+ empty:'Перелік поки порожній',sel:n=>`Обрано: ${n}`,
+ errN:'Вкажіть ім’я або назву компанії.',errP:'Вкажіть номер телефону.',errL:'Додайте продукцію до переліку або прикріпіть файл.',ok:'Дякуємо! Запит надіслано — менеджер зв’яжеться з вами в робочий час.',
+ total:(n,p)=>`${n} поз. · ${p} уп.`}:{
+ h:'Request a quote',sub:'Leave your contacts and pick the products — a manager will price your order and get back to you during working hours.',
+ nm:'Name or company',list:'Build your product list',add:'Add products',or:'or',
+ file:'Attach a specification or bill of quantities',fileh:'PDF, Excel, Word or photo — up to 10 MB',
+ send:'Send request',cancel:'Cancel',packs:'packs',pack:(n,u)=>`${n} ${u} per pack`,rm:'Remove',
+ pick:'Choose products',pickh:'Tick the sizes you need — set the number of packs in the list.',apply:'Add selected',back:'Back',
+ empty:'Your list is empty',sel:n=>`Selected: ${n}`,
+ errN:'Enter your name or company.',errP:'Enter your phone number.',errL:'Add products to the list or attach a file.',ok:'Thank you! Your request has been sent — a manager will contact you during working hours.',
+ total:(n,p)=>`${n} items · ${p} packs`};
+const rqKey=(id,vi)=>id+'-'+vi;
+function rqItemsHtml(){const T=rqT();if(!RQ.items.length)return `<p class="rq-empty">${T.empty}</p>`;
+ return RQ.items.map((it,i)=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return `<div class="rq-it" data-i="${i}"><img src="${IMGS[p.id]}" alt=""><div class="rq-in"><b>${title(p)} <span>${sz(v)}</span></b><small>${T.pack(v[2],un(p))}</small></div><label class="rq-q"><button type="button" data-rq-d="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${it.q}" aria-label="${T.packs}"><button type="button" data-rq-d="1" aria-label="+">+</button><span>${T.packs}</span></label><button type="button" class="rq-x" data-rq-rm aria-label="${T.rm}">✕</button></div>`}).join('')+
+ `<p class="rq-sum">${T.total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}</p>`}
+function rqPickHtml(){const T=rqT(),have=new Set(RQ.items.map(x=>rqKey(x.id,x.vi)));
+ return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<label class="rq-ch"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small></label>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
+function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="rq-main"><div class="rq-h"><h3>${T.h}</h3><button type="button" class="ic x" data-rq-close aria-label="${T.cancel}">✕</button></div><p class="rq-sub">${T.sub}</p>
+<input name="name" required placeholder="${T.nm}" aria-label="${T.nm}" autocomplete="name">
+<input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${lang==='uk'?'Телефон':'Phone'}" autocomplete="tel">
+<div class="rq-div"><span>${T.list}</span></div>
+<div class="rq-items">${rqItemsHtml()}</div>
+<button type="button" class="rq-add" data-rq-open><i>+</i>${T.add}</button>
+<div class="rq-div"><span>${T.or}</span></div>
+<label class="rq-file"><input type="file" name="files" multiple accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.heic" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5l-8.2 8.2a5.3 5.3 0 0 1-7.5-7.5l8.6-8.6a3.5 3.5 0 0 1 5 5l-8.6 8.6a1.8 1.8 0 0 1-2.5-2.5l7.9-7.9"/></svg><span><b>${T.file}</b><small class="rq-fn">${T.fileh}</small></span></label>
+<p class="lf-err" role="alert" hidden></p>
+<div class="rq-b"><button class="btn" type="submit">${T.send}</button><button class="btn g" type="button" data-rq-close>${T.cancel}</button></div></div>
+<div class="rq-pick" hidden></div></form>`}
+function rqOpen(subj){let d=document.getElementById('rqd');if(!d){d=document.createElement('dialog');d.id='rqd';d.className='rqd';document.body.appendChild(d);
+ d.addEventListener('click',e=>{if(e.target===d)d.close()});d.addEventListener('close',()=>{ccClose&&ccClose()})}
+ RQ.items=[];if(R.p==='product'){try{const {p,vi}=pvParse(R.a);if(p)RQ.items.push({id:p.id,vi:vi||0,q:1})}catch(_){}}
+ d.innerHTML=rqHtml();d.showModal();if(typeof ccEnhance==='function')ccEnhance(d)}
+function rqRefresh(){const d=document.getElementById('rqd');if(!d)return;d.querySelector('.rq-items').innerHTML=rqItemsHtml()}
+function rqCount(){const d=document.getElementById('rqd'),n=d.querySelectorAll('.rq-pick input:checked').length;d.querySelector('.rq-cnt').textContent=rqT().sel(n)}
+document.addEventListener('click',e=>{const r=e.target.closest('[data-rfq]');if(!r)return;e.preventDefault();e.stopImmediatePropagation();rqOpen(r.dataset.rfq)},true);
+document.addEventListener('click',e=>{const d=e.target.closest('#rqd');if(!d)return;
+ if(e.target.closest('[data-rq-close]')){d.close();return}
+ if(e.target.closest('[data-rq-open]')){const pk=d.querySelector('.rq-pick');pk.innerHTML=rqPickHtml();pk.hidden=false;d.querySelector('.rq-main').hidden=true;rqCount();d.scrollTop=0;return}
+ if(e.target.closest('[data-rq-back]')){d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;return}
+ if(e.target.closest('[data-rq-apply]')){const sel=[...d.querySelectorAll('.rq-pick input:checked')].map(i=>i.value);const keep=RQ.items.filter(x=>sel.includes(rqKey(x.id,x.vi)));sel.forEach(k=>{if(!keep.find(x=>rqKey(x.id,x.vi)===k)){const [id,vi]=k.split('-').map(Number);keep.push({id,vi,q:1})}});RQ.items=keep;d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;rqRefresh();return}
+ const q=e.target.closest('[data-rq-d]');if(q){const i=+q.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,(+RQ.items[i].q||1)+(+q.dataset.rqD));rqRefresh();return}
+ if(e.target.closest('[data-rq-rm]')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items.splice(i,1);rqRefresh();return}});
+document.addEventListener('change',e=>{const d=e.target.closest('#rqd');if(!d)return;if(e.target.closest('.rq-pick'))rqCount();
+ if(e.target.matches('.rq-q input')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);rqRefresh()}
+ if(e.target.name==='files'){const fs=[...e.target.files];d.querySelector('.rq-fn').textContent=fs.length?fs.map(f=>f.name).join(', '):rqT().fileh;d.querySelector('.rq-file').classList.toggle('on',!!fs.length)}});
+document.addEventListener('submit',e=>{const f=e.target.closest('#rqd .rq');if(!f)return;e.preventDefault();const T=rqT(),er=f.querySelector('.lf-err');const nm=f.name.value.trim(),files=[...f.files.files];
+ if(!nm){er.textContent=T.errN;er.hidden=false;f.name.setAttribute('aria-invalid','true');f.name.focus();return}
+ if(!f.phone.value.trim()){er.textContent=T.errP;er.hidden=false;f.phone.setAttribute('aria-invalid','true');f.phone.focus();return}
+ if(!RQ.items.length&&!files.length){er.textContent=T.errL;er.hidden=false;return}er.hidden=true;
+ const ph=f.phone.value.trim(),full=ph.startsWith('+')?ph:('+'+(typeof ccOf==='function'?ccOf(f.phone)[1]:'380')+' '+ph);
+ pushLead({name:nm,phone:full,type:'quote',items:RQ.items.map(it=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return {product:title(p),size:sz(v),packs:+it.q,perPack:v[2]+' '+un(p)}}),files:files.map(x=>x.name),source:leadSource('quote-modal'),okText:T.ok});
+ document.getElementById('rqd').close()});
+
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
