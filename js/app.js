@@ -1684,11 +1684,12 @@ const rqT=()=>lang==='uk'?{
  total:(n,p)=>`${n} items · ${p} packs`};
 const rqKey=(id,vi)=>id+'-'+vi;
 function rqItemsHtml(){const T=rqT();if(!RQ.items.length)return `<p class="rq-empty">${T.empty}</p>`;
- return RQ.items.map((it,i)=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return `<div class="rq-it" data-i="${i}"><img src="${IMGS[p.id]}" alt=""><div class="rq-in"><b>${title(p)} <span>${sz(v)}</span></b><small>${T.pack(v[2],un(p))}</small></div><label class="rq-q"><button type="button" data-rq-d="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${it.q}" aria-label="${T.packs}"><button type="button" data-rq-d="1" aria-label="+">+</button><span>${T.packs}</span></label><button type="button" class="rq-x" data-rq-rm aria-label="${T.rm}">✕</button></div>`}).join('')+
+ const ids=[...new Set(RQ.items.map(x=>x.id))];
+ return ids.map(id=>{const p=P.find(x=>x.id===id);return `<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${RQ.items.map((it,i)=>[it,i]).filter(([it])=>it.id===id).map(([it,i])=>{const v=p.v[it.vi];return `<div class="rq-ch rq-sel" data-i="${i}"><div class="rq-cl"><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small><button type="button" class="rq-x" data-rq-rm aria-label="${T.rm}"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></div><span class="rq-q rq-ps"><button type="button" data-rq-d="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${it.q}" aria-label="${T.packs}"><button type="button" data-rq-d="1" aria-label="+">+</button><span>${T.packs}</span></span></div>`}).join('')}</div></div>`}).join('')+
  `<p class="rq-sum">${T.total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}</p>`}
 function rqPickHtml(){const T=rqT(),have=new Set(RQ.items.map(x=>rqKey(x.id,x.vi)));
  return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<div class="rq-ch"><label class="rq-cl"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small></label><span class="rq-q rq-ps"><button type="button" data-rq-pd="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${(RQ.items.find(x=>rqKey(x.id,x.vi)===rqKey(p.id,vi))||{q:1}).q}" aria-label="${T.packs}"><button type="button" data-rq-pd="1" aria-label="+">+</button><span>${T.packs}</span></span></div>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
-function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="rq-main"><div class="rq-h"><h3>${T.h}</h3><button type="button" class="ic x" data-rq-close aria-label="${T.cancel}">✕</button></div><p class="rq-sub">${T.sub}</p>
+function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="rq-main"><div class="rq-h"><h3>${T.h}</h3><button type="button" class="ic x" data-rq-close aria-label="${T.cancel}">✕</button></div>
 <div class="rq-ct"><input name="name" required placeholder="${T.nm}" aria-label="${T.nm}" autocomplete="name">
 <input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${lang==='uk'?'Телефон':'Phone'}" autocomplete="tel"></div>
 <div class="rq-div"><span>${T.list}</span></div>
@@ -1697,7 +1698,7 @@ function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="
 <div class="rq-div"><span>${T.or}</span></div>
 <label class="rq-file"><input type="file" name="files" multiple accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.heic" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5l-8.2 8.2a5.3 5.3 0 0 1-7.5-7.5l8.6-8.6a3.5 3.5 0 0 1 5 5l-8.6 8.6a1.8 1.8 0 0 1-2.5-2.5l7.9-7.9"/></svg><span><b>${T.file}</b><small class="rq-fn">${T.fileh}</small></span></label>
 <p class="lf-err" role="alert" hidden></p>
-<div class="rq-b"><button class="btn" type="submit">${T.send}</button><button class="btn g" type="button" data-rq-close>${T.cancel}</button></div></div>
+<div class="rq-b"><button class="btn" type="submit">${T.send}</button></div></div>
 <div class="rq-pick" hidden></div></form>`}
 function rqOpen(subj){let d=document.getElementById('rqd');if(!d){d=document.createElement('dialog');d.id='rqd';d.className='rqd';document.body.appendChild(d);
  d.addEventListener('click',e=>{if(e.target===d)d.close()});d.addEventListener('close',()=>{ccClose&&ccClose()})}
@@ -1712,10 +1713,10 @@ document.addEventListener('click',e=>{const d=e.target.closest('#rqd');if(!d)ret
  if(e.target.closest('[data-rq-back]')){d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;return}
  const pd=e.target.closest('[data-rq-pd]');if(pd){const c=pd.closest('.rq-ch'),i=c.querySelector('.rq-ps input'),cb=c.querySelector('input[type=checkbox]');i.value=Math.max(1,(parseInt(i.value)||1)+(+pd.dataset.rqPd));if(!cb.checked){cb.checked=true;rqCount()}return}
  if(e.target.closest('[data-rq-apply]')){const sel=[...d.querySelectorAll('.rq-pick input[type=checkbox]:checked')];const prev=RQ.items;RQ.items=sel.map(cb=>{const [id,vi]=cb.value.split('-').map(Number),q=Math.max(1,parseInt(cb.closest('.rq-ch').querySelector('.rq-ps input').value)||1);return {id,vi,q}});RQ.items.sort((a,b)=>{const ia=prev.findIndex(x=>x.id===a.id&&x.vi===a.vi),ib=prev.findIndex(x=>x.id===b.id&&x.vi===b.vi);return (ia<0?1e3:ia)-(ib<0?1e3:ib)});d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;rqRefresh();return}
- const q=e.target.closest('[data-rq-d]');if(q){const i=+q.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,(+RQ.items[i].q||1)+(+q.dataset.rqD));rqRefresh();return}
- if(e.target.closest('[data-rq-rm]')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items.splice(i,1);rqRefresh();return}});
+ const q=e.target.closest('[data-rq-d]');if(q){const i=+q.closest('[data-i]').dataset.i;RQ.items[i].q=Math.max(1,(+RQ.items[i].q||1)+(+q.dataset.rqD));rqRefresh();return}
+ if(e.target.closest('[data-rq-rm]')){const i=+e.target.closest('[data-i]').dataset.i;RQ.items.splice(i,1);rqRefresh();return}});
 document.addEventListener('change',e=>{const d=e.target.closest('#rqd');if(!d)return;if(e.target.matches('.rq-ps input')){e.target.value=Math.max(1,parseInt(e.target.value)||1);const cb=e.target.closest('.rq-ch').querySelector('input[type=checkbox]');cb.checked=true}if(e.target.closest('.rq-pick'))rqCount();
- if(e.target.matches('.rq-it .rq-q input')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);rqRefresh()}
+ if(e.target.matches('.rq-sel .rq-q input')){const i=+e.target.closest('[data-i]').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);rqRefresh()}
  if(e.target.name==='files'){const fs=[...e.target.files];d.querySelector('.rq-fn').textContent=fs.length?fs.map(f=>f.name).join(', '):rqT().fileh;d.querySelector('.rq-file').classList.toggle('on',!!fs.length)}});
 document.addEventListener('submit',e=>{const f=e.target.closest('#rqd .rq');if(!f)return;e.preventDefault();const T=rqT(),er=f.querySelector('.lf-err');const nm=f.name.value.trim(),files=[...f.files.files];
  if(!nm){er.textContent=T.errN;er.hidden=false;f.name.setAttribute('aria-invalid','true');f.name.focus();return}
@@ -1736,6 +1737,12 @@ const _stkS=stkScroll;stkScroll=function(){_stkS();const mark=innerHeight*.62;
   it.forEach(li=>li.classList.toggle('stk-on',(stkY(li)-a)/Math.max(1,z-a)<=p+.001))})};
 /* keep sticky offset right when the held section changes height */
 if(window.ResizeObserver){const _ovRO=new ResizeObserver(()=>requestAnimationFrame(()=>{ovPos();stkScroll()}));new MutationObserver(()=>requestAnimationFrame(()=>document.querySelectorAll('#view .ov-under').forEach(u=>{if(!u._ro){u._ro=1;_ovRO.observe(u)}}))).observe(document.getElementById('view'),{childList:true,subtree:true})}
+
+
+/* mobile header: quote button next to quick contact */
+const ICO_CALC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.75" width="14" height="18.5" rx="3"/><rect x="8" y="5.75" width="8" height="3.5" rx="1"/><circle cx="8.9" cy="12.6" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="12.6" r=".75" fill="currentColor" stroke="none"/><circle cx="15.1" cy="12.6" r=".75" fill="currentColor" stroke="none"/><circle cx="8.9" cy="15.7" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="15.7" r=".75" fill="currentColor" stroke="none"/><circle cx="8.9" cy="18.6" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="18.6" r=".75" fill="currentColor" stroke="none"/><path d="M15.1 15v4.3"/></svg>';
+function rqHdr(){const q=document.getElementById('qcb');if(!q)return;let b=document.getElementById('rqb');if(!b){b=document.createElement('button');b.id='rqb';b.className='ic qc-b';b.dataset.rfq='PLASTIZA';b.innerHTML=ICO_CALC;q.parentNode.insertBefore(b,q)}b.setAttribute('aria-label',lang==='uk'?'Запит на розрахунок':'Request a quote')}
+rqHdr();setTimeout(rqHdr,300);new MutationObserver(()=>rqHdr()).observe(document.getElementById('view'),{childList:true});
 
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */

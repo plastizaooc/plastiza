@@ -3988,3 +3988,30 @@ html body .rq .rq-ps input{width:100%;min-width:0;flex:1}
 .rq-ps span{padding:0 6px 0 0}
 @media (min-width:700px){dialog.rqd{width:min(700px,94vw)}.rq-pp-v{grid-template-columns:repeat(4,1fr)}}
 @media (min-width:960px){dialog.rqd{width:min(780px,92vw)}.rq-pp-v{grid-template-columns:repeat(5,1fr)}}
+
+/* RFQ v3: tiles with right-aligned check / remove, sticky head + submit */
+#rqb{display:none!important}
+@media (max-width:760px){#rqb{display:inline-flex!important}}
+#rqb svg{display:block;width:20px;height:20px}
+html body .rqd .rq-cl{grid-template-columns:1fr auto;column-gap:8px;align-items:start}
+html body .rqd .rq-cl .rq-sz{grid-column:1;grid-row:1;line-height:18px}
+html body .rqd .rq-cl small{grid-column:1;grid-row:2}
+html body .rqd .rq-cl .rq-cb,html body .rqd .rq-cl .rq-x{grid-column:2;grid-row:1;align-self:start;margin:-1px 0 0}
+.rq-ch input:checked~.rq-cb::after{content:"";width:12px;height:12px;border:0!important;transform:none!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.4 6.3l2.4 2.4 4.8-5.2' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
+html body .rqd .rq-sel{border-color:var(--line)!important;background:none!important}
+html body .rqd .rq-sel .rq-sz{color:#0B35B8}
+html body .rqd .rq-sel .rq-ps{opacity:1}
+html body .rqd .rq-x{all:unset;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;cursor:pointer;color:inherit;opacity:.45;transition:opacity .15s,background .15s,color .15s}
+html body .rqd .rq-x:hover{opacity:1;color:#D9383A;background:rgba(217,56,58,.08)}
+.rq-items{gap:16px}
+.rq-file{justify-content:center;text-align:center}.rq-file span{justify-items:center}
+.rq-b{grid-template-columns:1fr!important}
+.rq-main{padding-top:0!important;padding-bottom:0!important}
+.rq-h{position:sticky;top:0;z-index:3;margin:0 -28px;padding:24px 28px 12px;background:var(--surf2,#fff);align-items:center}
+.rq-h .x{margin:0 -6px 0 0}
+.rq-b{position:sticky;bottom:0;z-index:3;margin:4px -28px 0;padding:12px 28px 24px;background:var(--surf2,#fff)}
+@media (max-width:560px){.rq-h{margin:0 -18px;padding:18px 18px 12px;border-bottom:1px solid var(--line)}.rq-b{margin:4px -18px 0;padding:12px 18px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}.rq-ct{margin-top:4px}}
+:root[data-theme="dark"] .rq-h,:root[data-theme="dark"] .rq-b{background:#141418}
+:root[data-theme="dark"] html body .rqd .rq-sel .rq-sz,:root[data-theme="dark"] .rqd .rq-sel .rq-sz{color:#7FA0FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rq-h,:root:not([data-theme="light"]) .rq-b{background:#141418}:root:not([data-theme="light"]) .rqd .rq-sel .rq-sz{color:#7FA0FF!important}}
+:root[data-theme="dark"] .rqd .rq-sel .rq-sz{color:#7FA0FF!important}
