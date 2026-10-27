@@ -3976,6 +3976,7 @@ html body .rq .rq-q input{all:unset;width:38px;text-align:center;font-size:15px;
 @media (min-width:960px){dialog.rqd{width:min(900px,92vw)}.rq-pp-v{grid-template-columns:repeat(5,1fr)}}
 
 /* RFQ picker: qty stepper in each size tile; narrower window */
+html body .rqd .rq-cl{align-items:start}html body .rqd .rq-cl .rq-cb{align-self:start;margin-top:-1px}html body .rqd .rq-cl .rq-sz{line-height:18px}
 html body .rqd .rq-ch{display:grid;grid-template-columns:1fr;gap:8px;padding:10px 10px 10px 12px;cursor:default}
 .rq-cl{display:grid;grid-template-columns:20px 1fr;column-gap:10px;align-items:center;cursor:pointer}
 .rq-cl input{position:absolute;opacity:0;pointer-events:none}
