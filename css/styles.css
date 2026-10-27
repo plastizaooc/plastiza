@@ -3754,3 +3754,14 @@ html.phd-lock,html.phd-lock body{overflow:hidden!important;overscroll-behavior:n
 .qc-scrim{position:fixed;inset:0;z-index:45;background:rgba(8,10,14,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .22s}
 @media (max-width:760px){.qc-scrim.on{opacity:1;pointer-events:auto}html.qc-lock,html.qc-lock body{overflow:hidden!important}}
 dialog::backdrop{background:rgba(8,10,14,.5)!important;-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important}
+
+/* quick contact: white messenger tiles */
+#qcp .qcp-m a{background:#fff!important;box-shadow:0 1px 2px rgba(15,23,42,.05)!important}
+:root[data-theme="dark"] #qcp .qcp-m a{background:rgba(255,255,255,.08)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #qcp .qcp-m a{background:rgba(255,255,255,.08)!important}}
+/* footer addresses side by side */
+@media (min-width:600px) and (max-width:1100px){
+html body footer .fpills{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;width:100%!important}
+html body footer .f-adr{width:100%!important;grid-column:1/-1!important}
+html body footer .fpills .fpill{width:100%!important;max-width:none!important;justify-content:center!important;margin:0!important;box-sizing:border-box}
+}
