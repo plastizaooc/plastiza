@@ -4030,3 +4030,6 @@ html body .rqd .rq-pp-h img,html body .rqd .rq-it img{background:#F4F2EE!importa
 
 /* PDF bar: full-width centered save button on mobile */
 @media (max-width:700px){html body #view .pdf-bar [data-print]{width:100%!important;display:flex!important;justify-content:center!important;align-items:center!important;text-align:center!important}html body #view .pdf-bar .row{width:100%}}
+
+/* PDF bar: very narrow screens — one row of switches, save button below */
+@media (max-width:480px){html body #view .pdf-bar .pq-tab{display:none}html body #view .pdf-bar .row{display:flex!important;flex-wrap:wrap!important;gap:8px!important}html body #view .pdf-bar .pq-sw{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;width:100%;justify-content:space-between}html body #view .pdf-bar .pq-seg{flex:1 1 auto}html body #view .pdf-bar .pq-seg button{padding-left:12px!important;padding-right:12px!important;flex:1}}
