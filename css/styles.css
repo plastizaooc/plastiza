@@ -3969,3 +3969,8 @@ html body .rq .rq-q input{all:unset;width:38px;text-align:center;font-size:15px;
 
 /* tracker completes before FAQ slides over */
 #view .ov-wrap>.ov-under:has(.stk-col)+.ov-top{margin-top:min(42vh,380px)!important}
+
+/* RFQ: wider on desktop/tablet */
+.rq-ct{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:700px){dialog.rqd{width:min(760px,94vw)}.rq-ct{grid-template-columns:1fr 1fr}.rq-pp-v{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:960px){dialog.rqd{width:min(900px,92vw)}.rq-pp-v{grid-template-columns:repeat(5,1fr)}}

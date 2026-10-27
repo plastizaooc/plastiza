@@ -1689,8 +1689,8 @@ function rqItemsHtml(){const T=rqT();if(!RQ.items.length)return `<p class="rq-em
 function rqPickHtml(){const T=rqT(),have=new Set(RQ.items.map(x=>rqKey(x.id,x.vi)));
  return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<label class="rq-ch"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small></label>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
 function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="rq-main"><div class="rq-h"><h3>${T.h}</h3><button type="button" class="ic x" data-rq-close aria-label="${T.cancel}">✕</button></div><p class="rq-sub">${T.sub}</p>
-<input name="name" required placeholder="${T.nm}" aria-label="${T.nm}" autocomplete="name">
-<input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${lang==='uk'?'Телефон':'Phone'}" autocomplete="tel">
+<div class="rq-ct"><input name="name" required placeholder="${T.nm}" aria-label="${T.nm}" autocomplete="name">
+<input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${lang==='uk'?'Телефон':'Phone'}" autocomplete="tel"></div>
 <div class="rq-div"><span>${T.list}</span></div>
 <div class="rq-items">${rqItemsHtml()}</div>
 <button type="button" class="rq-add" data-rq-open><i>+</i>${T.add}</button>
