@@ -4015,3 +4015,6 @@ html body .rqd .rq-x:hover{opacity:1;color:#D9383A;background:rgba(217,56,58,.08
 :root[data-theme="dark"] html body .rqd .rq-sel .rq-sz,:root[data-theme="dark"] .rqd .rq-sel .rq-sz{color:#7FA0FF}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rq-h,:root:not([data-theme="light"]) .rq-b{background:#141418}:root:not([data-theme="light"]) .rqd .rq-sel .rq-sz{color:#7FA0FF!important}}
 :root[data-theme="dark"] .rqd .rq-sel .rq-sz{color:#7FA0FF!important}
+
+/* RFQ: light plate under product photos */
+html body .rqd .rq-pp-h img,html body .rqd .rq-it img{background:#F4F2EE!important;padding:2px;box-sizing:border-box}

@@ -1713,10 +1713,10 @@ document.addEventListener('click',e=>{const d=e.target.closest('#rqd');if(!d)ret
  if(e.target.closest('[data-rq-back]')){d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;return}
  const pd=e.target.closest('[data-rq-pd]');if(pd){const c=pd.closest('.rq-ch'),i=c.querySelector('.rq-ps input'),cb=c.querySelector('input[type=checkbox]');i.value=Math.max(1,(parseInt(i.value)||1)+(+pd.dataset.rqPd));if(!cb.checked){cb.checked=true;rqCount()}return}
  if(e.target.closest('[data-rq-apply]')){const sel=[...d.querySelectorAll('.rq-pick input[type=checkbox]:checked')];const prev=RQ.items;RQ.items=sel.map(cb=>{const [id,vi]=cb.value.split('-').map(Number),q=Math.max(1,parseInt(cb.closest('.rq-ch').querySelector('.rq-ps input').value)||1);return {id,vi,q}});RQ.items.sort((a,b)=>{const ia=prev.findIndex(x=>x.id===a.id&&x.vi===a.vi),ib=prev.findIndex(x=>x.id===b.id&&x.vi===b.vi);return (ia<0?1e3:ia)-(ib<0?1e3:ib)});d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;rqRefresh();return}
- const q=e.target.closest('[data-rq-d]');if(q){const i=+q.closest('[data-i]').dataset.i;RQ.items[i].q=Math.max(1,(+RQ.items[i].q||1)+(+q.dataset.rqD));rqRefresh();return}
+ const q=e.target.closest('[data-rq-d]');if(q){const t=q.closest('[data-i]'),i=+t.dataset.i,inp=t.querySelector('.rq-q input');RQ.items[i].q=Math.max(1,(parseInt(inp.value)||+RQ.items[i].q||1)+(+q.dataset.rqD));inp.value=RQ.items[i].q;rqSum();return}
  if(e.target.closest('[data-rq-rm]')){const i=+e.target.closest('[data-i]').dataset.i;RQ.items.splice(i,1);rqRefresh();return}});
-document.addEventListener('change',e=>{const d=e.target.closest('#rqd');if(!d)return;if(e.target.matches('.rq-ps input')){e.target.value=Math.max(1,parseInt(e.target.value)||1);const cb=e.target.closest('.rq-ch').querySelector('input[type=checkbox]');cb.checked=true}if(e.target.closest('.rq-pick'))rqCount();
- if(e.target.matches('.rq-sel .rq-q input')){const i=+e.target.closest('[data-i]').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);rqRefresh()}
+document.addEventListener('change',e=>{const d=e.target.closest('#rqd');if(!d)return;if(e.target.matches('.rq-pick .rq-ps input')){e.target.value=Math.max(1,parseInt(e.target.value)||1);const cb=e.target.closest('.rq-ch').querySelector('input[type=checkbox]');cb.checked=true}if(e.target.closest('.rq-pick'))rqCount();
+ if(e.target.matches('.rq-sel .rq-q input')){const i=+e.target.closest('[data-i]').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);e.target.value=RQ.items[i].q;rqSum()}
  if(e.target.name==='files'){const fs=[...e.target.files];d.querySelector('.rq-fn').textContent=fs.length?fs.map(f=>f.name).join(', '):rqT().fileh;d.querySelector('.rq-file').classList.toggle('on',!!fs.length)}});
 document.addEventListener('submit',e=>{const f=e.target.closest('#rqd .rq');if(!f)return;e.preventDefault();const T=rqT(),er=f.querySelector('.lf-err');const nm=f.name.value.trim(),files=[...f.files.files];
  if(!nm){er.textContent=T.errN;er.hidden=false;f.name.setAttribute('aria-invalid','true');f.name.focus();return}
@@ -1740,9 +1740,13 @@ if(window.ResizeObserver){const _ovRO=new ResizeObserver(()=>requestAnimationFra
 
 
 /* mobile header: quote button next to quick contact */
-const ICO_CALC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.75" width="14" height="18.5" rx="3"/><rect x="8" y="5.75" width="8" height="3.5" rx="1"/><circle cx="8.9" cy="12.6" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="12.6" r=".75" fill="currentColor" stroke="none"/><circle cx="15.1" cy="12.6" r=".75" fill="currentColor" stroke="none"/><circle cx="8.9" cy="15.7" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="15.7" r=".75" fill="currentColor" stroke="none"/><circle cx="8.9" cy="18.6" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="18.6" r=".75" fill="currentColor" stroke="none"/><path d="M15.1 15v4.3"/></svg>';
+const ICO_CALC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h14v17l-2.33-1.4-2.33 1.4-2.34-1.4-2.33 1.4-2.34-1.4L5 20.5z"/><path d="M8.75 8.5h6.5M8.75 12h6.5M8.75 15.5h3.5"/></svg>';
 function rqHdr(){const q=document.getElementById('qcb');if(!q)return;let b=document.getElementById('rqb');if(!b){b=document.createElement('button');b.id='rqb';b.className='ic qc-b';b.dataset.rfq='PLASTIZA';b.innerHTML=ICO_CALC;q.parentNode.insertBefore(b,q)}b.setAttribute('aria-label',lang==='uk'?'Запит на розрахунок':'Request a quote')}
 rqHdr();setTimeout(rqHdr,300);new MutationObserver(()=>rqHdr()).observe(document.getElementById('view'),{childList:true});
+
+
+function rqSum(){const d=document.getElementById('rqd');const e=d&&d.querySelector('.rq-sum');if(e)e.textContent=rqT().total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}
+document.addEventListener('input',e=>{if(!e.target.matches('#rqd .rq-sel .rq-q input'))return;const i=+e.target.closest('[data-i]').dataset.i,v=parseInt(e.target.value);if(v>0){RQ.items[i].q=v;rqSum()}});
 
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
