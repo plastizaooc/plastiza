@@ -3627,8 +3627,9 @@ html:root body #view .cfb .btn::before,html:root body #view .cfb .btn::after{dis
 
 /* phone input: narrower in one-row forms */
 @media (min-width:761px){
-html:root body #view .hx.hx2 .hqi .hqf,html:root body #view .pri-q .hqf{grid-template-columns:minmax(0,242px) auto!important;justify-content:start!important}
-html:root body #view .cfb.cfb .s5-cf{grid-template-columns:minmax(0,242px) auto!important;justify-content:center!important}
+html:root body #view .hx.hx2 .hqi .hqf,html:root body #view .pri-q .hqf{grid-template-columns:minmax(0,296px) auto!important;justify-content:start!important}
+html:root body #view .cfb.cfb .s5-cf{grid-template-columns:1fr minmax(0,296px) max-content 1fr!important;justify-content:stretch!important}
+html:root body #view .cfb.cfb .s5-cf>.phw{grid-column:2}html:root body #view .cfb.cfb .s5-cf>.btn{grid-column:3}
 }
 
 /* mobile: bigger country chip, number centred */
@@ -3638,3 +3639,13 @@ html:root body #view .cfb.cfb .s5-cf{grid-template-columns:minmax(0,242px) auto!
 .phc svg{width:10px;height:7px}
 html:root body .phw>input.phw-i,html:root body #view .phw>input.phw-i.phw-i.phw-i{text-align:center!important;width:100%!important}
 }
+
+/* desktop: bigger country chip, narrower consult button */
+@media (min-width:761px){
+.phc{font-size:16px;gap:8px;padding:0 12px 0 7px;max-height:42px;height:calc(100% - 10px);left:5px}
+.phf{width:22px;height:22px}
+.phc svg{width:10px;height:7px}
+html:root body #view .cfb.cfb .s5-cf .btn.btn{width:auto!important;min-width:0!important;padding-left:30px!important;padding-right:30px!important;justify-self:start}
+}
+
+@media (min-width:1101px){html:root body #view .hx.hx2 .hqi,html:root body #view .pri-q{max-width:580px!important}}
