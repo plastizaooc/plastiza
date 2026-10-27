@@ -3866,7 +3866,7 @@ html body #view .lf3-c dd a:hover,html body #view .lf3-c dd>a:hover{opacity:1!im
 @media (min-width:761px){.qc-scrim{background:rgba(8,10,14,.22);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}}
 
 /* services page: compact first screen */
-html body #view .x>.pri-1:has(+.s5p) .pri-t,html body #view .x>.pri-1:has(+.s5p) .pri-t b{color:var(--ink)!important}
+
 @media (min-width:1101px){
 html body #view .x>.pri-1:has(+.s5p){display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,72px);align-items:start;padding-top:clamp(28px,4vh,48px)!important;padding-bottom:clamp(24px,3.5vh,40px)!important}
 html body #view .x>.pri-1:has(+.s5p) .pri-t{font-size:clamp(26px,2.3vw,40px)!important;margin:16px 0 0!important;max-width:none!important}
@@ -3882,7 +3882,18 @@ html body #view .s5p .s5-t{font-size:clamp(30px,3.2vw,52px)!important}
 
 html body #view .x>.pri-1:has(+.s5p){border-bottom:0!important;box-shadow:none!important}
 html body #view .x>.pri-1:has(+.s5p)::after,html body #view .x>.pri-1:has(+.s5p)::before{display:none!important}
-html body #view .x>.pri-1:has(+.s5p) .pri-t b{font-weight:inherit!important}
+
 html body #view .s5p::before{display:none!important}
 html body #view .s5p{border-top:0!important;padding-top:0!important;margin-top:0!important}
 html body #view .s5p .s5-notes>span{max-width:none!important}
+
+/* services hero: bold black accents, rest grey; more air */
+html body #view .x>.pri-1:has(+.s5p) .pri-t{color:color-mix(in srgb,var(--ink) 40%,transparent)!important}
+html body #view .x>.pri-1:has(+.s5p) .pri-t b{color:var(--ink)!important;font-weight:600!important}
+@media (min-width:1101px){
+html body #view .x>.pri-1:has(+.s5p){padding-top:clamp(48px,8vh,96px)!important;padding-bottom:clamp(44px,7vh,88px)!important}
+html body #view .s5p .s5-notes{padding:clamp(22px,3.2vh,32px) 0!important}
+html body #view .s5p .s5-l{margin-top:clamp(28px,5vh,56px)!important}
+}
+
+@media (min-width:1101px){html body #view .s5p .s5-l{border-top:0!important}html body #view .s5p .s5-l>.s5-i:first-child{border-top:0!important}html body #view .s5p .s5-l::before{display:none!important}}
