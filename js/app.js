@@ -1657,6 +1657,11 @@ function stkPlay(ol){if(ol._run)return;stkReset(ol);ol._run=true;const it=[...ol
 function stkScroll(){const mark=innerHeight*.62;document.querySelectorAll('#view .stk.stk-col').forEach(ol=>{const it=[...ol.children].filter(x=>x.tagName==='LI');if(!it.length)return;const a=stkY(it[0]),z=stkY(it[it.length-1]);const p=Math.min(1,Math.max(0,(mark-a)/Math.max(1,z-a)));ol.style.setProperty('--stk',p.toFixed(4));it.forEach(li=>li.classList.toggle('stk-on',stkY(li)<=mark+.5))})}
 let _stkT;const stkAll=()=>{clearTimeout(_stkT);_stkT=setTimeout(()=>{stkSetup();stkScroll()},120)};
 new MutationObserver(stkAll).observe(document.getElementById('view'),{childList:true});addEventListener('resize',stkAll);addEventListener('scroll',()=>requestAnimationFrame(stkScroll),{passive:true});document.fonts&&document.fonts.ready.then(stkAll);setTimeout(stkAll,400);
+
+/* delivery tiles: pickup title + micro-description for "your option" */
+const _dvP2=deliveryP;deliveryP=function(){let h=_dvP2();const u=lang==='uk';
+h=h.replace(/(<div class="dv-t dv-pk"[^>]*>[\s\S]*?<b>)([^<]*)(<\/b>)/,(m,a,b,c)=>a+(u?'Самовивіз<br>зі складу':'Pickup<br>from warehouse')+c);
+h=h.replace(/(<div class="dv-t dv-hi">[\s\S]*?<b>[^<]*<\/b>)/,`$1<span class="dv-hi-d">${u?'Підберемо спосіб під ваш об’єкт':'We’ll match delivery to your site'}</span>`);return h};
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}

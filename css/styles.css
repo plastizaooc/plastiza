@@ -3828,3 +3828,10 @@ html body #view .dv-ts{grid-auto-rows:auto!important}
 html body #view .dv-ts>.dv-t:not(.dv-hi):not(.dv-pk){justify-content:flex-start!important;min-height:0!important}
 html body #view .dv-ts>.dv-t:not(.dv-hi):not(.dv-pk)>b{margin-top:10px!important}
 }
+
+html body #view .dv-ts>.dv-t>b{font-size:clamp(17px,1.25vw,20px)!important;line-height:1.2!important;font-weight:500!important}
+html body #view .dv-hi .dv-hi-d{display:block;font-size:13px;line-height:1.35;color:color-mix(in srgb,var(--ink) 55%,transparent);margin-top:auto;margin-bottom:-8px}
+html body #view .dv-pk .dv-pk-x{margin-top:auto!important}
+html body #view .dv-pk .dv-pk-x>span{color:color-mix(in srgb,var(--ink) 55%,transparent)!important}
+html body #view .dv-hi,html body #view .dv-pk{justify-content:flex-start!important}
+html body #view .dv-pk .dv-pk-x>span{font-size:13px!important;line-height:1.35!important}
