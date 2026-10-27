@@ -3842,3 +3842,6 @@ html:root body #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover *{color:var(--mc)!impo
 html:root body #view :is(.lfa-ms,.dc-ms) .dc-m svg{color:var(--mc)!important;fill:var(--mc)!important}
 :root[data-theme="dark"] #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover{background:rgba(255,255,255,.1)!important}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover{background:rgba(255,255,255,.1)!important}}
+
+/* delivery hero: routes animation off for now */
+html body #view .dv-hero .dv-rt{display:none!important}
