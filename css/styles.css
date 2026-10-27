@@ -3956,7 +3956,7 @@ html body .rq .rq-q input{all:unset;width:38px;text-align:center;font-size:15px;
 .rq-cnt{font-size:14px;opacity:.65}.rq-pk-f .btn{height:48px;padding:0 24px;border-radius:14px;font-weight:600}
 @media (max-width:560px){dialog.rqd{width:100vw;max-width:100vw;max-height:94svh;margin:auto 0 0;border-radius:24px 24px 0 0;border-bottom:0}
 .rq-main{padding:22px 18px calc(18px + env(safe-area-inset-bottom))}.rq-h h3{font-size:21px}
-.rq-it{grid-template-columns:40px 1fr auto;row-gap:8px}.rq-it img{width:40px;height:40px}.rq-q{grid-column:2/3;justify-self:start}.rq-x{grid-row:1;grid-column:3}
+.rq-it{grid-template-columns:40px 1fr auto;row-gap:8px}.rq-it img{width:40px;height:40px}.rq-it .rq-q{grid-column:2/3;justify-self:start}.rq-x{grid-row:1;grid-column:3}
 .rq-pk-h,.rq-pk-l{padding-left:18px;padding-right:18px}.rq-pk-f{padding:12px 18px calc(14px + env(safe-area-inset-bottom))}
 .rq-pp-v{grid-template-columns:1fr 1fr}.rq-b{grid-template-columns:1fr}}
 :root[data-theme="dark"] dialog.rqd{background:#141418;box-shadow:0 30px 80px rgba(0,0,0,.6)}
@@ -3974,3 +3974,16 @@ html body .rq .rq-q input{all:unset;width:38px;text-align:center;font-size:15px;
 .rq-ct{display:grid;grid-template-columns:1fr;gap:12px}
 @media (min-width:700px){dialog.rqd{width:min(760px,94vw)}.rq-ct{grid-template-columns:1fr 1fr}.rq-pp-v{grid-template-columns:repeat(4,1fr)}}
 @media (min-width:960px){dialog.rqd{width:min(900px,92vw)}.rq-pp-v{grid-template-columns:repeat(5,1fr)}}
+
+/* RFQ picker: qty stepper in each size tile; narrower window */
+html body .rqd .rq-ch{display:grid;grid-template-columns:1fr;gap:8px;padding:10px 10px 10px 12px;cursor:default}
+.rq-cl{display:grid;grid-template-columns:20px 1fr;column-gap:10px;align-items:center;cursor:pointer}
+.rq-cl input{position:absolute;opacity:0;pointer-events:none}
+.rq-cl small{grid-column:2;font-size:12px;opacity:.6}
+.rq-ch .rq-ps{height:32px;justify-self:stretch;justify-content:space-between;opacity:.55;transition:opacity .15s}
+.rq-ch:has(input:checked) .rq-ps,.rq-ch:hover .rq-ps,.rq-ch .rq-ps:focus-within{opacity:1}
+html body .rq .rq-ps input{width:100%;min-width:0;flex:1}
+.rq-ps button{width:24px;height:24px;flex:none}
+.rq-ps span{padding:0 6px 0 0}
+@media (min-width:700px){dialog.rqd{width:min(700px,94vw)}.rq-pp-v{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:960px){dialog.rqd{width:min(780px,92vw)}.rq-pp-v{grid-template-columns:repeat(5,1fr)}}

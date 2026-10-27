@@ -1670,7 +1670,7 @@ const rqT=()=>lang==='uk'?{
  nm:'Ім’я або компанія',list:'Сформуйте перелік продукції',add:'Додати продукцію',or:'або',
  file:'Прикріпіть специфікацію чи кошторис',fileh:'PDF, Excel, Word або фото — до 10 МБ',
  send:'Надіслати запит',cancel:'Скасувати',packs:'уп.',pack:(n,u)=>`${n} ${u} в упаковці`,rm:'Прибрати',
- pick:'Оберіть продукцію',pickh:'Позначте потрібні розміри — кількість упаковок вкажете в переліку.',apply:'Додати обране',back:'Назад',
+ pick:'Оберіть продукцію',pickh:'Позначте потрібні розміри та вкажіть кількість упаковок.',apply:'Додати обране',back:'Назад',
  empty:'Перелік поки порожній',sel:n=>`Обрано: ${n}`,
  errN:'Вкажіть ім’я або назву компанії.',errP:'Вкажіть номер телефону.',errL:'Додайте продукцію до переліку або прикріпіть файл.',ok:'Дякуємо! Запит надіслано — менеджер зв’яжеться з вами в робочий час.',
  total:(n,p)=>`${n} поз. · ${p} уп.`}:{
@@ -1678,7 +1678,7 @@ const rqT=()=>lang==='uk'?{
  nm:'Name or company',list:'Build your product list',add:'Add products',or:'or',
  file:'Attach a specification or bill of quantities',fileh:'PDF, Excel, Word or photo — up to 10 MB',
  send:'Send request',cancel:'Cancel',packs:'packs',pack:(n,u)=>`${n} ${u} per pack`,rm:'Remove',
- pick:'Choose products',pickh:'Tick the sizes you need — set the number of packs in the list.',apply:'Add selected',back:'Back',
+ pick:'Choose products',pickh:'Tick the sizes you need and set the number of packs.',apply:'Add selected',back:'Back',
  empty:'Your list is empty',sel:n=>`Selected: ${n}`,
  errN:'Enter your name or company.',errP:'Enter your phone number.',errL:'Add products to the list or attach a file.',ok:'Thank you! Your request has been sent — a manager will contact you during working hours.',
  total:(n,p)=>`${n} items · ${p} packs`};
@@ -1687,7 +1687,7 @@ function rqItemsHtml(){const T=rqT();if(!RQ.items.length)return `<p class="rq-em
  return RQ.items.map((it,i)=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return `<div class="rq-it" data-i="${i}"><img src="${IMGS[p.id]}" alt=""><div class="rq-in"><b>${title(p)} <span>${sz(v)}</span></b><small>${T.pack(v[2],un(p))}</small></div><label class="rq-q"><button type="button" data-rq-d="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${it.q}" aria-label="${T.packs}"><button type="button" data-rq-d="1" aria-label="+">+</button><span>${T.packs}</span></label><button type="button" class="rq-x" data-rq-rm aria-label="${T.rm}">✕</button></div>`}).join('')+
  `<p class="rq-sum">${T.total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}</p>`}
 function rqPickHtml(){const T=rqT(),have=new Set(RQ.items.map(x=>rqKey(x.id,x.vi)));
- return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<label class="rq-ch"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small></label>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
+ return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<div class="rq-ch"><label class="rq-cl"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small></label><span class="rq-q rq-ps"><button type="button" data-rq-pd="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${(RQ.items.find(x=>rqKey(x.id,x.vi)===rqKey(p.id,vi))||{q:1}).q}" aria-label="${T.packs}"><button type="button" data-rq-pd="1" aria-label="+">+</button><span>${T.packs}</span></span></div>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
 function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="rq-main"><div class="rq-h"><h3>${T.h}</h3><button type="button" class="ic x" data-rq-close aria-label="${T.cancel}">✕</button></div><p class="rq-sub">${T.sub}</p>
 <div class="rq-ct"><input name="name" required placeholder="${T.nm}" aria-label="${T.nm}" autocomplete="name">
 <input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${lang==='uk'?'Телефон':'Phone'}" autocomplete="tel"></div>
@@ -1704,17 +1704,18 @@ function rqOpen(subj){let d=document.getElementById('rqd');if(!d){d=document.cre
  RQ.items=[];if(R.p==='product'){try{const {p,vi}=pvParse(R.a);if(p)RQ.items.push({id:p.id,vi:vi||0,q:1})}catch(_){}}
  d.innerHTML=rqHtml();d.showModal();if(typeof ccEnhance==='function')ccEnhance(d)}
 function rqRefresh(){const d=document.getElementById('rqd');if(!d)return;d.querySelector('.rq-items').innerHTML=rqItemsHtml()}
-function rqCount(){const d=document.getElementById('rqd'),n=d.querySelectorAll('.rq-pick input:checked').length;d.querySelector('.rq-cnt').textContent=rqT().sel(n)}
+function rqCount(){const d=document.getElementById('rqd'),n=d.querySelectorAll('.rq-pick input[type=checkbox]:checked').length;d.querySelector('.rq-cnt').textContent=rqT().sel(n)}
 document.addEventListener('click',e=>{const r=e.target.closest('[data-rfq]');if(!r)return;e.preventDefault();e.stopImmediatePropagation();rqOpen(r.dataset.rfq)},true);
 document.addEventListener('click',e=>{const d=e.target.closest('#rqd');if(!d)return;
  if(e.target.closest('[data-rq-close]')){d.close();return}
  if(e.target.closest('[data-rq-open]')){const pk=d.querySelector('.rq-pick');pk.innerHTML=rqPickHtml();pk.hidden=false;d.querySelector('.rq-main').hidden=true;rqCount();d.scrollTop=0;return}
  if(e.target.closest('[data-rq-back]')){d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;return}
- if(e.target.closest('[data-rq-apply]')){const sel=[...d.querySelectorAll('.rq-pick input:checked')].map(i=>i.value);const keep=RQ.items.filter(x=>sel.includes(rqKey(x.id,x.vi)));sel.forEach(k=>{if(!keep.find(x=>rqKey(x.id,x.vi)===k)){const [id,vi]=k.split('-').map(Number);keep.push({id,vi,q:1})}});RQ.items=keep;d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;rqRefresh();return}
+ const pd=e.target.closest('[data-rq-pd]');if(pd){const c=pd.closest('.rq-ch'),i=c.querySelector('.rq-ps input'),cb=c.querySelector('input[type=checkbox]');i.value=Math.max(1,(parseInt(i.value)||1)+(+pd.dataset.rqPd));if(!cb.checked){cb.checked=true;rqCount()}return}
+ if(e.target.closest('[data-rq-apply]')){const sel=[...d.querySelectorAll('.rq-pick input[type=checkbox]:checked')];const prev=RQ.items;RQ.items=sel.map(cb=>{const [id,vi]=cb.value.split('-').map(Number),q=Math.max(1,parseInt(cb.closest('.rq-ch').querySelector('.rq-ps input').value)||1);return {id,vi,q}});RQ.items.sort((a,b)=>{const ia=prev.findIndex(x=>x.id===a.id&&x.vi===a.vi),ib=prev.findIndex(x=>x.id===b.id&&x.vi===b.vi);return (ia<0?1e3:ia)-(ib<0?1e3:ib)});d.querySelector('.rq-pick').hidden=true;d.querySelector('.rq-main').hidden=false;rqRefresh();return}
  const q=e.target.closest('[data-rq-d]');if(q){const i=+q.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,(+RQ.items[i].q||1)+(+q.dataset.rqD));rqRefresh();return}
  if(e.target.closest('[data-rq-rm]')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items.splice(i,1);rqRefresh();return}});
-document.addEventListener('change',e=>{const d=e.target.closest('#rqd');if(!d)return;if(e.target.closest('.rq-pick'))rqCount();
- if(e.target.matches('.rq-q input')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);rqRefresh()}
+document.addEventListener('change',e=>{const d=e.target.closest('#rqd');if(!d)return;if(e.target.matches('.rq-ps input')){e.target.value=Math.max(1,parseInt(e.target.value)||1);const cb=e.target.closest('.rq-ch').querySelector('input[type=checkbox]');cb.checked=true}if(e.target.closest('.rq-pick'))rqCount();
+ if(e.target.matches('.rq-it .rq-q input')){const i=+e.target.closest('.rq-it').dataset.i;RQ.items[i].q=Math.max(1,parseInt(e.target.value)||1);rqRefresh()}
  if(e.target.name==='files'){const fs=[...e.target.files];d.querySelector('.rq-fn').textContent=fs.length?fs.map(f=>f.name).join(', '):rqT().fileh;d.querySelector('.rq-file').classList.toggle('on',!!fs.length)}});
 document.addEventListener('submit',e=>{const f=e.target.closest('#rqd .rq');if(!f)return;e.preventDefault();const T=rqT(),er=f.querySelector('.lf-err');const nm=f.name.value.trim(),files=[...f.files.files];
  if(!nm){er.textContent=T.errN;er.hidden=false;f.name.setAttribute('aria-invalid','true');f.name.focus();return}
