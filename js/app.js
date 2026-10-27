@@ -1768,12 +1768,45 @@ const _pdfBlobs={};
 const PDF_BASE=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)?'assets/pdf/':'https://plastiza.vercel.app/assets/pdf/';
 const pdfUrl=n=>PDF_BASE+n+'?v='+PDF_V;
 function pdfPre(){if(R.p!=='pdf')return;const n=pdfFile();if(_pdfBlobs[n])return;_pdfBlobs[n]=fetch(pdfUrl(n),{mode:'cors'}).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>(_pdfBlobs[n]=new File([b],n,{type:'application/pdf'}))).catch(()=>{delete _pdfBlobs[n];return null})}
-function pdfDl(e){e.preventDefault();e.stopPropagation();const n=pdfFile(),url=pdfUrl(n),f=_pdfBlobs[n],touch=matchMedia('(hover:none)').matches;
- const openUrl=()=>{const w=window.open(url,'_blank','noopener');if(!w)location.href=url};
- if(f instanceof File){
-  if(touch&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:n}).catch(err=>{if(err&&err.name!=='AbortError')openUrl()});return true}
-  if(!touch){const a=document.createElement('a'),h=URL.createObjectURL(f);a.href=h;a.download=n;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(h)},4000);return true}}
- openUrl();return true}
+function pdfAbs(n){return new URL(pdfUrl(n),location.href).href}
+function pdfSameOrigin(){try{return new URL(PDF_BASE,location.href).origin===location.origin}catch(_){return false}}
+function pdfToast(m){const el=$('#toast');el.textContent=m;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2600)}
+function pdfDl(e){e.preventDefault();e.stopPropagation();const n=pdfFile(),url=pdfAbs(n),f=_pdfBlobs[n];
+ const aClick=(href)=>{const a=document.createElement('a');a.href=href;a.download=n;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),4000)};
+ if(pdfSameOrigin()){aClick(url);return true}
+ if(f instanceof File&&!matchMedia('(hover:none)').matches){const h=URL.createObjectURL(f);aClick(h);setTimeout(()=>URL.revokeObjectURL(h),8000);return true}
+ const w=window.open(url,'_blank','noopener');if(!w)location.href=url;return true}
+/* share menu: system share sheet with the PDF file + link options */
+const ICO_SHARE='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14.5V3.5M8 7.5l4-4 4 4"/><path d="M8.5 10.5H7A2 2 0 0 0 5 12.5v6A2 2 0 0 0 7 20.5h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1.5"/></svg>';
+const pdfCanShareFile=()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.pdf',{type:'application/pdf'})]}))}catch(_){return false}};
+function pdfShareUi(){const b=document.querySelector('#view .pdf-bar [data-print]');if(!b||b.parentElement.classList.contains('pdf-act'))return;const u=lang==='uk';
+ const w=document.createElement('div');w.className='pdf-act';b.before(w);w.appendChild(b);
+ const s=document.createElement('button');s.type='button';s.className='pdf-sh';s.dataset.pdfSh='';s.setAttribute('aria-haspopup','menu');s.setAttribute('aria-expanded','false');s.setAttribute('aria-label',u?'Поділитися каталогом':'Share catalog');s.title=u?'Поділитися':'Share';s.innerHTML=ICO_SHARE;w.appendChild(s)}
+function pdfShClose(){const m=document.getElementById('pdfshm');if(m)m.remove();const b=document.querySelector('[data-pdf-sh][aria-expanded=true]');if(b)b.setAttribute('aria-expanded','false')}
+function pdfShOpen(btn){pdfShClose();const u=lang==='uk',n=pdfFile(),url=pdfAbs(n),txt=(u?'Каталог PLASTIZA (PDF): ':'PLASTIZA catalog (PDF): ')+url;btn.setAttribute('aria-expanded','true');
+ const gl=k=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="${QC_COL[k]}" aria-hidden="true"><path d="${DC_GL[k]}"/></svg>`;
+ const it=(act,ic,lab,sub)=>`<button type="button" role="menuitem" data-psh="${act}"><span class="psh-i">${ic}</span><span class="psh-t"><b>${lab}</b>${sub?`<small>${sub}</small>`:''}</span></button>`;
+ const m=document.createElement('div');m.id='pdfshm';m.className='pdf-shm';m.setAttribute('role','menu');
+ m.innerHTML=(pdfCanShareFile()?it('file',ICO_SHARE,u?'Надіслати PDF-файл':'Send PDF file',u?'Telegram, Viber, WhatsApp, «Файли»…':'Telegram, Viber, WhatsApp, Files…')+'<i class="psh-sep"></i>':'')+
+  `<p class="psh-h">${u?'Надіслати посилання на файл':'Send a link to the file'}</p>`+
+  it('tg',gl('Telegram'),'Telegram')+it('vb',gl('Viber'),'Viber')+it('wa',gl('WhatsApp'),'WhatsApp')+
+  it('copy','<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',u?'Копіювати посилання':'Copy link');
+ btn.parentElement.appendChild(m);m._url=url;m._txt=txt;m._n=n}
+async function pdfShareFile(n){let f=_pdfBlobs[n];const u=lang==='uk';
+ if(!(f instanceof File)){pdfPre();try{f=await _pdfBlobs[n]}catch(_){f=null}}
+ if(!(f instanceof File)){pdfToast(u?'Не вдалося підготувати файл. Спробуйте ще раз.':'Could not prepare the file. Please try again.');return}
+ try{await navigator.share({files:[f],title:n})}catch(err){if(err&&err.name==='NotAllowedError')pdfToast(u?'Файл готовий — натисніть ще раз.':'File ready — tap again.')}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pdf-sh]');if(b){e.preventDefault();b.getAttribute('aria-expanded')==='true'?pdfShClose():pdfShOpen(b);return}
+ const a=e.target.closest('[data-psh]');if(a){const m=a.closest('#pdfshm'),k=a.dataset.psh,url=m._url,txt=m._txt,u=lang==='uk';
+  if(k==='file')pdfShareFile(m._n);
+  else if(k==='tg')window.open('https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(u?'Каталог PLASTIZA (PDF)':'PLASTIZA catalog (PDF)'),'_blank','noopener');
+  else if(k==='vb')location.href='viber://forward?text='+encodeURIComponent(txt);
+  else if(k==='wa')window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank','noopener');
+  else if(k==='copy'){const done=()=>pdfToast(u?'Посилання скопійовано':'Link copied');if(navigator.clipboard)navigator.clipboard.writeText(url).then(done,()=>{prompt('',url)});else prompt('',url)}
+  pdfShClose();return}
+ if(!e.target.closest('#pdfshm'))pdfShClose()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')pdfShClose()});
+new MutationObserver(()=>requestAnimationFrame(()=>{pdfShClose();pdfShareUi()})).observe(document.getElementById('view'),{childList:true});setTimeout(pdfShareUi,400);
 new MutationObserver(()=>requestAnimationFrame(pdfPre)).observe(document.getElementById('view'),{childList:true,subtree:false});
 document.addEventListener('click',e=>{if(e.target.closest('[data-pl],[data-go="pdf"]'))setTimeout(pdfPre,300)});setTimeout(pdfPre,500);
 
