@@ -3822,3 +3822,9 @@ html body #view .stk-col>li.stk-on::after{background:#0B35B8;border-color:#0B35B
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view .stk>.stk-t>.stk-f,:root:not([data-theme="light"]) #view .stk-col>li.stk-on::after{background:#5A86FF;border-color:#5A86FF}:root:not([data-theme="light"]) #view .stk>li.stk-on .stk-n{color:#7FA0FF!important}}
 /* hi3 keeps its own mobile timeline */
 @media (max-width:760px){html body #view .hi3.stk>.stk-t,html body #view .hi3.stk-col>li::after{display:none!important}html body #view .hi3.stk-col>li{padding-left:28px!important}}
+
+@media (max-width:760px){
+html body #view .dv-ts{grid-auto-rows:auto!important}
+html body #view .dv-ts>.dv-t:not(.dv-hi):not(.dv-pk){justify-content:flex-start!important;min-height:0!important}
+html body #view .dv-ts>.dv-t:not(.dv-hi):not(.dv-pk)>b{margin-top:10px!important}
+}
