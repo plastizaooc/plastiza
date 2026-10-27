@@ -3845,3 +3845,9 @@ html:root body #view :is(.lfa-ms,.dc-ms) .dc-m svg{color:var(--mc)!important;fil
 
 /* delivery hero: routes animation off for now */
 html body #view .dv-hero .dv-rt{display:none!important}
+
+/* direct contacts: email & phones hover blue */
+html body #view .lf3-c dd a,html body #view .lf3-c dd>a{transition:color .2s,opacity .2s}
+html body #view .lf3-c dd a:hover,html body #view .lf3-c dd>a:hover{opacity:1!important;color:#0B35B8!important}
+:root[data-theme="dark"] #view .lf3-c dd a:hover{color:#7FA0FF!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view .lf3-c dd a:hover{color:#7FA0FF!important}}
