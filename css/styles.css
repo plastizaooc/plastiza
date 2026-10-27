@@ -3675,3 +3675,16 @@ html:root body .lf-ms .mc .dd-i.mi,html:root body .lf-ms .mc .dd-i.mi svg{width:
 }
 
 @media (max-width:345px){html:root body .lf-ms .mc{font-size:9.5px!important;gap:4px!important;padding:0 3px!important;letter-spacing:-.02em}html:root body .lf-ms .mc .dd-i.mi,html:root body .lf-ms .mc .dd-i.mi svg{width:16px!important;height:16px!important;min-width:16px}}
+
+/* messenger chips: active = brand colour */
+html:root body .lf .mc[data-mc]{transition:background .2s,color .2s,border-color .2s}
+html:root body #view .lf .mc.mc.mc[data-mc=WhatsApp][aria-checked=true],html:root body .lf .mc.mc.mc[data-mc=WhatsApp][aria-checked=true]{background:#25D366!important;border-color:#25D366!important;color:#fff!important}
+html:root body #view .lf .mc.mc.mc[data-mc=Telegram][aria-checked=true],html:root body .lf .mc.mc.mc[data-mc=Telegram][aria-checked=true]{background:#229ED9!important;border-color:#229ED9!important;color:#fff!important}
+html:root body #view .lf .mc.mc.mc[data-mc=Viber][aria-checked=true],html:root body .lf .mc.mc.mc[data-mc=Viber][aria-checked=true]{background:#7360F2!important;border-color:#7360F2!important;color:#fff!important}
+html:root body .lf .mc.mc[aria-checked=true] .mi-bg{fill:transparent}
+html:root body .lf .mc[aria-checked=true] .mi-u{fill:transparent}
+html:root body .lf .mc[aria-checked=true] .mi-t{fill:#fff}
+html:root body .lf .mc[aria-checked=true] .dd-i.mi{transform:scale(1.12)}
+@media (max-width:760px){html:root body .lf-ms .mc{font-size:13px!important;font-weight:600;height:42px}}
+@media (max-width:345px){html:root body .lf-ms .mc{font-size:10px!important}}
+.dc-m svg{width:22px!important;height:22px!important}
