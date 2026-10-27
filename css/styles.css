@@ -3651,3 +3651,6 @@ html:root body #view .cfb.cfb .s5-cf .btn.btn{width:auto!important;min-width:0!i
 @media (min-width:1101px){html:root body #view .hx.hx2 .hqi,html:root body #view .pri-q{max-width:580px!important}}
 
 @media (max-width:760px){html:root body .phw>input.phw-i,html:root body #view .phw>input.phw-i.phw-i.phw-i{text-align:left!important;letter-spacing:.03em}}
+
+/* hero: no typewriter line anywhere */
+html:root body #view .hx .hx-dyn,html:root body #view .hx .tw-l,html:root body #view .hx .hx-rot{display:none!important}
