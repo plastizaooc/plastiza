@@ -1762,7 +1762,7 @@ new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getEleme
 
 
 /* PDF catalog: real pre-built PDF files (one continuous page) — download / share instead of print */
-const PDF_V='202610271840';
+const PDF_V='202610271850';
 function pdfFile(){const L=(typeof pdfLang!=='undefined'&&pdfLang)||lang;return `plastiza-catalog-${L==='uk'?'ua':'en'}-${R.a==='mob'?'mobile':'desktop'}.pdf`}
 const _pdfBlobs={};
 const PDF_BASE=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)?'assets/pdf/':'https://plastiza.vercel.app/assets/pdf/';
@@ -1795,7 +1795,7 @@ function pdfShOpen(btn){pdfShClose();const u=lang==='uk',n=pdfFile(),url=pdfAbs(
 async function pdfShareFile(n){let f=_pdfBlobs[n];const u=lang==='uk';
  if(!(f instanceof File)){pdfPre();try{f=await _pdfBlobs[n]}catch(_){f=null}}
  if(!(f instanceof File)){pdfToast(u?'Не вдалося підготувати файл. Спробуйте ще раз.':'Could not prepare the file. Please try again.');return}
- try{await navigator.share({files:[f],title:n})}catch(err){if(err&&err.name==='NotAllowedError')pdfToast(u?'Файл готовий — натисніть ще раз.':'File ready — tap again.')}}
+ try{await navigator.share({files:[f]})}catch(err){if(err&&err.name==='NotAllowedError')pdfToast(u?'Файл готовий — натисніть ще раз.':'File ready — tap again.')}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-pdf-sh]');if(b){e.preventDefault();b.getAttribute('aria-expanded')==='true'?pdfShClose():pdfShOpen(b);return}
  const a=e.target.closest('[data-psh]');if(a){const m=a.closest('#pdfshm'),k=a.dataset.psh,url=m._url,txt=m._txt,u=lang==='uk';
   if(k==='file')pdfShareFile(m._n);
