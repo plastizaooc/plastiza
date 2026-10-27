@@ -1668,7 +1668,7 @@ const RQ={items:[]};
 const rqT=()=>lang==='uk'?{
  h:'Запит на розрахунок',sub:'Залиште контакти та оберіть продукцію — менеджер розрахує вартість і зв’яжеться з вами в робочий час.',
  nm:'Ім’я або компанія',list:'Сформуйте перелік продукції',add:'Додати продукцію',or:'або',
- file:'Прикріпіть специфікацію чи кошторис',fileh:'PDF, Excel, Word або фото — до 10 МБ',
+ file:'Прикріпіть специфікацію чи кошторис',fileh:'PDF, Excel, Word або фото — до 4 МБ',
  send:'Надіслати запит',cancel:'Скасувати',packs:'уп.',pack:(n,u)=>`${n} ${u} в упаковці`,rm:'Прибрати',
  pick:'Оберіть продукцію',pickh:'Позначте потрібні розміри та вкажіть кількість упаковок.',apply:'Додати обране',back:'Назад',
  empty:'Перелік поки порожній',sel:n=>`Обрано: ${n}`,
@@ -1676,7 +1676,7 @@ const rqT=()=>lang==='uk'?{
  total:(n,p)=>`${n} поз. · ${p} уп.`}:{
  h:'Request a quote',sub:'Leave your contacts and pick the products — a manager will price your order and get back to you during working hours.',
  nm:'Name or company',list:'Build your product list',add:'Add products',or:'or',
- file:'Attach a specification or bill of quantities',fileh:'PDF, Excel, Word or photo — up to 10 MB',
+ file:'Attach a specification or bill of quantities',fileh:'PDF, Excel, Word or photo — up to 4 MB',
  send:'Send request',cancel:'Cancel',packs:'packs',pack:(n,u)=>`${n} ${u} per pack`,rm:'Remove',
  pick:'Choose products',pickh:'Tick the sizes you need and set the number of packs.',apply:'Add selected',back:'Back',
  empty:'Your list is empty',sel:n=>`Selected: ${n}`,
@@ -1809,6 +1809,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')pdfShClose()});
 new MutationObserver(()=>requestAnimationFrame(()=>{pdfShClose();pdfShareUi()})).observe(document.getElementById('view'),{childList:true});setTimeout(pdfShareUi,400);
 new MutationObserver(()=>requestAnimationFrame(pdfPre)).observe(document.getElementById('view'),{childList:true,subtree:false});
 document.addEventListener('click',e=>{if(e.target.closest('[data-pl],[data-go="pdf"]'))setTimeout(pdfPre,300)});setTimeout(pdfPre,500);
+
+
+/* ===== Leads → server → Telegram bot ===== */
+const LEAD_API=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)||location.hostname.endsWith('plastiza.vercel.app')?'/api/lead':'https://plastiza.vercel.app/api/lead';
+let _leadForm=null;window.addEventListener('submit',e=>{_leadForm=e.target instanceof HTMLFormElement?e.target:null},true);
+const _pushLead0=pushLead;
+pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
+ const u=lang==='uk',files=[];if(_leadForm)_leadForm.querySelectorAll('input[type=file]').forEach(i=>[...(i.files||[])].forEach(f=>files.push(f)));_leadForm=null;
+ const body=new FormData(),d={...data};delete d.okText;if(!d.files||!d.files.length)d.files=files.map(f=>f.name);
+ body.append('data',JSON.stringify(d));let tot=0;files.slice(0,5).forEach(f=>{tot+=f.size;if(tot<=4*1024*1024)body.append('files',f,f.name)});
+ fetch(LEAD_API,{method:'POST',body}).then(r=>r.ok?r.json():Promise.reject(r.status)).catch(()=>{const el=$('#toast');el.textContent=u?'Не вдалося надіслати заявку. Зателефонуйте нам: +380 (96) 682-14-63':'Could not send the request. Please call +380 96 682 14 63';el.classList.add('on');setTimeout(()=>el.classList.remove('on'),6000)})};
 
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
