@@ -3713,3 +3713,12 @@ html:root body #view .lfa-ms .dc-m{min-width:0!important;width:100%!important;ju
 html:root body #view .lfa-ms .dc-m svg{width:20px!important;height:20px!important;flex:none}
 }
 @media (max-width:345px){html:root body #view .lfa-ms .dc-m{font-size:10px!important;gap:4px!important}html:root body #view .lfa-ms .dc-m svg{width:16px!important;height:16px!important}}
+
+/* mobile: direct-contact messengers as tiles (icon above name) */
+@media (max-width:760px){
+html:root body #view .lfa-ms .dc-m{flex-direction:column!important;height:auto!important;min-height:84px!important;padding:14px 4px 12px!important;gap:8px!important;border-radius:16px!important;background:#fff!important;border:0!important;box-shadow:0 0 0 1px rgba(15,23,42,.06)!important;font-size:13px!important}
+html:root body #view .lfa-ms .dc-m svg{width:26px!important;height:26px!important}
+:root[data-theme="dark"] #view .lfa-ms .dc-m{background:rgba(255,255,255,.06)!important;box-shadow:0 0 0 1px rgba(255,255,255,.08)!important}
+}
+@media (max-width:760px) and (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view .lfa-ms .dc-m{background:rgba(255,255,255,.06)!important;box-shadow:0 0 0 1px rgba(255,255,255,.08)!important}}
+@media (max-width:345px){html:root body #view .lfa-ms .dc-m{font-size:11px!important}html:root body #view .lfa-ms .dc-m svg{width:22px!important;height:22px!important}}
