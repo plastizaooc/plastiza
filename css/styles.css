@@ -3705,3 +3705,11 @@ html:root body .lf .mc[aria-checked=true] .dd-i.mi{transform:scale(1.12)}
 .phs-c{all:unset;box-sizing:border-box;display:block;width:100%;margin-top:8px;height:56px;border-radius:16px;background:#fff;text-align:center;font:600 19px/56px Manrope,system-ui,sans-serif;color:#0B35B8;cursor:pointer}
 :root[data-theme="dark"] .phs-g{background:rgba(44,44,48,.96)}:root[data-theme="dark"] .phs-c{background:#2C2C30;color:#8EA8FF}:root[data-theme="dark"] .phs-i{color:#8EA8FF;border-color:rgba(255,255,255,.12)}:root[data-theme="dark"] .phs-t{color:rgba(235,235,245,.6);border-color:rgba(255,255,255,.12)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .phs-g{background:rgba(44,44,48,.96)}:root:not([data-theme="light"]) .phs-c{background:#2C2C30;color:#8EA8FF}:root:not([data-theme="light"]) .phs-i{color:#8EA8FF;border-color:rgba(255,255,255,.12)}:root:not([data-theme="light"]) .phs-t{color:rgba(235,235,245,.6);border-color:rgba(255,255,255,.12)}}
+
+/* mobile: direct-contact messengers in one row */
+@media (max-width:760px){
+html:root body #view .lfa-ms{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+html:root body #view .lfa-ms .dc-m{min-width:0!important;width:100%!important;justify-content:center!important;gap:6px!important;padding:0 4px!important;height:46px!important;font-size:13px!important;font-weight:600;white-space:nowrap;overflow:hidden;margin:0!important}
+html:root body #view .lfa-ms .dc-m svg{width:20px!important;height:20px!important;flex:none}
+}
+@media (max-width:345px){html:root body #view .lfa-ms .dc-m{font-size:10px!important;gap:4px!important}html:root body #view .lfa-ms .dc-m svg{width:16px!important;height:16px!important}}
