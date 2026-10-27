@@ -1639,6 +1639,23 @@ const T=innerWidth<=760?[[700,20],[620,640],[20,620],[380,630],[760,330],[260,10
 const ps=T.map(([x,y],i)=>{const dx=x-o[0],dy=y-o[1],k=(i%2?.22:-.22);const mx=(x+o[0])/2-dy*k,my=(y+o[1])/2+dx*k;return `M${o[0]} ${o[1]}Q${mx.toFixed(0)} ${my.toFixed(0)} ${x} ${y}`});
 const pin=`<g class="rt-pin" transform="translate(${o[0]-11} ${o[1]-28})"><path d="M11 0C5 0 0 4.7 0 10.6 0 18 11 28 11 28s11-10 11-17.4C22 4.7 17 0 11 0z"/><circle cx="11" cy="10.5" r="4" class="rt-pin-c"/></g>`;
 return `<svg class="dv-rt dv-rt2" viewBox="0 0 ${W} ${H}" preserveAspectRatio="${innerWidth<=760?'xMinYMid':'xMidYMid'} slice" aria-hidden="true">${ps.map((d,i)=>`<path class="rt-l" d="${d}" style="--t:${(14+i%3*4)}s"/>`).join('')}${T.map(([x,y])=>`<circle class="rt-d" cx="${x}" cy="${y}" r="2.4"/>`).join('')}<circle class="rt-halo" cx="${o[0]}" cy="${o[1]}" r="16"/>${pin}</svg>`};
+
+/* ===== Step trackers: all step sections (row = auto-play on view, column = scroll-linked) ===== */
+const STK_SEL='#view .dv-steps,#view .st2,#view .sp6-st,#view .sp7-st,#view .s5-st,#view .hi3';
+function stkNum(li){if(li.querySelector('.stk-n'))return;const c=[...li.querySelectorAll('i,b,span,em,small,div')].find(e=>!e.children.length&&/^(\d{1,2}|\d{4})$/.test(e.textContent.trim()));if(c)c.classList.add('stk-n')}
+function stkMode(ol){const it=[...ol.children].filter(x=>x.tagName==='LI'&&x.offsetParent);if(it.length<2)return null;return Math.abs(it[0].getBoundingClientRect().top-it[1].getBoundingClientRect().top)<4?'row':'col'}
+function stkSetup(){document.querySelectorAll(STK_SEL).forEach(ol=>{if(!ol.offsetParent)return;const items=[...ol.children].filter(x=>x.tagName==='LI');if(items.length<2)return;items.forEach(stkNum);
+ if(!ol.querySelector(':scope>.stk-t')){const t=document.createElement('i');t.className='stk-t';t.setAttribute('aria-hidden','true');t.innerHTML='<i class="stk-f"></i>';ol.appendChild(t);ol.classList.add('stk')}
+ const m=stkMode(ol);ol.classList.toggle('stk-row',m==='row');ol.classList.toggle('stk-col',m==='col');stkGeom(ol);
+ if(!ol._io){ol._io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.3){if(ol.classList.contains('stk-row'))stkPlay(ol)}else if(!e.isIntersecting){stkReset(ol)}}),{threshold:[0,.3,.6]});ol._io.observe(ol)}})}
+function stkGeom(ol){const it=[...ol.children].filter(x=>x.tagName==='LI'&&x.offsetParent);if(!it.length)return;const o=ol.getBoundingClientRect(),a=it[0].getBoundingClientRect(),z=it[it.length-1].getBoundingClientRect();const t=ol.querySelector(':scope>.stk-t');
+ if(ol.classList.contains('stk-row')){t.style.cssText=`left:${a.left-o.left}px;width:${z.right-a.left}px;top:0;height:2px`}else{t.style.cssText=`left:0;top:${a.top-o.top+8}px;height:${Math.max(0,z.top-a.top)}px;width:2px`}}
+function stkReset(ol){clearTimeout(ol._tm);ol._run=false;ol.style.setProperty('--stk','0');[...ol.children].forEach(li=>li.classList&&li.classList.remove('stk-on'))}
+function stkPlay(ol){if(ol._run)return;stkReset(ol);ol._run=true;const it=[...ol.children].filter(x=>x.tagName==='LI');const n=it.length;let k=0;
+ const step=()=>{if(!ol._run)return;it[k].classList.add('stk-on');ol.style.setProperty('--stk',ol.classList.contains('hi3')?(n>1?(k/(n-1)).toFixed(4):'1'):((k+1)/n).toFixed(4));k++;if(k<n)ol._tm=setTimeout(step,700)};ol._tm=setTimeout(step,250)}
+function stkScroll(){const mark=innerHeight*.62;document.querySelectorAll('#view .stk.stk-col').forEach(ol=>{const it=[...ol.children].filter(x=>x.tagName==='LI');if(!it.length)return;const a=it[0].getBoundingClientRect().top+8,z=it[it.length-1].getBoundingClientRect().top+8;const p=Math.min(1,Math.max(0,(mark-a)/Math.max(1,z-a)));ol.style.setProperty('--stk',p.toFixed(4));it.forEach(li=>li.classList.toggle('stk-on',li.getBoundingClientRect().top+8<=mark))})}
+let _stkT;const stkAll=()=>{clearTimeout(_stkT);_stkT=setTimeout(()=>{stkSetup();stkScroll()},120)};
+new MutationObserver(stkAll).observe(document.getElementById('view'),{childList:true});addEventListener('resize',stkAll);addEventListener('scroll',()=>requestAnimationFrame(stkScroll),{passive:true});document.fonts&&document.fonts.ready.then(stkAll);setTimeout(stkAll,400);
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}

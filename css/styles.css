@@ -3805,3 +3805,20 @@ html body #view .dv-ts>.dv-hi .btn,html body #view .dv-ts>.dv-pk .btn{padding:0 
 /* delivery routes: softer, spread in all directions */
 html body .dv-rt2 .rt-l{stroke:color-mix(in srgb,var(--ink) 13%,transparent)!important;stroke-width:1.1!important}
 html body .dv-rt2 .rt-d{fill:color-mix(in srgb,var(--ink) 20%,transparent)!important}
+
+/* step trackers */
+html body #view .stk{position:relative}
+html body #view .stk>.stk-t{position:absolute;display:block;background:color-mix(in srgb,var(--ink) 12%,transparent);border-radius:2px;pointer-events:none;z-index:2;overflow:hidden}
+html body #view .stk>.stk-t>.stk-f{position:absolute;left:0;top:0;display:block;background:#0B35B8;border-radius:2px}
+html body #view .stk-row>.stk-t>.stk-f{height:100%;width:calc(var(--stk,0)*100%);transition:width .65s cubic-bezier(.4,0,.2,1)}
+html body #view .stk-col>.stk-t>.stk-f{width:100%;height:calc(var(--stk,0)*100%);transition:height .12s linear}
+html body #view .stk .stk-n{transition:color .35s}
+html body #view .stk>li.stk-on .stk-n{color:#0B35B8!important;opacity:1!important}
+html body #view .stk-col>li{padding-left:22px!important;position:relative}
+html body #view .stk-col>li::after{content:"";position:absolute;left:-3px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--bg,#fff);border:1.5px solid color-mix(in srgb,var(--ink) 30%,transparent);z-index:3;transition:background .3s,border-color .3s}
+html body #view .stk-col>li.stk-on::after{background:#0B35B8;border-color:#0B35B8}
+:root[data-theme="dark"] #view .stk>.stk-t>.stk-f,:root[data-theme="dark"] #view .stk-col>li.stk-on::after{background:#5A86FF;border-color:#5A86FF}
+:root[data-theme="dark"] #view .stk>li.stk-on .stk-n{color:#7FA0FF!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view .stk>.stk-t>.stk-f,:root:not([data-theme="light"]) #view .stk-col>li.stk-on::after{background:#5A86FF;border-color:#5A86FF}:root:not([data-theme="light"]) #view .stk>li.stk-on .stk-n{color:#7FA0FF!important}}
+/* hi3 keeps its own mobile timeline */
+@media (max-width:760px){html body #view .hi3.stk>.stk-t,html body #view .hi3.stk-col>li::after{display:none!important}html body #view .hi3.stk-col>li{padding-left:28px!important}}
