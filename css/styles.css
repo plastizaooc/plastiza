@@ -3815,7 +3815,7 @@ html body #view .stk-col>.stk-t>.stk-f{width:100%;height:calc(var(--stk,0)*100%)
 html body #view .stk .stk-n{transition:color .35s}
 html body #view .stk>li.stk-on .stk-n{color:#0B35B8!important;opacity:1!important}
 html body #view .stk-col>li{padding-left:22px!important;position:relative}
-html body #view .stk-col>li::after{content:"";position:absolute;left:-3px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--bg,#fff);border:1.5px solid color-mix(in srgb,var(--ink) 30%,transparent);z-index:3;transition:background .3s,border-color .3s}
+html body #view .stk-col>li::after{content:"";position:absolute;left:-3px;top:var(--stk-dy,5px);width:8px;height:8px;border-radius:50%;background:var(--bg,#fff);border:1.5px solid color-mix(in srgb,var(--ink) 30%,transparent);z-index:3;transition:background .3s,border-color .3s}
 html body #view .stk-col>li.stk-on::after{background:#0B35B8;border-color:#0B35B8}
 :root[data-theme="dark"] #view .stk>.stk-t>.stk-f,:root[data-theme="dark"] #view .stk-col>li.stk-on::after{background:#5A86FF;border-color:#5A86FF}
 :root[data-theme="dark"] #view .stk>li.stk-on .stk-n{color:#7FA0FF!important}
