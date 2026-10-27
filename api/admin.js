@@ -165,7 +165,7 @@ const OPS = {
     return {};
   },
 };
-const SET_SEC = { contacts: 'contacts', ticker: 'content', faq: 'content', content: 'content', blog: 'content', media: 'content', redirects: 'seo', seo: 'seo', mails: 'mail', i18n: 'i18n', products: 'products', pdf: 'products' };
+const SET_SEC = { contacts: 'contacts', ticker: 'content', faq: 'content', content: 'content', blog: 'content', media: 'content', redirects: 'seo', seo: 'seo', mails: 'mail', i18n: 'i18n', products: 'products', pdf: 'products', docs: 'integrations' };
 const OPEN_OPS = new Set(['ping', 'auth.login']);
 const PERM = { 'leads.': 'leads', 'clients.': 'clients', 'team.save': 'team', 'team.invite': 'team', 'team.resetPassword': 'team' };
 
