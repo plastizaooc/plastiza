@@ -3864,3 +3864,25 @@ html body #view .lf3-c dd a:hover,html body #view .lf3-c dd>a:hover{opacity:1!im
 /* desktop scrim too */
 .qc-scrim.on{opacity:1;pointer-events:auto}
 @media (min-width:761px){.qc-scrim{background:rgba(8,10,14,.22);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}}
+
+/* services page: compact first screen */
+html body #view .x>.pri-1:has(+.s5p) .pri-t,html body #view .x>.pri-1:has(+.s5p) .pri-t b{color:var(--ink)!important}
+@media (min-width:1101px){
+html body #view .x>.pri-1:has(+.s5p){display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,72px);align-items:start;padding-top:clamp(28px,4vh,48px)!important;padding-bottom:clamp(24px,3.5vh,40px)!important}
+html body #view .x>.pri-1:has(+.s5p) .pri-t{font-size:clamp(26px,2.3vw,40px)!important;margin:16px 0 0!important;max-width:none!important}
+html body #view .x>.pri-1:has(+.s5p) .pri-r{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:0!important}
+html body #view .x>.pri-1:has(+.s5p) .pri-c{min-height:clamp(84px,10.5vh,108px)!important;padding:14px 16px 14px!important;gap:10px!important}
+html body #view .x>.pri-1:has(+.s5p) .pri-c b{font-size:clamp(15px,1.15vw,18px)!important}
+html body #view .s5p .s5-notes{border-top:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important;padding:clamp(18px,2.6vh,26px) 0!important;margin-bottom:0!important;align-items:center}
+html body #view .s5p .s5-l{margin-top:0!important}
+html body #view .s5p .s5-s{padding:clamp(14px,2.2vh,22px) 0!important}
+html body #view .s5p .s5-t{font-size:clamp(30px,3.2vw,52px)!important}
+}
+@media (max-width:1100px){html body #view .s5p .s5-notes{border-top:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important;padding:18px 0!important;margin-bottom:0!important}}
+
+html body #view .x>.pri-1:has(+.s5p){border-bottom:0!important;box-shadow:none!important}
+html body #view .x>.pri-1:has(+.s5p)::after,html body #view .x>.pri-1:has(+.s5p)::before{display:none!important}
+html body #view .x>.pri-1:has(+.s5p) .pri-t b{font-weight:inherit!important}
+html body #view .s5p::before{display:none!important}
+html body #view .s5p{border-top:0!important;padding-top:0!important;margin-top:0!important}
+html body #view .s5p .s5-notes>span{max-width:none!important}
