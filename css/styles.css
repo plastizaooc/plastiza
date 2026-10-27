@@ -3765,3 +3765,16 @@ html body footer .fpills{display:grid!important;grid-template-columns:1fr 1fr!im
 html body footer .f-adr{width:100%!important;grid-column:1/-1!important}
 html body footer .fpills .fpill{width:100%!important;max-width:none!important;justify-content:center!important;margin:0!important;box-sizing:border-box}
 }
+
+/* delivery hero routes v2 */
+html body .dv-rt.dv-rt2{opacity:1!important;-webkit-mask:none;mask:none}
+html body .dv-rt2 .rt-l{fill:none;stroke:color-mix(in srgb,var(--ink) 22%,transparent);stroke-width:1.3;stroke-dasharray:4 8;stroke-linecap:round;vector-effect:non-scaling-stroke;animation:rtFlow var(--t,16s) linear infinite}
+@keyframes rtFlow{to{stroke-dashoffset:-120}}
+html body .dv-rt2 .rt-d{fill:color-mix(in srgb,var(--ink) 35%,transparent)}
+html body .dv-rt2 .rt-pin path{fill:#0B35B8}
+html body .dv-rt2 .rt-pin-c{fill:#fff}
+html body .dv-rt2 .rt-halo{fill:#0B35B8;opacity:.12}
+:root[data-theme="dark"] .dv-rt2 .rt-pin path,:root[data-theme="dark"] .dv-rt2 .rt-halo{fill:#5A86FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dv-rt2 .rt-pin path,:root:not([data-theme="light"]) .dv-rt2 .rt-halo{fill:#5A86FF}}
+@media (prefers-reduced-motion:reduce){html body .dv-rt2 .rt-l{animation:none}}
+.sm-m svg{width:24px!important;height:24px!important}
