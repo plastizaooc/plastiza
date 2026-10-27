@@ -1762,7 +1762,7 @@ new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getEleme
 
 
 /* PDF catalog: real pre-built PDF files (one continuous page) — download / share instead of print */
-const PDF_V='202610271835';
+const PDF_V='202610271840';
 function pdfFile(){const L=(typeof pdfLang!=='undefined'&&pdfLang)||lang;return `plastiza-catalog-${L==='uk'?'ua':'en'}-${R.a==='mob'?'mobile':'desktop'}.pdf`}
 const _pdfBlobs={};
 const PDF_BASE=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)?'assets/pdf/':'https://plastiza.vercel.app/assets/pdf/';
