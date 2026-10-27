@@ -1749,6 +1749,9 @@ function rqSum(){const d=document.getElementById('rqd');const e=d&&d.querySelect
 document.addEventListener('input',e=>{if(!e.target.matches('#rqd .rq-sel .rq-q input'))return;const i=+e.target.closest('[data-i]').dataset.i,v=parseInt(e.target.value);if(v>0){RQ.items[i].q=v;rqSum()}});
 
 
+/* supply band: centre «Про комплектацію» link on the button line */
+function spbAlign(){document.querySelectorAll('#view .spb-g').forEach(g=>{const l=g.querySelector(':scope>div:first-child .tlink'),b=g.querySelector('.spb-f .btn');if(!l||!b)return;g.style.setProperty('--spb-lk','0px');if(innerWidth<701)return;const lr=l.getBoundingClientRect(),br=b.getBoundingClientRect();if(Math.abs(lr.bottom-br.bottom)>3)return;g.style.setProperty('--spb-lk',Math.max(0,Math.round((br.height-lr.height)/2))+'px')})}
+new MutationObserver(()=>requestAnimationFrame(spbAlign)).observe(document.getElementById('view'),{childList:true});addEventListener('resize',()=>requestAnimationFrame(spbAlign));setTimeout(spbAlign,400);document.fonts&&document.fonts.ready.then(spbAlign);
 /* related products (mobile): dots left + arrows right, like the blog slider */
 function rlCtl(){document.querySelectorAll('#view .rl').forEach(r=>{if(r.querySelector('.rl-ctl'))return;const d=r.querySelector('.rl-dots'),sl=r.querySelector('.rl-s');if(!d||!sl)return;const u=lang==='uk';
  const c=document.createElement('div');c.className='bg-ctl rl-ctl';d.before(c);c.appendChild(d);
