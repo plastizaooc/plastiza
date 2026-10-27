@@ -1762,16 +1762,18 @@ new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getEleme
 
 
 /* PDF catalog: real pre-built PDF files (one continuous page) — download / share instead of print */
-const PDF_V='202610271815';
+const PDF_V='202610271830';
 function pdfFile(){const L=(typeof pdfLang!=='undefined'&&pdfLang)||lang;return `plastiza-catalog-${L==='uk'?'ua':'en'}-${R.a==='mob'?'mobile':'desktop'}.pdf`}
 const _pdfBlobs={};
-function pdfPre(){if(R.p!=='pdf')return;const n=pdfFile();if(_pdfBlobs[n])return;_pdfBlobs[n]=fetch('assets/pdf/'+n+'?v='+PDF_V).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>(_pdfBlobs[n]=new File([b],n,{type:'application/pdf'}))).catch(()=>{delete _pdfBlobs[n];return null})}
-function pdfDl(e){e.preventDefault();e.stopPropagation();const n=pdfFile(),url='assets/pdf/'+n+'?v='+PDF_V,f=_pdfBlobs[n];
- const save=file=>{const a=document.createElement('a');a.href=file?URL.createObjectURL(file):url;a.download=n;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();if(file)URL.revokeObjectURL(a.href)},4000)};
- const touch=matchMedia('(hover:none)').matches;
- if(f instanceof File){if(touch&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'PLASTIZA — '+(lang==='uk'?'каталог':'catalog')}).catch(err=>{if(err&&err.name!=='AbortError')save(f)})}else save(f);return true}
- if(f&&f.then){f.then(x=>save(x||null));return true}
- save(null);return true}
+const PDF_BASE=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)?'assets/pdf/':'https://plastiza.vercel.app/assets/pdf/';
+const pdfUrl=n=>PDF_BASE+n+'?v='+PDF_V;
+function pdfPre(){if(R.p!=='pdf')return;const n=pdfFile();if(_pdfBlobs[n])return;_pdfBlobs[n]=fetch(pdfUrl(n),{mode:'cors'}).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>(_pdfBlobs[n]=new File([b],n,{type:'application/pdf'}))).catch(()=>{delete _pdfBlobs[n];return null})}
+function pdfDl(e){e.preventDefault();e.stopPropagation();const n=pdfFile(),url=pdfUrl(n),f=_pdfBlobs[n],touch=matchMedia('(hover:none)').matches;
+ const openUrl=()=>{const w=window.open(url,'_blank','noopener');if(!w)location.href=url};
+ if(f instanceof File){
+  if(touch&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:n}).catch(err=>{if(err&&err.name!=='AbortError')openUrl()});return true}
+  if(!touch){const a=document.createElement('a'),h=URL.createObjectURL(f);a.href=h;a.download=n;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(h)},4000);return true}}
+ openUrl();return true}
 new MutationObserver(()=>requestAnimationFrame(pdfPre)).observe(document.getElementById('view'),{childList:true,subtree:false});
 document.addEventListener('click',e=>{if(e.target.closest('[data-pl],[data-go="pdf"]'))setTimeout(pdfPre,300)});setTimeout(pdfPre,500);
 
