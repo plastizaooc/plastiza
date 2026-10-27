@@ -1765,7 +1765,7 @@ new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getEleme
 const PDF_V='202610271850';
 function pdfFile(){const L=(typeof pdfLang!=='undefined'&&pdfLang)||lang;return `plastiza-catalog-${L==='uk'?'ua':'en'}-${R.a==='mob'?'mobile':'desktop'}.pdf`}
 const _pdfBlobs={};
-const PDF_BASE=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)?'assets/pdf/':'https://plastiza.vercel.app/assets/pdf/';
+const PDF_BASE=location.protocol==='file:'||/^(localhost|127\.)/.test(location.hostname)||!/claude/.test(location.hostname)?'assets/pdf/':'https://plastiza.vercel.app/assets/pdf/';
 const pdfUrl=n=>PDF_BASE+n+'?v='+PDF_V;
 function pdfPre(){if(R.p!=='pdf')return;const n=pdfFile();if(_pdfBlobs[n])return;_pdfBlobs[n]=fetch(pdfUrl(n),{mode:'cors'}).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>(_pdfBlobs[n]=new File([b],n,{type:'application/pdf'}))).catch(()=>{delete _pdfBlobs[n];return null})}
 function pdfAbs(n){return new URL(pdfUrl(n),location.href).href}
@@ -1812,7 +1812,7 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-pl],[data-go="p
 
 
 /* ===== Leads → server → Telegram bot ===== */
-const LEAD_API=/^(file:|https?:\/\/(localhost|127\.))/.test(location.href)||location.hostname.endsWith('plastiza.vercel.app')?'/api/lead':'https://plastiza.vercel.app/api/lead';
+const LEAD_API=/claude|^$/.test(location.hostname)||location.protocol==='file:'?'https://plastiza.vercel.app/api/lead':'/api/lead';
 let _leadForm=null;window.addEventListener('submit',e=>{_leadForm=e.target instanceof HTMLFormElement?e.target:null},true);
 const _pushLead0=pushLead;
 pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
