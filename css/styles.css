@@ -4018,3 +4018,8 @@ html body .rqd .rq-x:hover{opacity:1;color:#D9383A;background:rgba(217,56,58,.08
 
 /* RFQ: light plate under product photos */
 html body .rqd .rq-pp-h img,html body .rqd .rq-it img{background:#F4F2EE!important;padding:2px;box-sizing:border-box}
+
+/* related: control row */
+#view .rl-ctl{margin-top:18px}#view .rl-ctl .rl-dots{margin:0!important}
+@media (min-width:701px){#view .rl-ctl .rl-ar{display:none}}
+#view .rl-ar button:disabled{opacity:.35;cursor:default}

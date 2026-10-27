@@ -1748,6 +1748,15 @@ function rqHdr(){const q=document.getElementById('qcb');if(!q)return;let b=docum
 function rqSum(){const d=document.getElementById('rqd');const e=d&&d.querySelector('.rq-sum');if(e)e.textContent=rqT().total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}
 document.addEventListener('input',e=>{if(!e.target.matches('#rqd .rq-sel .rq-q input'))return;const i=+e.target.closest('[data-i]').dataset.i,v=parseInt(e.target.value);if(v>0){RQ.items[i].q=v;rqSum()}});
 
+
+/* related products (mobile): dots left + arrows right, like the blog slider */
+function rlCtl(){document.querySelectorAll('#view .rl').forEach(r=>{if(r.querySelector('.rl-ctl'))return;const d=r.querySelector('.rl-dots'),sl=r.querySelector('.rl-s');if(!d||!sl)return;const u=lang==='uk';
+ const c=document.createElement('div');c.className='bg-ctl rl-ctl';d.before(c);c.appendChild(d);
+ const ar=document.createElement('div');ar.className='bg-ar rl-ar';ar.innerHTML=`<button type="button" data-rlm="-1" aria-label="${u?'Попередній товар':'Previous'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" data-rlm="1" aria-label="${u?'Наступний товар':'Next'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>`;c.appendChild(ar);
+ const [pv,nx]=ar.querySelectorAll('button'),f=()=>{pv.disabled=sl.scrollLeft<4;nx.disabled=sl.scrollLeft+sl.clientWidth>=sl.scrollWidth-4};sl.addEventListener('scroll',()=>requestAnimationFrame(f),{passive:true});f()})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rlm]');if(!b)return;const s=b.closest('.rl').querySelector('.rl-s'),c=s.firstElementChild;s.scrollBy({left:+b.dataset.rlm*(c?c.getBoundingClientRect().width+8:300),behavior:'smooth'})});
+new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getElementById('view'),{childList:true});requestAnimationFrame(rlCtl);
+
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
