@@ -1536,12 +1536,12 @@ function ccUpd(w){const el=w.querySelector('input'),b=w.querySelector('.phc'),c=
 b.innerHTML=`${ccFlag(c)}<span>+${c[1]}</span><svg viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
 b.setAttribute('aria-label',(lang==='uk'?'Код країни: ':'Country code: ')+ccName(c[0])+' +'+c[1]);
 el.placeholder=c[2].replace(/#/g,'0');el.setAttribute('maxlength',c[2].length+4);
-const pad=()=>{if(!b.offsetWidth)return;const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')};pad();requestAnimationFrame(pad)}
+const pad=()=>{if(!b.offsetWidth)return;if(innerWidth<=760&&typeof phCentre==='function'){phCentre(el);return}const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')};pad();requestAnimationFrame(pad)}
 function ccEnhance(root){(root||document).querySelectorAll('input[type=tel]:not([data-cc]),input[name=phone]:not([type=hidden]):not([data-cc])').forEach(el=>{
 el.dataset.cc='UA';el.classList.add('phw-i');if(el.value)el.value=ccFmt(el,el.value);
 const w=document.createElement('span');w.className='phw';el.parentNode.insertBefore(w,el);w.appendChild(el);
 const b=document.createElement('button');b.type='button';b.className='phc';b.setAttribute('aria-haspopup','listbox');b.setAttribute('aria-expanded','false');w.insertBefore(b,el);ccUpd(w)})}
-function ccRepad(){document.querySelectorAll('.phw').forEach(w=>{const el=w.querySelector('input'),b=w.querySelector('.phc');if(b&&b.offsetWidth){const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')}})}
+function ccRepad(){document.querySelectorAll('.phw').forEach(w=>{const el=w.querySelector('input'),b=w.querySelector('.phc');if(b&&b.offsetWidth){if(innerWidth<=760&&typeof phCentre==='function'){phCentre(el);return}const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')}})}
 let ccOpenEl=null;
 function ccClose(){const d=document.getElementById('phdd');if(d)d.remove();if(ccOpenEl){ccOpenEl.setAttribute('aria-expanded','false');ccOpenEl=null}}
 function ccOpen(btn){ccClose();const w=btn.closest('.phw'),el=w.querySelector('input'),cur=ccOf(el),u=lang==='uk';ccOpenEl=btn;btn.setAttribute('aria-expanded','true');
@@ -1568,6 +1568,19 @@ addEventListener('resize',()=>{const d=document.getElementById('phdd');if(d&&d._
 addEventListener('scroll',e=>{const d=document.getElementById('phdd');if(d&&!d.contains(e.target)&&d._pos)d._pos()},true);
 ccEnhance();new MutationObserver(()=>{ccEnhance();requestAnimationFrame(ccRepad)}).observe(document.body,{childList:true,subtree:true});
 document.addEventListener('reset',e=>setTimeout(()=>e.target.querySelectorAll&&e.target.querySelectorAll('.phw input').forEach(el=>ccSet(el,'UA')),0),true);
+
+/* mobile: optically centre the phone number in the whole field without touching the country chip */
+const _phCv=document.createElement('canvas').getContext('2d');
+function phCentre(el){if(!el||!el.classList.contains('phw-i'))return;const w=el.closest('.phw'),b=w&&w.querySelector('.phc');if(!b||!b.offsetWidth)return;
+if(innerWidth>760){el.style.setProperty('text-align','left','important');return}
+const cs=getComputedStyle(el);_phCv.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;const ls=parseFloat(cs.letterSpacing)||0;const txt=el.value||el.placeholder||'';const tw=_phCv.measureText(txt).width+ls*txt.length;
+const W=el.offsetWidth,minL=b.offsetLeft+b.offsetWidth+12;const L=Math.max(minL,(W-tw)/2);
+el.style.setProperty('text-align','left','important');el.style.setProperty('padding-left',Math.round(L)+'px','important');el.style.setProperty('padding-right','12px','important')}
+function phCentreAll(){document.querySelectorAll('.phw-i').forEach(phCentre)}
+document.addEventListener('input',e=>{if(e.target.classList&&e.target.classList.contains('phw-i'))phCentre(e.target)});
+addEventListener('resize',()=>requestAnimationFrame(phCentreAll));
+new MutationObserver(()=>requestAnimationFrame(phCentreAll)).observe(document.body,{childList:true,subtree:true});
+document.fonts&&document.fonts.ready.then(phCentreAll);
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
