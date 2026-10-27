@@ -4025,3 +4025,6 @@ html body .rqd .rq-pp-h img,html body .rqd .rq-it img{background:#F4F2EE!importa
 #view .rl-ctl{margin-top:18px}#view .rl-ctl .rl-dots{margin:0!important}
 @media (min-width:701px){#view .rl-ctl .rl-ar{display:none}}
 #view .rl-ar button:disabled{opacity:.35;cursor:default}
+
+/* PDF bar: full-width centered save button on mobile */
+@media (max-width:700px){html body #view .pdf-bar [data-print]{width:100%!important;display:flex!important;justify-content:center!important;align-items:center!important;text-align:center!important}html body #view .pdf-bar .row{width:100%}}

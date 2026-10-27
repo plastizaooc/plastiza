@@ -467,7 +467,7 @@ bd('w',secAdv())+bd('',xSteps().replace('class="x-s"','class=""'))+bd('w',secFaq
 // ================= v4: TZ implementation =================
 const V4={uk:{menuProd:'Продукція',qcH:'Зв’яжіться з нами',qcCall:'Зателефонувати',qcMsg:'Месенджери',qcHrs:'Графік роботи',qcOpen:'Зараз працюємо · до 18:00',qcClosed:'Зараз зачинено · працюємо з 09:00',qcCbH:'Вам перетелефонувати?',qcCbP:'Залиште номер — передзвонимо в робочий час.',qcCbB:'Передзвоніть мені',qcCbOk:'Дякуємо! Менеджер передзвонить найближчим часом.',qcLab:'Швидкий зв’язок',
 attB:'Прикріпити файли',attH:'до 3 файлів або посилань',fmH:'Прикріпити файли',fmS:'Креслення, 3D-моделі або фото — до 3 файлів і до 3 посилань. Великі файли зручніше додати посиланням на хмарне сховище.',fmLink:'Посилання на файл (Google Drive, Dropbox…)',fmAdd:'Додати',fmDev:'Обрати з пристрою',fmDone:'Готово',fmEmpty:'Ще нічого не додано',fmFull:'Додано максимум — 3 файли',msgPick:'Оберіть месенджер',
-pdfB:'Каталог PDF',pdfH:'Завантажити каталог',pdfS:'Оберіть версію — каталог згенерується з актуальних даних сайту з клікабельним змістом.',pdfD:['ПК і планшет','A4, альбомна орієнтація, два товари на сторінці'],pdfM:['Мобільна версія','Вузький формат для зручного перегляду з телефона'],pdfSave:'Зберегти як PDF',pdfTip:'У вікні друку оберіть «Зберегти як PDF».',pdfToc:'Зміст',pdfTop:'↑ До змісту',pdfOpen:'Відкрити на сайті',pdfCover:'Каталог продукції',pdfVar:'Варіанти та ціни',
+pdfB:'Каталог PDF',pdfH:'Завантажити каталог',pdfS:'Оберіть версію — каталог згенерується з актуальних даних сайту з клікабельним змістом.',pdfD:['ПК і планшет','A4, альбомна орієнтація, два товари на сторінці'],pdfM:['Мобільна версія','Вузький формат для зручного перегляду з телефона'],pdfSave:'Зберегти як PDF',pdfTip:'Файл одразу завантажиться на ваш пристрій.',pdfToc:'Зміст',pdfTop:'↑ До змісту',pdfOpen:'Відкрити на сайті',pdfCover:'Каталог продукції',pdfVar:'Варіанти та ціни',
 items:'позицій',
 prH:'Виробництво пластикових деталей повного циклу',prL:'Фіксатори арматури, елементи опалубки та вироби під замовлення — від розробки пресформи до відвантаження партії на власних потужностях.',prPh:'Фото цеху додамо після зйомки',prLab:'Виробництво',
 mvLab:'Хто ми',mvH:'Місія, історія та цінності',mv:[['Місія','Забезпечувати будівництво та виробників надійними пластиковими деталями українського виробництва — точно, вчасно й за чесною ціною.'],['Історія','За 12 років ми виросли від виробника будівельних фіксаторів до підприємства повного циклу з власним виготовленням пресформ.'],['Цінності','Якість на кожному етапі, відповідальність за терміни та довгострокове партнерство з кожним клієнтом.']],
@@ -475,7 +475,7 @@ tpaLab:'Обладнання',tpaH:'Парк термопластавтомат�
 hiLab:'Історія',hiH:'Шлях компанії',hi:[['2014','Заснування компанії у Львові'],['2017','Запуск власної лінійки фіксаторів арматури'],['2020','Власне виготовлення пресформ'],['2023','Відкриття офісу в Києві'],['2025','20 000+ виконаних замовлень'],['2026','Новий сайт і онлайн-каталог']]},
 en:{menuProd:'Products',qcH:'Get in touch',qcCall:'Call us',qcMsg:'Messengers',qcHrs:'Working hours',qcOpen:'Open now · until 18:00',qcClosed:'Closed now · open from 09:00',qcCbH:'Want us to call you back?',qcCbP:'Leave your number and we’ll call back during working hours.',qcCbB:'Call me back',qcCbOk:'Thank you! A manager will call you back shortly.',qcLab:'Quick contact',
 attB:'Attach files',attH:'up to 3 files or links',fmH:'Attach files',fmS:'Drawings, 3D models or photos — up to 3 files and up to 3 links. Large files are easier to share as a cloud link.',fmLink:'Link to file (Google Drive, Dropbox…)',fmAdd:'Add',fmDev:'Choose from device',fmDone:'Done',fmEmpty:'Nothing added yet',fmFull:'Maximum of 3 files added',msgPick:'Choose a messenger',
-pdfB:'PDF catalog',pdfH:'Download catalog',pdfS:'Pick a version — the catalog is generated from current site data with a clickable table of contents.',pdfD:['Desktop & tablet','A4 landscape, two products per page'],pdfM:['Mobile','Narrow format for comfortable phone reading'],pdfSave:'Save as PDF',pdfTip:'In the print dialog choose “Save as PDF”.',pdfToc:'Contents',pdfTop:'↑ Back to contents',pdfOpen:'Open on website',pdfCover:'Product catalog',pdfVar:'Options and prices',
+pdfB:'PDF catalog',pdfH:'Download catalog',pdfS:'Pick a version — the catalog is generated from current site data with a clickable table of contents.',pdfD:['Desktop & tablet','A4 landscape, two products per page'],pdfM:['Mobile','Narrow format for comfortable phone reading'],pdfSave:'Save as PDF',pdfTip:'The file downloads straight to your device.',pdfToc:'Contents',pdfTop:'↑ Back to contents',pdfOpen:'Open on website',pdfCover:'Product catalog',pdfVar:'Options and prices',
 items:'items',
 prH:'Full-cycle plastic parts manufacturing',prL:'Rebar spacers, formwork parts and custom products — from mold design to shipment at our own plant.',prPh:'Plant photos coming soon',prLab:'Production',
 mvLab:'Who we are',mvH:'Mission, history and values',mv:[['Mission','To supply construction and manufacturers with reliable Ukrainian-made plastic parts — precise, on time and fairly priced.'],['History','In 12 years we grew from a spacer maker into a full-cycle plant with in-house mold making.'],['Values','Quality at every stage, responsibility for lead times and long-term partnership.']],
@@ -1358,7 +1358,7 @@ const ms=`<div class="hqm"><span>${u?'або напишіть нам':'or messag
 h=h.replace(/<input name="name"[^>]*>/,`<input name="name" type="hidden" value="${u?'Консультація з головної':'Hero consultation'}">`);return h};
 
 /* PDF: one continuous page (electronic catalog, no page breaks) */
-document.addEventListener('click',e=>{if(!e.target.closest('[data-print]'))return;const d=document.querySelector('#view .pdf-doc');if(!d)return;e.preventDefault();e.stopPropagation();
+document.addEventListener('click',e=>{if(!e.target.closest('[data-print]'))return;if(pdfDl(e))return;const d=document.querySelector('#view .pdf-doc');if(!d)return;e.preventDefault();e.stopPropagation();
 const r=d.getBoundingClientRect(),W=Math.ceil(r.width),H=Math.ceil(d.scrollHeight)+2;let ps=document.getElementById('pdfpage');if(!ps){ps=document.createElement('style');ps.id='pdfpage';document.head.appendChild(ps)}const old=ps.textContent;
 ps.textContent=`@page{size:${W}px ${H}px;margin:0}@media print{html.pq-cont #view .pdf-doc{width:${W}px!important;min-width:${W}px!important;max-width:${W}px!important}}`;
 document.documentElement.classList.add('pq-cont');const done=()=>{document.documentElement.classList.remove('pq-cont');ps.textContent=old;removeEventListener('afterprint',done)};addEventListener('afterprint',done);
@@ -1756,6 +1756,21 @@ function rlCtl(){document.querySelectorAll('#view .rl').forEach(r=>{if(r.querySe
  const [pv,nx]=ar.querySelectorAll('button'),f=()=>{pv.disabled=sl.scrollLeft<4;nx.disabled=sl.scrollLeft+sl.clientWidth>=sl.scrollWidth-4};sl.addEventListener('scroll',()=>requestAnimationFrame(f),{passive:true});f()})}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-rlm]');if(!b)return;const s=b.closest('.rl').querySelector('.rl-s'),c=s.firstElementChild;s.scrollBy({left:+b.dataset.rlm*(c?c.getBoundingClientRect().width+8:300),behavior:'smooth'})});
 new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getElementById('view'),{childList:true});requestAnimationFrame(rlCtl);
+
+
+/* PDF catalog: real pre-built PDF files (one continuous page) — download / share instead of print */
+const PDF_V='202610271815';
+function pdfFile(){const L=(typeof pdfLang!=='undefined'&&pdfLang)||lang;return `plastiza-catalog-${L==='uk'?'ua':'en'}-${R.a==='mob'?'mobile':'desktop'}.pdf`}
+const _pdfBlobs={};
+function pdfPre(){if(R.p!=='pdf')return;const n=pdfFile();if(_pdfBlobs[n])return;_pdfBlobs[n]=fetch('assets/pdf/'+n+'?v='+PDF_V).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>(_pdfBlobs[n]=new File([b],n,{type:'application/pdf'}))).catch(()=>{delete _pdfBlobs[n];return null})}
+function pdfDl(e){e.preventDefault();e.stopPropagation();const n=pdfFile(),url='assets/pdf/'+n+'?v='+PDF_V,f=_pdfBlobs[n];
+ const save=file=>{const a=document.createElement('a');a.href=file?URL.createObjectURL(file):url;a.download=n;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();if(file)URL.revokeObjectURL(a.href)},4000)};
+ const touch=matchMedia('(hover:none)').matches;
+ if(f instanceof File){if(touch&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'PLASTIZA — '+(lang==='uk'?'каталог':'catalog')}).catch(err=>{if(err&&err.name!=='AbortError')save(f)})}else save(f);return true}
+ if(f&&f.then){f.then(x=>save(x||null));return true}
+ save(null);return true}
+new MutationObserver(()=>requestAnimationFrame(pdfPre)).observe(document.getElementById('view'),{childList:true,subtree:false});
+document.addEventListener('click',e=>{if(e.target.closest('[data-pl],[data-go="pdf"]'))setTimeout(pdfPre,300)});setTimeout(pdfPre,500);
 
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
