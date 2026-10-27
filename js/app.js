@@ -1554,14 +1554,15 @@ const w=document.createElement('span');w.className='phw';el.parentNode.insertBef
 const b=document.createElement('button');b.type='button';b.className='phc';b.setAttribute('aria-haspopup','listbox');b.setAttribute('aria-expanded','false');w.insertBefore(b,el);ccUpd(w)})}
 function ccRepad(){document.querySelectorAll('.phw').forEach(w=>{const el=w.querySelector('input'),b=w.querySelector('.phc');if(b&&b.offsetWidth){if(innerWidth<=760&&typeof phCentre==='function'){phCentre(el);return}const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')}})}
 let ccOpenEl=null;
-function ccClose(){const d=document.getElementById('phdd');if(d)d.remove();if(ccOpenEl){ccOpenEl.setAttribute('aria-expanded','false');ccOpenEl=null}}
+function ccClose(){const d=document.getElementById('phdd');if(d)d.remove();const sc=document.getElementById('phdscrim');if(sc)sc.remove();document.documentElement.classList.remove('phd-lock');if(ccOpenEl){ccOpenEl.setAttribute('aria-expanded','false');ccOpenEl=null}}
 function ccOpen(btn){ccClose();const w=btn.closest('.phw'),el=w.querySelector('input'),cur=ccOf(el),u=lang==='uk';ccOpenEl=btn;btn.setAttribute('aria-expanded','true');
 const [pr,rest]=ccList();
 const item=c=>`<li role="option" data-iso="${c[0]}" aria-selected="${c[0]===cur[0]}" tabindex="-1">${ccFlag(c)}<b>${c[0]}</b><span class="phd-n">${ccName(c[0])}</span><span class="phd-c">+${c[1]}</span></li>`;
 const d=document.createElement('div');d.id='phdd';d.className='phd';
 d.innerHTML=`<div class="phd-s"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5 17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input type="search" placeholder="${u?'Пошук країни або коду':'Search country or code'}" aria-label="${u?'Пошук країни':'Search country'}" autocomplete="off"></div><ul role="listbox">${pr.map(item).join('')}<li class="phd-sep" role="presentation"></li>${rest.map(item).join('')}</ul>`;
 document.body.appendChild(d);
-const pos=()=>{const r=w.getBoundingClientRect(),vh=innerHeight,below=vh-r.bottom-16,above=r.top-16,up=below<240&&above>below+40;const H=Math.round(Math.min(380,Math.max(200,up?above:below)));
+const sheet=innerWidth<=760;if(sheet&&window.visualViewport){const vv=visualViewport;const fitVV=()=>{if(!document.body.contains(d)){vv.removeEventListener('resize',fitVV);vv.removeEventListener('scroll',fitVV);return}const kb=Math.max(0,innerHeight-vv.height-vv.offsetTop);d.style.setProperty('bottom',kb+'px','important');d.style.setProperty('max-height',Math.min(560,vv.height*.85)+'px','important')};vv.addEventListener('resize',fitVV);vv.addEventListener('scroll',fitVV)}if(sheet){d.classList.add('phd-sheet');const sc=document.createElement('div');sc.className='phd-scrim';sc.id='phdscrim';document.body.insertBefore(sc,d);document.documentElement.classList.add('phd-lock')}
+const pos=()=>{if(sheet)return;const r=w.getBoundingClientRect(),vh=innerHeight,below=vh-r.bottom-16,above=r.top-16,up=below<240&&above>below+40;const H=Math.round(Math.min(380,Math.max(200,up?above:below)));
 d.style.width=Math.min(Math.max(r.width,320),innerWidth-24)+'px';d.style.maxHeight=H+'px';d.style.left=Math.min(Math.max(12,r.left),innerWidth-12-d.offsetWidth)+'px';
 d.style.top=(up?r.top-8-d.offsetHeight:r.bottom+8)+'px';d.classList.toggle('up',up)};
 pos();
