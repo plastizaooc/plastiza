@@ -1634,8 +1634,8 @@ sc.addEventListener('click',()=>{if(typeof qc==='function')qc(false)})})();
 const _catalogSP=catalog;catalog=function(){let h=_catalogSP();const fq=bd('w',secFaq()),i=h.indexOf(fq);const add=supplyBand()+bd('sp7-bd',supplyProc());return i>-1?h.slice(0,i)+add+h.slice(i):h+add};
 
 /* delivery hero v2: calm logistics map — pin + looping dashed routes */
-dvRoutes=function(){const W=1440,H=640,o=[190,150];
-const T=[[1360,80],[1260,560],[980,30],[760,620],[60,560],[1410,330],[620,20],[420,600]];
+dvRoutes=function(){const W=1440,H=640,o=innerWidth<=760?[60,40]:[1270,210];
+const T=innerWidth<=760?[[700,20],[620,640],[20,620],[380,630],[760,330],[260,10]]:[[40,90],[30,560],[260,630],[620,10],[980,20],[1420,40],[1430,420],[1200,630],[820,640],[520,640]];
 const ps=T.map(([x,y],i)=>{const dx=x-o[0],dy=y-o[1],k=(i%2?.22:-.22);const mx=(x+o[0])/2-dy*k,my=(y+o[1])/2+dx*k;return `M${o[0]} ${o[1]}Q${mx.toFixed(0)} ${my.toFixed(0)} ${x} ${y}`});
 const pin=`<g class="rt-pin" transform="translate(${o[0]-11} ${o[1]-28})"><path d="M11 0C5 0 0 4.7 0 10.6 0 18 11 28 11 28s11-10 11-17.4C22 4.7 17 0 11 0z"/><circle cx="11" cy="10.5" r="4" class="rt-pin-c"/></g>`;
 return `<svg class="dv-rt dv-rt2" viewBox="0 0 ${W} ${H}" preserveAspectRatio="${innerWidth<=760?'xMinYMid':'xMidYMid'} slice" aria-hidden="true">${ps.map((d,i)=>`<path class="rt-l" d="${d}" style="--t:${(14+i%3*4)}s"/>`).join('')}${T.map(([x,y])=>`<circle class="rt-d" cx="${x}" cy="${y}" r="2.4"/>`).join('')}<circle class="rt-halo" cx="${o[0]}" cy="${o[1]}" r="16"/>${pin}</svg>`};
