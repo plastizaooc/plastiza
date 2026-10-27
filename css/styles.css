@@ -3722,3 +3722,12 @@ html:root body #view .lfa-ms .dc-m svg{width:26px!important;height:26px!importan
 }
 @media (max-width:760px) and (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view .lfa-ms .dc-m{background:rgba(255,255,255,.06)!important;box-shadow:0 0 0 1px rgba(255,255,255,.08)!important}}
 @media (max-width:345px){html:root body #view .lfa-ms .dc-m{font-size:11px!important}html:root body #view .lfa-ms .dc-m svg{width:22px!important;height:22px!important}}
+
+/* direct-contact messengers: tiles also on tablets / narrow desktops, no border */
+html:root body #view :is(.lfa-ms,.dc-ms) .dc-m{box-shadow:none!important;border:0!important}
+@media (min-width:761px) and (max-width:1279px){
+html:root body #view .dc-ms{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;width:100%}
+html:root body #view .dc-ms .dc-m{min-width:0!important;width:100%!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;height:auto!important;min-height:76px!important;padding:12px 4px 10px!important;gap:6px!important;border-radius:14px!important;background:#fff!important;font-size:12.5px!important;font-weight:600;white-space:nowrap;margin:0!important}
+html:root body #view .dc-ms .dc-m svg{width:24px!important;height:24px!important}
+:root[data-theme="dark"] #view .dc-ms .dc-m{background:rgba(255,255,255,.06)!important}
+}
