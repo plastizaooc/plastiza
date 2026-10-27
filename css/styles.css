@@ -3624,3 +3624,9 @@ html:root body .phw>input.phw-i,html:root body #view .phw>input.phw-i.phw-i.phw-
 @media (max-width:420px){.phc{font-size:13px;gap:5px;padding:0 8px 0 5px}.phf{width:18px;height:18px}}
 
 html:root body #view .cfb .btn::before,html:root body #view .cfb .btn::after{display:none!important;content:none!important}
+
+/* phone input: narrower in one-row forms */
+@media (min-width:761px){
+html:root body #view .hx.hx2 .hqi .hqf,html:root body #view .pri-q .hqf{grid-template-columns:minmax(0,242px) auto!important;justify-content:start!important}
+html:root body #view .cfb.cfb .s5-cf{grid-template-columns:minmax(0,242px) auto!important;justify-content:center!important}
+}
