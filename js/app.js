@@ -1724,6 +1724,18 @@ document.addEventListener('submit',e=>{const f=e.target.closest('#rqd .rq');if(!
  pushLead({name:nm,phone:full,type:'quote',items:RQ.items.map(it=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return {product:title(p),size:sz(v),packs:+it.q,perPack:v[2]+' '+un(p)}}),files:files.map(x=>x.name),source:leadSource('quote-modal'),okText:T.ok});
  document.getElementById('rqd').close()});
 
+
+/* step tracker: finish filling while the section is held, before FAQ overlaps */
+const _stkS=stkScroll;stkScroll=function(){_stkS();const mark=innerHeight*.62;
+ document.querySelectorAll('#view .ov-under .stk.stk-col').forEach(ol=>{const u=ol.closest('.ov-under'),t=u.nextElementSibling;if(!t)return;
+  const hold=parseFloat(getComputedStyle(t).marginTop)||0;if(hold<40)return;
+  const gap=t.getBoundingClientRect().top-u.getBoundingClientRect().bottom,f=Math.min(1,Math.max(0,(hold-gap-4)/(hold*.8)));if(!f)return;
+  const it=[...ol.children].filter(x=>x.tagName==='LI');const a=stkY(it[0]),z=stkY(it[it.length-1]);
+  const p0=Math.min(1,Math.max(0,(mark-a)/Math.max(1,z-a))),p=p0+(1-p0)*f;ol.style.setProperty('--stk',p.toFixed(4));
+  it.forEach(li=>li.classList.toggle('stk-on',(stkY(li)-a)/Math.max(1,z-a)<=p+.001))})};
+/* keep sticky offset right when the held section changes height */
+if(window.ResizeObserver){const _ovRO=new ResizeObserver(()=>requestAnimationFrame(()=>{ovPos();stkScroll()}));new MutationObserver(()=>requestAnimationFrame(()=>document.querySelectorAll('#view .ov-under').forEach(u=>{if(!u._ro){u._ro=1;_ovRO.observe(u)}}))).observe(document.getElementById('view'),{childList:true,subtree:true})}
+
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
