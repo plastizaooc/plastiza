@@ -3621,7 +3621,7 @@ html:root body .phw>input.phw-i,html:root body #view .phw>input.phw-i.phw-i.phw-
 :root[data-theme="dark"] .phd li[aria-selected=true]{background:rgba(90,134,255,.18)}:root[data-theme="dark"] .phd li[aria-selected=true] .phd-c{color:#8EA8FF}
 :root[data-theme="dark"] .phd-sep{background:rgba(255,255,255,.1)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .phd{background:rgba(28,28,31,.97);color:#F2F2F5;box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08)}:root:not([data-theme="light"]) .phd-s{background:rgba(118,118,128,.24);color:rgba(235,235,245,.6)}:root:not([data-theme="light"]) .phd-s input{color:#F2F2F5}:root:not([data-theme="light"]) .phd-s input::placeholder{color:rgba(235,235,245,.6)}:root:not([data-theme="light"]) .phd li b,:root:not([data-theme="light"]) .phd .phd-c{color:rgba(235,235,245,.6)}:root:not([data-theme="light"]) .phd li[data-iso]:hover,:root:not([data-theme="light"]) .phd li[data-iso]:focus{background:rgba(118,118,128,.24)}:root:not([data-theme="light"]) .phd li[aria-selected=true]{background:rgba(90,134,255,.18)}:root:not([data-theme="light"]) .phd li[aria-selected=true] .phd-c{color:#8EA8FF}:root:not([data-theme="light"]) .phd-sep{background:rgba(255,255,255,.1)}}
-@media (max-width:420px){.phc{font-size:13px;gap:5px;padding:0 8px 0 5px}.phf{width:18px;height:18px}}
+
 
 html:root body #view .cfb .btn::before,html:root body #view .cfb .btn::after{display:none!important;content:none!important}
 
@@ -3629,4 +3629,12 @@ html:root body #view .cfb .btn::before,html:root body #view .cfb .btn::after{dis
 @media (min-width:761px){
 html:root body #view .hx.hx2 .hqi .hqf,html:root body #view .pri-q .hqf{grid-template-columns:minmax(0,242px) auto!important;justify-content:start!important}
 html:root body #view .cfb.cfb .s5-cf{grid-template-columns:minmax(0,242px) auto!important;justify-content:center!important}
+}
+
+/* mobile: bigger country chip, number centred */
+@media (max-width:760px){
+.phc{font-size:16px;gap:8px;padding:0 12px 0 7px;max-height:42px;height:calc(100% - 10px);left:5px}
+.phf{width:22px;height:22px}
+.phc svg{width:10px;height:7px}
+html:root body .phw>input.phw-i,html:root body #view .phw>input.phw-i.phw-i.phw-i{text-align:center!important;width:100%!important}
 }

@@ -1536,12 +1536,12 @@ function ccUpd(w){const el=w.querySelector('input'),b=w.querySelector('.phc'),c=
 b.innerHTML=`${ccFlag(c)}<span>+${c[1]}</span><svg viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
 b.setAttribute('aria-label',(lang==='uk'?'Код країни: ':'Country code: ')+ccName(c[0])+' +'+c[1]);
 el.placeholder=c[2].replace(/#/g,'0');el.setAttribute('maxlength',c[2].length+4);
-const pad=()=>{if(b.offsetWidth)el.style.setProperty('padding-left',(b.offsetWidth+16)+'px','important')};pad();requestAnimationFrame(pad)}
+const pad=()=>{if(!b.offsetWidth)return;const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')};pad();requestAnimationFrame(pad)}
 function ccEnhance(root){(root||document).querySelectorAll('input[type=tel]:not([data-cc]),input[name=phone]:not([type=hidden]):not([data-cc])').forEach(el=>{
 el.dataset.cc='UA';el.classList.add('phw-i');if(el.value)el.value=ccFmt(el,el.value);
 const w=document.createElement('span');w.className='phw';el.parentNode.insertBefore(w,el);w.appendChild(el);
 const b=document.createElement('button');b.type='button';b.className='phc';b.setAttribute('aria-haspopup','listbox');b.setAttribute('aria-expanded','false');w.insertBefore(b,el);ccUpd(w)})}
-function ccRepad(){document.querySelectorAll('.phw').forEach(w=>{const el=w.querySelector('input'),b=w.querySelector('.phc');if(b&&b.offsetWidth)el.style.setProperty('padding-left',(b.offsetWidth+16)+'px','important')})}
+function ccRepad(){document.querySelectorAll('.phw').forEach(w=>{const el=w.querySelector('input'),b=w.querySelector('.phc');if(b&&b.offsetWidth){const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')}})}
 let ccOpenEl=null;
 function ccClose(){const d=document.getElementById('phdd');if(d)d.remove();if(ccOpenEl){ccOpenEl.setAttribute('aria-expanded','false');ccOpenEl=null}}
 function ccOpen(btn){ccClose();const w=btn.closest('.phw'),el=w.querySelector('input'),cur=ccOf(el),u=lang==='uk';ccOpenEl=btn;btn.setAttribute('aria-expanded','true');
