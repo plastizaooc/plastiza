@@ -3851,3 +3851,16 @@ html body #view .lf3-c dd a,html body #view .lf3-c dd>a{transition:color .2s,opa
 html body #view .lf3-c dd a:hover,html body #view .lf3-c dd>a:hover{opacity:1!important;color:#0B35B8!important}
 :root[data-theme="dark"] #view .lf3-c dd a:hover{color:#7FA0FF!important}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view .lf3-c dd a:hover{color:#7FA0FF!important}}
+
+/* quick contact polish */
+#qcp .qcp-m a{box-shadow:0 0 0 1px rgba(15,23,42,.08)!important;transition:box-shadow .2s,color .2s}
+#qcp .qcp-m a:hover,#qcp .qcp-m a:focus-visible{color:var(--mc)!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--mc) 35%,transparent),0 8px 20px -10px color-mix(in srgb,var(--mc) 60%,transparent)!important}
+#qcp .qcp-m a:hover span{color:var(--mc)!important}
+:root[data-theme="dark"] #qcp .qcp-m a{box-shadow:0 0 0 1px rgba(255,255,255,.1)!important}
+#qcp .qcp-ph{justify-content:center!important;text-align:center}
+#qcp .qcp-s:has(.qcp-st){text-align:center}
+#qcp .qcp-s:has(.qcp-st) .qcp-st{justify-content:center}
+#qcp .qcp-cb>.qcp-k,#qcp .qcp-cb>p{text-align:center;display:block}
+/* desktop scrim too */
+.qc-scrim.on{opacity:1;pointer-events:auto}
+@media (min-width:761px){.qc-scrim{background:rgba(8,10,14,.22);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}}

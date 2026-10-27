@@ -1615,7 +1615,7 @@ new MutationObserver(()=>requestAnimationFrame(dcIcons)).observe(document.body,{
 
 /* quick-contact: brand icons + mobile call sheet */
 const QC_COL={WhatsApp:'#25D366',Telegram:'#229ED9',Viber:'#7360F2'};
-function qcIcons(){document.querySelectorAll('#qcp .qcp-m a').forEach(a=>{if(a.dataset.gl)return;const n=Object.keys(DC_GL).find(k=>a.textContent.includes(k));const sv=a.querySelector('svg');if(!n||!sv)return;sv.outerHTML=`<svg viewBox="0 0 24 24" width="26" height="26" fill="${QC_COL[n]}" aria-hidden="true"><path d="${DC_GL[n]}"/></svg>`;a.dataset.gl=1})}
+function qcIcons(){document.querySelectorAll('#qcp .qcp-m a').forEach(a=>{if(a.dataset.gl)return;const n=Object.keys(DC_GL).find(k=>a.textContent.includes(k));const sv=a.querySelector('svg');if(!n||!sv)return;sv.outerHTML=`<svg viewBox="0 0 24 24" width="26" height="26" fill="${QC_COL[n]}" aria-hidden="true"><path d="${DC_GL[n]}"/></svg>`;a.style.setProperty('--mc',QC_COL[n]);a.dataset.gl=1})}
 new MutationObserver(()=>qcIcons()).observe(document.getElementById('qcp')||document.body,{childList:true,subtree:true});
 function phSheet(){const u=lang==='uk';const d=document.createElement('div');d.id='phs';d.className='phs';
 d.innerHTML=`<div class="phs-b"><div class="phs-g"><p class="phs-t">${u?'Оберіть номер':'Choose a number'}</p>${PH.map(x=>`<a class="phs-i" href="tel:${x.replace(/[^+\d]/g,'')}">${ICO.phone}<span>${x}</span></a>`).join('')}</div><button type="button" class="phs-c">${u?'Скасувати':'Cancel'}</button></div>`;
