@@ -4019,6 +4019,8 @@ html body .rqd .rq-x:hover{opacity:1;color:#D9383A;background:rgba(217,56,58,.08
 /* RFQ: light plate under product photos */
 html body .rqd .rq-pp-h img,html body .rqd .rq-it img{background:#F4F2EE!important;padding:2px;box-sizing:border-box}
 
+/* supply band: stack phone + button on narrow two-column widths */
+@media (min-width:901px) and (max-width:1360px){html body .spb-f{grid-template-columns:1fr!important;gap:10px!important}html body .spb-f .btn{width:100%}html body .spb-r{gap:24px!important}}
 /* related: control row */
 #view .rl-ctl{margin-top:18px}#view .rl-ctl .rl-dots{margin:0!important}
 @media (min-width:701px){#view .rl-ctl .rl-ar{display:none}}
