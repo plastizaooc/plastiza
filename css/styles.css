@@ -3665,3 +3665,13 @@ html:root body #view .cfb.cfb .s5-cf.ph-stk>.phw,html:root body #view .cfb.cfb .
 html:root body .lf .dd-i.mi{width:28px!important;height:28px!important;min-width:28px;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;border-radius:50%!important;display:inline-grid!important;place-items:center;overflow:visible}
 html:root body .lf .dd-i.mi svg{width:28px!important;height:28px!important;display:block}
 html:root body .lf .mc{gap:10px!important}
+
+/* mobile: messenger chips in one row (no dropdown) */
+@media (max-width:760px){
+html:root body .lf-ms .dd{display:none!important}
+html:root body .lf-ms .mc-row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;width:100%}
+html:root body .lf-ms .mc{min-width:0!important;width:100%!important;justify-content:center!important;gap:5px!important;padding:0 4px!important;height:44px;font-size:clamp(10.5px,calc((100vw - 96px)/22.5),15px)!important;letter-spacing:-.01em;white-space:nowrap;overflow:hidden}
+html:root body .lf-ms .mc .dd-i.mi,html:root body .lf-ms .mc .dd-i.mi svg{width:21px!important;height:21px!important;min-width:21px}
+}
+
+@media (max-width:345px){html:root body .lf-ms .mc{font-size:9.5px!important;gap:4px!important;padding:0 3px!important;letter-spacing:-.02em}html:root body .lf-ms .mc .dd-i.mi,html:root body .lf-ms .mc .dd-i.mi svg{width:16px!important;height:16px!important;min-width:16px}}
