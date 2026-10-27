@@ -3835,3 +3835,10 @@ html body #view .dv-pk .dv-pk-x{margin-top:auto!important}
 html body #view .dv-pk .dv-pk-x>span{color:color-mix(in srgb,var(--ink) 55%,transparent)!important}
 html body #view .dv-hi,html body #view .dv-pk{justify-content:flex-start!important}
 html body #view .dv-pk .dv-pk-x>span{font-size:13px!important;line-height:1.35!important}
+
+/* direct-contact messengers: hover keeps tile, text takes brand colour */
+html:root body #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover,html:root body #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:focus-visible{background:#fff!important;color:var(--mc)!important;border-color:transparent!important;box-shadow:0 6px 18px -8px color-mix(in srgb,var(--mc) 55%,transparent)!important}
+html:root body #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover *{color:var(--mc)!important}
+html:root body #view :is(.lfa-ms,.dc-ms) .dc-m svg{color:var(--mc)!important;fill:var(--mc)!important}
+:root[data-theme="dark"] #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover{background:rgba(255,255,255,.1)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view :is(.lfa-ms,.dc-ms) .dc-m.dc-m:hover{background:rgba(255,255,255,.1)!important}}
