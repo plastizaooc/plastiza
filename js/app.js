@@ -683,8 +683,11 @@ if(e.target.closest('[data-fclr]')){F.fm=[];F.ps=[];F.pu=[];F.sz=[];F.o={};updCa
 if(R.p==='catalog'&&Object.values(F.o).some(Boolean)&&!e.target.closest('.fdd')&&!e.target.closest('[data-f]')){F.o={};updCat()}},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&R.p==='catalog'&&Object.values(F.o).some(Boolean)){F.o={};updCat()}});
 
-function fit(){const m=document.querySelector('.mega');if(!m)return;const w=m.parentNode,cs=getComputedStyle(w),W=w.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);const c=document.createElement('canvas').getContext('2d');c.font='600 100px Unbounded, sans-serif';const x=c.measureText('PLASTIZA'),s=W/(x.actualBoundingBoxLeft+x.actualBoundingBoxRight);m.style.fontSize=(100*s)+'px';m.style.marginLeft=(x.actualBoundingBoxLeft*s)+'px'}
-addEventListener('resize',fit);try{document.fonts.load('600 100px Unbounded').then(fit)}catch(e){}
+function fit(){document.querySelectorAll('.mega').forEach(m=>{const w=m.parentNode;if(!w||!w.clientWidth)return;const cs=getComputedStyle(w),W=w.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+m.style.fontSize='100px';m.style.marginLeft='0px';const t=m.firstChild;if(!t)return;const r=document.createRange();r.selectNodeContents(m);const rb=r.getBoundingClientRect(),mb=m.getBoundingClientRect();
+const c=document.createElement('canvas').getContext('2d');c.font=getComputedStyle(m).fontWeight+' 100px '+getComputedStyle(m).fontFamily;const x=c.measureText(m.textContent);const ink=(x.actualBoundingBoxLeft+x.actualBoundingBoxRight)||rb.width;
+const k=(W-2)/ink;m.style.fontSize=(100*k).toFixed(2)+'px';m.style.marginLeft=(x.actualBoundingBoxLeft*k).toFixed(2)+'px'})}
+addEventListener('resize',fit);try{document.fonts.load('600 100px Unbounded').then(fit);document.fonts.ready.then(fit)}catch(e){}setTimeout(fit,600);setTimeout(fit,2000);
 function footH(){const L=(p,l,a)=>`<button class="fl" data-go="${p}"${a!=null?` data-a="${a}"`:''}>${l}</button>`,I=lang==='uk'?0:1;
 return `<div class="wrap fw"><div class="fa2 f-mot"><p class="fmot"><b>${t('motA')}</b> ${t('motB')}</p></div>
 <div class="f-nav"><h4>[ ${t('fnav')} ]</h4><div class="f-ls">${L('home',t('home'))}${L('about',t('about'))}${L('catalog',v4('menuProd'),'all')}${L('oem',t('serv'))}${SRV.map((x,i)=>`<button class="fl fl2" data-go="soon" data-a="${i}">${x[lang]}</button>`).join('')}${L('faq',t('faq'))}${L('delivery',lang==='uk'?'Доставка та оплата':'Delivery & payment')}${L('blog',t('blog'))}${L('contacts',t('contacts'))}<button class="fl fl-pdf" data-go="pdf" data-a="desk">${lang==='uk'?'Каталог PDF':'PDF catalog'}</button></div></div>
