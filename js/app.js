@@ -1623,6 +1623,12 @@ document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));
 const close=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),260)};
 d.addEventListener('click',e=>{e.stopPropagation();if(e.target===d||e.target.closest('.phs-c'))close();else if(e.target.closest('.phs-i'))setTimeout(close,150)})}
 document.addEventListener('click',e=>{const c=e.target.closest('#qcp .qcp-call');if(!c||innerWidth>760)return;e.preventDefault();e.stopPropagation();phSheet()},true);
+
+/* mobile: dark blurred scrim behind quick-contact panel */
+(function(){const sc=document.createElement('div');sc.id='qcscrim';sc.className='qc-scrim';document.body.appendChild(sc);
+const sync=()=>{const p=document.getElementById('qcp');const on=!!(p&&!p.hidden&&p.classList.contains('on'));sc.classList.toggle('on',on);document.documentElement.classList.toggle('qc-lock',on&&innerWidth<=760)};
+const p=document.getElementById('qcp');if(p)new MutationObserver(sync).observe(p,{attributes:true,attributeFilter:['class','hidden']});
+sc.addEventListener('click',()=>{if(typeof qc==='function')qc(false)})})();
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
