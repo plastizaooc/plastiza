@@ -1581,6 +1581,13 @@ document.addEventListener('input',e=>{if(e.target.classList&&e.target.classList.
 addEventListener('resize',()=>requestAnimationFrame(phCentreAll));
 new MutationObserver(()=>requestAnimationFrame(phCentreAll)).observe(document.body,{childList:true,subtree:true});
 document.fonts&&document.fonts.ready.then(phCentreAll);
+
+/* one-row phone forms: stack input over button when the number would not fit */
+function phStack(){document.querySelectorAll('#view .hx.hx2 .hqf, #view .pri-q .hqf, #view .cfb .s5-cf').forEach(f=>{const w=f.querySelector('.phw'),b=f.querySelector('.phc'),i=w&&w.querySelector('input'),btn=f.querySelector('.btn');if(!w||!b||!i||!btn)return;
+if(innerWidth<=760){f.classList.remove('ph-stk');return}
+const cs=getComputedStyle(i);_phCv.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;const need=b.offsetWidth+16+_phCv.measureText(i.placeholder||'(00) 000-00-00').width+28;
+const avail=(f.classList.contains('ph-stk')?f.parentElement.clientWidth:f.clientWidth)-btn.offsetWidth-8;f.classList.toggle('ph-stk',avail<Math.max(need,280))})}
+addEventListener('resize',()=>requestAnimationFrame(phStack));new MutationObserver(()=>requestAnimationFrame(phStack)).observe(document.getElementById('view'),{childList:true});document.fonts&&document.fonts.ready.then(phStack);
 R=fromHash();render();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}

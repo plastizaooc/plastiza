@@ -3654,3 +3654,9 @@ html:root body #view .cfb.cfb .s5-cf .btn.btn{width:auto!important;min-width:0!i
 
 /* hero: no typewriter line anywhere */
 html:root body #view .hx .hx-dyn,html:root body #view .hx .tw-l,html:root body #view .hx .hx-rot{display:none!important}
+
+html:root body #view .hx.hx2 .hqi .hqf.ph-stk,html:root body #view .pri-q .hqf.hqf.ph-stk{grid-template-columns:minmax(0,1fr)!important;max-width:400px!important;width:100%}
+html:root body #view .hqf.ph-stk .btn{width:100%!important;grid-column:1!important}
+html:root body #view .hx.hx2 .hqi:has(.ph-stk),html:root body #view .pri-q:has(.ph-stk){max-width:400px!important}
+html:root body #view .cfb.cfb .s5-cf.ph-stk{grid-template-columns:1fr minmax(0,400px) 1fr!important}
+html:root body #view .cfb.cfb .s5-cf.ph-stk>.phw,html:root body #view .cfb.cfb .s5-cf.ph-stk>.btn.btn{grid-column:2!important;width:100%!important;justify-self:stretch}
