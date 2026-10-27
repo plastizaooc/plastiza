@@ -3660,3 +3660,8 @@ html:root body #view .hqf.ph-stk .btn{width:100%!important;grid-column:1!importa
 html:root body #view .hx.hx2 .hqi:has(.ph-stk),html:root body #view .pri-q:has(.ph-stk){max-width:400px!important}
 html:root body #view .cfb.cfb .s5-cf.ph-stk{grid-template-columns:1fr minmax(0,400px) 1fr!important}
 html:root body #view .cfb.cfb .s5-cf.ph-stk>.phw,html:root body #view .cfb.cfb .s5-cf.ph-stk>.btn.btn{grid-column:2!important;width:100%!important;justify-self:stretch}
+
+/* messenger round icons */
+html:root body .lf .dd-i.mi{width:28px!important;height:28px!important;min-width:28px;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;border-radius:50%!important;display:inline-grid!important;place-items:center;overflow:visible}
+html:root body .lf .dd-i.mi svg{width:28px!important;height:28px!important;display:block}
+html:root body .lf .mc{gap:10px!important}
