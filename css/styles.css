@@ -4055,3 +4055,28 @@ html body .pdf-m .pq-cv-k{grid-template-columns:1fr 1fr!important;row-gap:22px}
 html body .pdf-m .pq-cv-k>div{padding:18px 12px 0 0!important;border-left:0!important}
 html body .pdf-m .pq-cv-k>div:nth-child(even){padding-left:16px!important;border-left:1px solid rgba(255,255,255,.16)!important}
 @media (max-width:700px){html body .pq-cv-k{grid-template-columns:1fr 1fr!important;row-gap:22px}html body .pq-cv-k>div{padding:18px 12px 0 0!important;border-left:0!important}html body .pq-cv-k>div:nth-child(even){padding-left:16px!important;border-left:1px solid rgba(255,255,255,.16)!important}}
+
+/*FIX1-START*/
+/* ===== 28.10: темна тема — кнопки при наведенні/натисканні лишаються білими, текст синій ===== */
+:root[data-theme="dark"] body :is(.btn:not(.g):not(.tlink):not(.hx-b2),.hx-chip.pri-pdf,.lf3-sb,.pd2-b):is(:hover,:active,:focus-visible):not(:disabled){background:#fff!important;border-color:#fff!important;color:#0B35B8!important;box-shadow:0 12px 28px -14px rgba(255,255,255,.35)!important}
+:root[data-theme="dark"] body :is(.btn:not(.g):not(.tlink):not(.hx-b2),.hx-chip.pri-pdf,.lf3-sb,.pd2-b):is(:hover,:active,:focus-visible):not(:disabled) *{color:#0B35B8!important}
+:root[data-theme="dark"] body :is(.btn:not(.g):not(.tlink):not(.hx-b2),.hx-chip.pri-pdf,.lf3-sb,.pd2-b):is(:hover,:active,:focus-visible):not(:disabled)::before{opacity:0!important}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) body :is(.btn:not(.g):not(.tlink):not(.hx-b2),.hx-chip.pri-pdf,.lf3-sb,.pd2-b):is(:hover,:active,:focus-visible):not(:disabled){background:#fff!important;border-color:#fff!important;color:#0B35B8!important;box-shadow:0 12px 28px -14px rgba(255,255,255,.35)!important}
+:root:not([data-theme="light"]) body :is(.btn:not(.g):not(.tlink):not(.hx-b2),.hx-chip.pri-pdf,.lf3-sb,.pd2-b):is(:hover,:active,:focus-visible):not(:disabled) *{color:#0B35B8!important}
+:root:not([data-theme="light"]) body :is(.btn:not(.g):not(.tlink):not(.hx-b2),.hx-chip.pri-pdf,.lf3-sb,.pd2-b):is(:hover,:active,:focus-visible):not(:disabled)::before{opacity:0!important}}
+
+/* ===== форма в першому екрані сторінок (Виробництво тощо) — ті самі розміри, що й на головній ===== */
+@media (min-width:761px){html body #view .pri-q .hqf :is(input,.phw-i){height:48px!important;min-height:48px!important}html body #view .pri-q .hqf .btn{height:48px!important;min-height:48px!important}html body #view .pri-q .phc{max-height:38px!important}}
+@media (max-width:760px){html body #view .pri-q .hqf{grid-template-columns:1fr!important;gap:10px!important}html body #view .pri-q .hqf :is(input,.phw-i){height:54px!important;min-height:54px!important}html body #view .pri-q .hqf .btn{height:54px!important;min-height:54px!important;width:100%}html body #view .pri-q .phc{max-height:42px!important}}
+
+/* ===== етапи: без горизонтальних смужок — лінія з кружечками, що заповнюються при прокрутці (як «Шлях компанії») ===== */
+html body #view :is(.st2,.sp6-st).stk>li{border-top:0!important}
+html body #view :is(.st2,.sp6-st).stk>li::before{display:none!important}
+html body #view :is(.st2,.sp6-st).stk-col>li::after{display:block!important}
+html body #view :is(.st2,.sp6-st).stk-row>li{padding-top:30px!important}
+html body #view :is(.st2,.sp6-st).stk-row>li::after{content:""!important;display:block!important;position:absolute;left:0;top:-4px;width:9px;height:9px;border-radius:50%;box-sizing:border-box;background:var(--bg,#fff);border:1.5px solid color-mix(in srgb,var(--ink) 35%,transparent);z-index:3;transition:background .35s,border-color .35s,box-shadow .35s}
+html body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#0B35B8!important;border-color:#0B35B8!important;box-shadow:0 0 0 4px rgba(11,53,184,.16)}
+:root[data-theme="dark"] body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}}
+/*FIX1-END*/

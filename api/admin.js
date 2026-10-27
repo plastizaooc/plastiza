@@ -3,6 +3,7 @@
 import { randomBytes, scryptSync, timingSafeEqual, createHash } from 'node:crypto';
 import { sql, migrate, hasDb } from './_db.js';
 import { json, cors } from './_tg.js';
+import { hasBlob, blobPut, blobDel, safeName } from './_blob.js';
 
 const SA = 'Суперадмін';
 const ROLE_PERMS = {
@@ -150,6 +151,29 @@ const OPS = {
     return {};
   },
 
+  /* ---------- media (Vercel Blob) ---------- */
+  async 'media.list'() { return { blob: hasBlob(), media: await sql('SELECT id, url, name, type, size, used, created_at FROM media ORDER BY created_at DESC LIMIT 500') }; },
+  async 'media.upload'({ name, type, data, used }, req, me) {
+    need(can(me, 'content') || can(me, 'products'), 403, 'Немає доступу до медіафайлів');
+    need(hasBlob(), 503, 'Сховище файлів не підключене: Vercel → Storage → Blob → Connect to project');
+    need(typeof data === 'string' && data.length > 10, 400, 'Немає файлу');
+    const buf = Buffer.from(data.replace(/^data:[^,]*,/, ''), 'base64');
+    need(buf.length <= 4 * 1024 * 1024, 413, 'Файл більший за 4 МБ');
+    const ct = String(type || 'application/octet-stream');
+    need(/^(image\/(webp|jpeg|png|gif|svg\+xml|avif)|video\/(mp4|webm)|application\/pdf)$/.test(ct), 415, 'Непідтримуваний тип файлу');
+    const b = await blobPut('media/' + safeName(name), buf, ct);
+    const r = await sql('INSERT INTO media(url, name, type, size, used, user_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING id, url, name, type, size, used, created_at', [b.url, String(name || '').slice(0, 160), ct, buf.length, String(used || '').slice(0, 160), me.id]);
+    await log(me, `Завантажив(ла) файл «${String(name || '').slice(0, 80)}»`, 'Медіафайли');
+    return { file: r[0] };
+  },
+  async 'media.delete'({ id }, req, me) {
+    need(can(me, 'content') || can(me, 'products'), 403, 'Немає доступу до медіафайлів');
+    const r = await sql('DELETE FROM media WHERE id = $1 RETURNING url, name', [+id]);
+    if (r[0] && hasBlob() && /vercel-storage\.com/.test(r[0].url)) await blobDel([r[0].url]).catch(() => {});
+    if (r[0]) await log(me, `Видалив(ла) файл «${r[0].name}»`, 'Медіафайли');
+    return {};
+  },
+
   /* ---------- journal ---------- */
   async 'log.list'() { return { log: await sql('SELECT who, action, section, created_at FROM audit_log ORDER BY created_at DESC LIMIT 300') }; },
 
@@ -165,7 +189,8 @@ const OPS = {
     return {};
   },
 };
-const SET_SEC = { contacts: 'contacts', ticker: 'content', faq: 'content', content: 'content', blog: 'content', media: 'content', redirects: 'seo', seo: 'seo', mails: 'mail', i18n: 'i18n', products: 'products', pdf: 'products', docs: 'integrations' };
+const SET_SEC = { contacts: 'contacts', ticker: 'content', faq: 'content', content: 'content', blog: 'content', media: 'content', redirects: 'seo', seo: 'seo', mails: 'mail', i18n: 'i18n', products: 'products', pdf: 'products', docs: 'integrations',
+  'site.prods': 'products', 'site.posts': 'content', 'adm.blog': 'content', 'site.faqs': 'content', 'site.tick': 'content', 'site.contacts': 'contacts', 'site.seo': 'seo', 'site.texts': 'content' };
 const OPEN_OPS = new Set(['ping', 'auth.login']);
 const PERM = { 'leads.': 'leads', 'clients.': 'clients', 'team.save': 'team', 'team.invite': 'team', 'team.resetPassword': 'team' };
 

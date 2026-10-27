@@ -1888,3 +1888,12 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-thm]');if(
 function smThm(){const d=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;document.querySelectorAll('[data-thm]').forEach(x=>x.setAttribute('aria-pressed',(x.dataset.thm==='dark')===d))}
 new MutationObserver(smThm).observe(root,{attributes:true,attributeFilter:['data-theme']});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',smThm)}catch(_){}
 side();
+
+/*FIXJS1-START*/
+/* 28.10: швидкий зв’язок — вибір країни в списку телефонних кодів більше не закриває панель */
+(function(){if(typeof qc!=='function')return;
+ document.addEventListener('click',e=>{const t=e.target;window.__qcX=!!(t.closest&&t.closest('[data-qc-x],#qcb'));if(t.closest&&t.closest('#phdd,#phdscrim,.phd-scrim,.phc'))window.__qcKeep=Date.now()},true);
+ document.addEventListener('pointerdown',e=>{const t=e.target;if(t.closest&&t.closest('#phdd,#phdscrim,.phd-scrim'))window.__qcKeep=Date.now()},true);
+ const _qc=qc;qc=function(open){if(!open&&!window.__qcX){const dd=document.getElementById('phdd'),f=document.activeElement,inp=f&&f.closest&&f.closest('#qcp')&&/^(INPUT|TEXTAREA)$/.test(f.tagName);
+  if(Date.now()-(window.__qcKeep||0)<700||dd||inp){try{qcY=scrollY}catch(_){}return}}window.__qcX=false;return _qc.apply(this,arguments)}})();
+/*FIXJS1-END*/

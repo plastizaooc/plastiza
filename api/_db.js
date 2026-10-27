@@ -73,6 +73,7 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS audit_log (
     id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id) ON DELETE SET NULL, who TEXT DEFAULT '', action TEXT NOT NULL, section TEXT DEFAULT '', created_at TIMESTAMPTZ NOT NULL DEFAULT now())`,
   `CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT now(), updated_by INT)`,
+  `CREATE TABLE IF NOT EXISTS media (id SERIAL PRIMARY KEY, url TEXT NOT NULL, name TEXT DEFAULT '', type TEXT DEFAULT '', size INT DEFAULT 0, used TEXT DEFAULT '', user_id INT REFERENCES users(id) ON DELETE SET NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now())`,
 ];
 let migrated = null;
 export function migrate() {

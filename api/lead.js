@@ -2,6 +2,7 @@
 // Body: multipart/form-data with field "data" (JSON) and optional "files", or plain JSON.
 import { tg, CHATS, TOKEN, json, cors, leadText, leadId, SITE } from './_tg.js';
 import { sql, migrate, hasDb } from './_db.js';
+import { hasBlob, blobPut, safeName } from './_blob.js';
 
 const MAX_FILES = 5;
 const MAX_TOTAL = 4 * 1024 * 1024; // Vercel request body limit is ~4.5 MB
@@ -48,6 +49,15 @@ export async function POST(req) {
         { page: s.page, id: s.id, title: s.title, url: s.url, form: s.form, lang: s.lang }]);
       dbId = r[0].id; id = String(dbId);
     } catch (e) { console.error('DB insert failed', e); }
+  }
+  // вкладення → Vercel Blob (посилання зберігаються в заявці й видно в адмінці)
+  if (files.length && hasBlob()) {
+    const saved = [];
+    for (const f of files) {
+      try { const b = await blobPut(`leads/${dbId || id}/${safeName(f.name)}`, Buffer.from(await f.arrayBuffer()), f.type || 'application/octet-stream'); saved.push({ n: String(f.name || 'file').slice(0, 160), u: b.url, s: f.size }); }
+      catch (e) { console.error('blob', e); saved.push({ n: String(f.name || 'file').slice(0, 160), s: f.size, err: 1 }); }
+    }
+    if (dbId) await sql('UPDATE leads SET files = $1::jsonb WHERE id = $2', [JSON.stringify(saved), dbId]).catch((e) => console.error(e));
   }
   if (!tgReady) return json(req, { ok: !!dbId, id });
   const total = files.reduce((a, f) => a + f.size, 0);
