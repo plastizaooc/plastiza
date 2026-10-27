@@ -1742,7 +1742,7 @@ if(window.ResizeObserver){const _ovRO=new ResizeObserver(()=>requestAnimationFra
 /* mobile header: quote button next to quick contact */
 const ICO_CALC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h14v17l-2.33-1.4-2.33 1.4-2.34-1.4-2.33 1.4-2.34-1.4L5 20.5z"/><path d="M8.75 8.5h6.5M8.75 12h6.5M8.75 15.5h3.5"/></svg>';
 function rqHdr(){const q=document.getElementById('qcb');if(!q)return;let b=document.getElementById('rqb');if(!b){b=document.createElement('button');b.id='rqb';b.className='ic qc-b';b.dataset.rfq='PLASTIZA';b.innerHTML=ICO_CALC;q.parentNode.insertBefore(b,q)}b.setAttribute('aria-label',lang==='uk'?'Запит на розрахунок':'Request a quote')}
-rqHdr();setTimeout(rqHdr,300);new MutationObserver(()=>rqHdr()).observe(document.getElementById('view'),{childList:true});
+/* header quote icon disabled: on mobile the quote option lives on product pages only */
 
 
 function rqSum(){const d=document.getElementById('rqd');const e=d&&d.querySelector('.rq-sum');if(e)e.textContent=rqT().total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}
