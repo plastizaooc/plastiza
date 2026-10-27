@@ -4049,3 +4049,9 @@ html body .rqd .rq-pp-h img,html body .rqd .rq-it img{background:#F4F2EE!importa
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pdf-shm{background:rgba(28,28,31,.98);color:#F2F2F5;box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08)}:root:not([data-theme="light"]) .psh-sep{background:rgba(255,255,255,.1)}:root:not([data-theme="light"]) .psh-i{background:rgba(118,118,128,.24)}}
 @media (max-width:700px){.pdf-act{width:100%}.pdf-act [data-print]{flex:1;width:auto!important}}
 @media print{.pdf-sh,.pdf-shm{display:none!important}}
+
+/* PDF cover stats: clean 2x2 grid when two columns */
+html body .pdf-m .pq-cv-k{grid-template-columns:1fr 1fr!important;row-gap:22px}
+html body .pdf-m .pq-cv-k>div{padding:18px 12px 0 0!important;border-left:0!important}
+html body .pdf-m .pq-cv-k>div:nth-child(even){padding-left:16px!important;border-left:1px solid rgba(255,255,255,.16)!important}
+@media (max-width:700px){html body .pq-cv-k{grid-template-columns:1fr 1fr!important;row-gap:22px}html body .pq-cv-k>div{padding:18px 12px 0 0!important;border-left:0!important}html body .pq-cv-k>div:nth-child(even){padding-left:16px!important;border-left:1px solid rgba(255,255,255,.16)!important}}
