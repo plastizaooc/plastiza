@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta name="robots" content="noindex,nofollow">
 <title>PLASTIZA Адмінпанель</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23111317'/%3E%3Cpath d='M20 47V17h11.5a9.5 9.5 0 0 1 0 19H20' fill='none' stroke='%23fff' stroke-width='5.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='47' cy='47' r='10' fill='%232F5BFF' stroke='%23111317' stroke-width='3'/%3E%3Cpath d='M42.5 47.2l3 3 5.3-6' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -2015,8 +2015,22 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-bmenu]')){const
 /* таблиці → картки з підписами колонок */
 function cards10(root){if(!MOB10())return;(root||document).querySelectorAll('#main table:not(.lt-t):not(.v9-t):not(.dc-t),#dr table:not(.lt-t):not(.v9-t)').forEach(t=>{if(t.dataset.mc)return;t.dataset.mc=1;t.classList.add('mc10');
  const hs=[...t.querySelectorAll('thead th')].map(th=>th.textContent.trim());t.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>{if(hs[i]&&!td.hasAttribute('data-l'))td.setAttribute('data-l',hs[i])}))})}
+/* редагування прямо в блоці + закріплена панель збереження */
+function ced10(){if(!LOCKV.has(VIEW)||EDIT)return;document.querySelectorAll('#main .card').forEach((c,i)=>{if(c.querySelector('.ced10')||!c.querySelector('input:disabled,select:disabled,textarea:disabled'))return;
+ const b=`<button class="ic ced10" data-cedit="${i}" title="Редагувати цей блок" aria-label="Редагувати цей блок">${ic('pen',15)}</button>`,h=c.querySelector('.card-h');if(h)h.insertAdjacentHTML('beforeend',b);else c.insertAdjacentHTML('afterbegin',`<div class="ced10w">${b}</div>`)})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cedit]');if(!b)return;const i=+b.dataset.cedit;EDIT=true;rerender();
+ const c=document.querySelectorAll('#main .card')[i];if(c){const y=c.getBoundingClientRect().top+scrollY-(MOB10()?70:16);scrollTo({top:y,behavior:'smooth'});const f=c.querySelector('input:not([type=checkbox]):not([disabled]),textarea:not([disabled]),select:not([disabled])');if(f)setTimeout(()=>f.focus({preventScroll:true}),350)}});
+const EBS='[data-edit-x],[data-saveprof],[data-savemail],[data-savei18n],[data-savect],[data-savecontent],[data-savefaq],[data-saveseo]',EBD='[data-psave9],[data-txs9],[data-cts9],[data-bsave9="pub"]';
+function ebar10(){let bar=$('#ebar');const top=document.querySelector('#main .top');let bs=[],t='';
+ if(top&&LOCKV.has(VIEW)&&EDIT){bs=[...top.querySelectorAll(EBS)];t='Режим редагування'}else if(top&&typeof DIRTY9!=='undefined'&&Object.keys(DIRTY9).length){bs=[...top.querySelectorAll(EBD)];t='Є незбережені зміни'}
+ if(!bs.length){if(bar)bar.remove();document.body.classList.remove('has-ebar');return}
+ if(!bar){bar=document.createElement('div');bar.id='ebar';bar.className='ebar';document.body.appendChild(bar)}
+ bar.innerHTML=`<span>${t}</span><div>${bs.map(b=>b.outerHTML).join('')}</div>`;document.body.classList.add('has-ebar');
+ if(!MOB10()){const r=$('#main').getBoundingClientRect();bar.style.left=Math.round(r.left+16)+'px';bar.style.right=Math.round(innerWidth-r.right+16)+'px'}else{bar.style.left='';bar.style.right=''}}
+document.addEventListener('input',()=>{clearTimeout(ebar10.t);ebar10.t=setTimeout(ebar10,150)});document.addEventListener('change',()=>{clearTimeout(ebar10.t);ebar10.t=setTimeout(ebar10,150)});
+document.addEventListener('click',()=>setTimeout(ebar10,60));
 /* підсумок після кожного рендеру */
-const _r10=render;render=function(){const r=_r10.apply(this,arguments);try{cards10();bnav10()}catch(e){console.warn(e)}return r};
+const _r10=render;render=function(){const r=_r10.apply(this,arguments);try{cards10();bnav10();ced10();ebar10()}catch(e){console.warn(e)}return r};
 const _o10=typeof openLead==='function'?openLead:null;if(_o10)openLead=function(){const r=_o10.apply(this,arguments);try{cards10($('#dr'))}catch(_){}return r};
 new MutationObserver(()=>{try{cards10($('#dr'))}catch(_){}}).observe($('#dr'),{childList:true});
 addEventListener('resize',()=>{clearTimeout(cards10.t);cards10.t=setTimeout(()=>{if(MOB10())cards10()},200)});
@@ -2029,15 +2043,25 @@ document.addEventListener('change',e=>{const s=e.target.closest('[data-txsel10]'
 const _vSeo10=vSeo9;vSeo9=function(){return _vSeo10().replace(/<td><span class="sc ([^"]*)">(\d+)<\/span><\/td><td><span class="sc ([^"]*)">(\d+)<\/span><\/td><\/tr>/g,'<td data-l="Title"><span class="sc $1">$2</span></td><td data-l="Description"><span class="sc $3">$4</span></td></tr>')};V9.seo=vSeo9;
 document.head.insertAdjacentHTML('beforeend',`<style id="v10css">
 .bnav{display:none}
+.ced10{width:32px;height:32px;margin-left:8px;flex:0 0 32px}.ced10w{display:flex;justify-content:flex-end;margin:-4px -4px 4px 0}
+.card-h:has(.ced10){align-items:center}
+.ebar{position:fixed;z-index:44;left:calc(var(--railw,264px) + 24px);right:24px;bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 18px;border-radius:18px;background:color-mix(in srgb,var(--surf,#fff) 92%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 16px 40px -18px rgba(10,20,40,.35)}
+.ebar>span{font-size:13px;font-weight:600;color:var(--mut)}.ebar>div{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+body.has-ebar #main{padding-bottom:96px}
 @media (max-width:900px){
 html,body{overflow-x:hidden;overflow-x:clip;max-width:100%;overscroll-behavior-x:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{touch-action:manipulation}
 .app,#main{min-width:0;max-width:100vw}
 #main{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;overflow-wrap:break-word}
 #main :is(.grid,.g2,.g3,.g2x,.g3x,.bp-g)>*{min-width:0}
-#dr:not(.on){visibility:hidden;transition:visibility 0s .3s,transform .3s}
+#dr:not(.on){visibility:hidden}
 #main input:not([type=checkbox]):not([type=radio]),#main select,#main textarea,#dr input:not([type=checkbox]):not([type=radio]),#dr select,#dr textarea,#login input{font-size:16px!important}
 #main .inp,#main .sel,#dr .inp,#dr .sel{min-height:44px}
+#main :is(input,select,textarea):not([type=checkbox]):not([type=radio]),#dr :is(input,select,textarea):not([type=checkbox]):not([type=radio]){min-width:0!important;max-width:100%!important;box-sizing:border-box}
+#main :is(.fld,.row9,.g2x,.g3x,.slug9,.tx9-p,.tx9-c,.bk,.bfq,td)>:is(input,select,textarea){width:100%}
+#main input[type=date],#dr input[type=date]{display:block;-webkit-appearance:none;appearance:none;width:100%;min-height:44px}
+#main :is(.fld,.tx9-c,.tx9-p,.bk,.bfq,.ad9,.g2x>*,.g3x>*,.row9>*,label,td){min-width:0}
+#dr:not(.on){right:0!important;left:auto!important;transform:none!important;opacity:0;pointer-events:none}
 #main .btn,#dr .btn{min-height:42px}
 #main .btn.sm,#dr .btn.sm{min-height:36px}
 .li,.li>div{min-width:0}.li small,.li b{white-space:normal!important;overflow-wrap:anywhere}
@@ -2079,6 +2103,9 @@ table.mc10 td>:is(.tag,.chip,.sc,span,b,a,button){justify-self:start;max-width:1
 .bnav button svg{width:20px;height:20px}
 .bnav b{position:absolute;top:2px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:99px;background:#0B35B8;color:#fff;font-size:10px;line-height:16px;text-align:center;box-sizing:border-box}
 body.auth-off .bnav,body.nav-open .bnav{display:none}
+.ebar{left:8px;right:8px;bottom:calc(70px + env(safe-area-inset-bottom,0px));padding:8px 8px 8px 14px;border-radius:16px}.ebar>span{font-size:12px}.ebar .btn{min-height:40px;padding-left:14px;padding-right:14px}
+body.has-ebar #main{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))!important}
+body.nav-open .ebar{display:none}
 #toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important}
 }
 @media (max-width:380px){table.mc10 td{grid-template-columns:84px minmax(0,1fr)}.bnav button{font-size:10px}}
