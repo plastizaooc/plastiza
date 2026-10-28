@@ -4,6 +4,17 @@
 import { SHELL } from './_shell.js';
 import { rtParse, rtIndex, rtPath, rtMeta, rtAll, rtKey, rtPageNames } from './_routes.js';
 import { SITE_DEF } from './_site.js';
+import { PRE, PRE_T, PRE_D } from './_pre.js';
+import { LQ } from './_lq.js';
+import { CR_T, CR_X, CR_P } from './_crit.js';
+/* критичні стилі сторінки: лише правила, які потрібні її першому екрану */
+const CRC = new Map();
+function critCss(key) {
+  if (CRC.has(key)) return CRC.get(key); const rg = CR_P[key]; if (!rg) return '';
+  const on = new Uint8Array(CR_X.length); for (const [a, b] of rg) for (let i = a; i <= b; i++) on[i] = 1;
+  const emit = (list) => list.map((n) => typeof n === 'number' ? (on[n] ? CR_X[n] : '') : ((x) => x ? n.h + '{' + x + '}' : '')(emit(n.k))).join('');
+  const css = emit(CR_T); CRC.set(key, css); return css;
+}
 import { sql, hasDb } from './_db.js';
 
 const INDEXING = process.env.SITE_INDEXING === '1'; // ⚠️ тимчасовий домен: індексацію вимкнено
@@ -89,6 +100,44 @@ function sitemap(D, origin) {
 const H_HTML = { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=0, s-maxage=30, stale-while-revalidate=300' };
 const J = (s) => JSON.stringify(s).replace(/</g, '\\u003c').replace(/[\u2028\u2029]/g, (c) => '\\u' + c.charCodeAt(0).toString(16));
 
+
+/* Перший екран сторінки — готова розмітка (знята під час збірки), показується одразу, ще до завантаження скрипта.
+   Скрипт сайту потім малює сторінку заново. Правки текстів з адмінки підставляються й сюди. */
+const DEC = /aria-hidden|<svg|[↗→←↓✕✓]/;
+function preTx(h, L, Z, DP) {
+  const tx = Z && Z.texts; if (!tx || !h) return h;
+  const sw = (a, b) => { if (a && b && a !== b && typeof a === 'string' && typeof b === 'string') h = h.split(a).join(b); };
+  const TO = tx.T && tx.T[L], TD = PRE_T && PRE_T[L];
+  if (TO && TD) for (const k of Object.keys(TO)) {
+    const nv = TO[k], dv = TD[k]; if (nv == null || nv === '' || dv == null) continue;
+    if (JSON.stringify(nv) !== JSON.stringify(dv) && (!DP || DP.includes(k))) return null; /* змінений текст першого екрана — заготовку не показуємо */
+    if (Array.isArray(dv)) { if (Array.isArray(nv)) sw(dv[0], nv[0]); continue; }
+    if (k === 'lead') sw(String(dv).replace(/\.\s+/, '. <br class="hx-br">'), String(nv).replace(/\.\s+/, '. <br class="hx-br">'));
+    sw(dv, nv);
+  }
+  const M = tx[L]; if (M && typeof M === 'object') for (const k of Object.keys(M)) if (k.length > 2 && h.includes(k)) { if (DEC.test(k)) return null; sw(k, M[k]); }
+  return h;
+}
+/* відео в заготовці — лише його постер (картинка), справжнє відео вмикає скрипт */
+const preVid = (h) => h.replace(/<img class="hv-v" src="([^"]+)" alt="" fetchpriority="high" decoding="sync">/, '<img class="hv-v" src="$1" alt="" fetchpriority="high" decoding="sync" style="transform:scale(1.004)">').replace(/<video class="([^"]*)"[^>]*?poster="([^"]+)"[^>]*>\s*<\/video>/g, '<img class="$1" src="$2" alt="" fetchpriority="high" decoding="sync">')
+  .replace(/<video [^>]*?poster="([^"]+)"[^>]*>\s*<\/video>/g, '<img src="$1" alt="" decoding="sync" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">');
+/* сторінки, чий перший екран показує дані з адмінки (товари, FAQ, статті): якщо їх змінено — без заготовки */
+const PRE_DATA = { catalog: 'prods', cat_rebar: 'prods', cat_form: 'prods', pdf: 'prods', pdfm: 'prods', faq: 'faqs', srv0: 'faqs', srv1: 'faqs', srv2: 'faqs', blog: 'posts' };
+function preHtml(k, L, Z) {
+  const m0 = PRE[k + '|' + L + '|m']; if (!m0) return ['', ''];
+  const dk = PRE_DATA[k]; if (dk && Z && Array.isArray(Z[dk]) && Z[dk].length) return ['', ''];
+  const DP = PRE_D ? PRE_D[k + '|' + L] : null;
+  const ct = (h) => { const c = Z && Z.contacts, d = PRE_T && PRE_T._c; if (!h || !c || !d) return h;
+    const sw = (a, b) => { if (a && b && a !== b) h = h.split(a).join(b); };
+    sw(d.edrpou, c.edrpou && String(c.edrpou)); sw(d.email, c.email);
+    (d.phones || []).forEach((p, i) => { const n = c.phones && c.phones[i]; if (n && n !== p) { sw(p, n); sw(p.replace(/[^\d+]/g, ''), String(n).replace(/[^\d+]/g, '')); } });
+    return h; };
+  const m = ct(preTx(m0, L, Z, DP)); if (m === null) return ['', ''];
+  let d = PRE[k + '|' + L + '|d']; d = d === '=' ? '' : d ? ct(preTx(d, L, Z, DP)) : ''; if (d === null) return ['', ''];
+  const tm = '<template id="pzpm">' + preVid(m).replace('<img class="hv-v" src="/assets/hero/poster.webp"', () => '<img class="hv-v" src="' + LQ + '"') + '</template>' + (d ? '<template id="pzpd">' + preVid(d) + '</template>' : '');
+  return [tm, '<script>!function(){var v=document.getElementById("view"),t=document.getElementById(innerWidth>760&&document.getElementById("pzpd")?"pzpd":"pzpm");if(v&&t)v.insertBefore(t.content.cloneNode(!0),v.firstChild)}()</script>'];
+}
+
 export async function GET(req) {
   const url = new URL(req.url);
   const rows = await loadDb(), Z = pzOf(rows), D = dataFor(Z), origin = ORIGIN();
@@ -120,9 +169,16 @@ export async function GET(req) {
   let m = rtParse(norm, D, ix), status = 200;
   if (!m) { status = 404; const L = /^\/en(\/|$)/.test(norm) ? 'en' : 'uk'; m = { L, R: { p: '404' }, k: '404' }; }
   const L = m.L;
-  const html = SHELL.replace('@LANG@', L)
+  const SH = L === 'en' ? SHELL.replace('<span class="cta-l">Запросити розрахунок</span><span class="cta-s">Розрахунок</span>', '<span class="cta-l">Request a quote</span><span class="cta-s">Quote</span>').replace('aria-label="Меню"', 'aria-label="Menu"').replace('<span class="bm-t">Меню</span>', '<span class="bm-t">Menu</span>').replace(/\n<link rel="preload" href="\/assets\/fonts\/[a-z]+-cyrillic\.woff2"[^>]*>/g, '') : SHELL;
+  const PH = preHtml(m.k, L, Z);
+  /* зі заготовкою: у сторінці лише критичні стилі, повний CSS підвантажує завантажувач після першого показу */
+  let SH2 = SH;
+  const CRIT = PH[0] ? critCss(m.k + '|' + L) : '';
+  if (CRIT) SH2 = SH.replace(/<link rel="stylesheet" href="(\/css\/styles\.css[^"]*)">/, (a, u) => '<style>' + CRIT + '</style><script>window.PZCSS=' + JSON.stringify(u) + '</script><noscript>' + a + '</noscript>');
+  const html = SH2.replace('@LANG@', L)
     .replace('<!--@HEAD@-->', head(m, L, D, origin))
-    .replace('<!--@SSR@-->', ssr(m, L, D))
+    .replace('<!--@SSR@-->', () => PH[1] + ssr(m, L, D)).replace('</head>', () => PH[0] + '</head>')
+    .replace('<!--@PRELOAD@-->', m.k === 'home' || m.k === 'about' ? '<link rel="preload" as="image" href="/assets/hero/poster.webp" fetchpriority="high" media="(min-width: 761px)">' : '')
     .replace('<!--@DATA@-->', `<script>window.PZ_DATA=${J(Z)};</script>`);
   return new Response(html, { status, headers: H_HTML });
 }
