@@ -134,8 +134,11 @@ function preHtml(k, L, Z) {
     return h; };
   const m = ct(preTx(m0, L, Z, DP)); if (m === null) return ['', ''];
   let d = PRE[k + '|' + L + '|d']; d = d === '=' ? '' : d ? ct(preTx(d, L, Z, DP)) : ''; if (d === null) return ['', ''];
-  const tm = '<template id="pzpm">' + preVid(m).replace('<img class="hv-v" src="/assets/hero/poster.webp"', () => '<img class="hv-v" src="' + LQ + '"') + '</template>' + (d ? '<template id="pzpd">' + preVid(d) + '</template>' : '');
-  return [tm, '<script>!function(){var v=document.getElementById("view"),t=document.getElementById(innerWidth>760&&document.getElementById("pzpd")?"pzpd":"pzpm");if(v&&t)v.insertBefore(t.content.cloneNode(!0),v.firstChild)}()</script>'];
+  /* обидва варіанти — рядками в скрипті (браузер розбирає лише потрібний) */
+  const js = (x) => JSON.stringify(x).replace(/<\//g, '<\\/').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+  const mm = preVid(m).replace('<img class="hv-v" src="/assets/hero/poster.webp"', () => '<img class="hv-v" src="' + LQ + '"');
+  const head = '<script>window.__pzM=' + js(mm) + ';window.__pzD=' + (d ? js(preVid(d)) : 'null') + '</script>';
+  return [head, '<script id="pzpm">!function(){var v=document.getElementById("view"),h=innerWidth>760&&window.__pzD||window.__pzM;if(v&&h)v.insertAdjacentHTML("afterbegin",h);window.__pzM=window.__pzD=null}()</script>'];
 }
 
 export async function GET(req) {

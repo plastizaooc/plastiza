@@ -873,7 +873,7 @@ ${payBlock()}
 ${leadForm('delivery')}</div>`}
 
 /* Europe delivery map */
-var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202610281355';s.onload=function(){if(document.querySelector('.eum-ld')){var y=scrollY;render();scrollTo(0,y)}};document.head.appendChild(s)}
+var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202610281400';s.onload=function(){if(document.querySelector('.eum-ld')){var y=scrollY;render();scrollTo(0,y)}};document.head.appendChild(s)}
 const CNAME={uk:{ALB:'Албанія',AND:'Андорра',AUT:'Австрія',BEL:'Бельгія',BIH:'Боснія і Герцеговина',BGR:'Болгарія',HRV:'Хорватія',CYP:'Кіпр',CZE:'Чехія',DNK:'Данія',EST:'Естонія',FIN:'Фінляндія',FRA:'Франція',DEU:'Німеччина',GRC:'Греція',HUN:'Угорщина',ISL:'Ісландія',IRL:'Ірландія',ITA:'Італія',KOS:'Косово',LVA:'Латвія',LIE:'Ліхтенштейн',LTU:'Литва',LUX:'Люксембург',MLT:'Мальта',MDA:'Молдова',MCO:'Монако',MNE:'Чорногорія',NLD:'Нідерланди',MKD:'Північна Македонія',NOR:'Норвегія',POL:'Польща',PRT:'Португалія',ROU:'Румунія',SMR:'Сан-Марино',SRB:'Сербія',SVK:'Словаччина',SVN:'Словенія',ESP:'Іспанія',SWE:'Швеція',CHE:'Швейцарія',UKR:'Україна',GBR:'Велика Британія',VAT:'Ватикан'},
 en:{ALB:'Albania',AND:'Andorra',AUT:'Austria',BEL:'Belgium',BIH:'Bosnia and Herzegovina',BGR:'Bulgaria',HRV:'Croatia',CYP:'Cyprus',CZE:'Czechia',DNK:'Denmark',EST:'Estonia',FIN:'Finland',FRA:'France',DEU:'Germany',GRC:'Greece',HUN:'Hungary',ISL:'Iceland',IRL:'Ireland',ITA:'Italy',KOS:'Kosovo',LVA:'Latvia',LIE:'Liechtenstein',LTU:'Lithuania',LUX:'Luxembourg',MLT:'Malta',MDA:'Moldova',MCO:'Monaco',MNE:'Montenegro',NLD:'Netherlands',MKD:'North Macedonia',NOR:'Norway',POL:'Poland',PRT:'Portugal',ROU:'Romania',SMR:'San Marino',SRB:'Serbia',SVK:'Slovakia',SVN:'Slovenia',ESP:'Spain',SWE:'Sweden',CHE:'Switzerland',UKR:'Ukraine',GBR:'United Kingdom',VAT:'Vatican'}};
 const NPC=['POL','MDA','LTU','CZE','ROU','DEU','SVK','LVA','EST','HUN','ITA','GBR','ESP','FRA','AUT','NLD'];
@@ -1870,7 +1870,13 @@ function __pzTail(done){var v=document.getElementById('view');
   var n=__pzT.shift();v.appendChild(n);requestAnimationFrame(function(){setTimeout(next,0)})})()}
 (function(){var flush=function(){(window.requestIdleCallback||setTimeout)(__pzFlush,{timeout:1200})};
  var start=function(){requestAnimationFrame(function(){setTimeout(function(){__pzTail(function(){if(document.readyState==='complete')setTimeout(flush,60);else addEventListener('load',function(){setTimeout(flush,60)})})},0)})};
- start()})();
+/* решта сторінки й другорядні ініціалізатори — коли людина почне взаємодіяти (прокрутка, дотик, клавіша),
+    коли низ першого екрана наближається, або через 7 с — що станеться раніше */
+ var fired=0,EV=['scroll','wheel','touchstart','pointerdown','keydown','mousemove'],fire=function(){if(fired)return;fired=1;EV.forEach(function(e){removeEventListener(e,fire,{passive:true})});if(io)io.disconnect();start()},io=null;
+ EV.forEach(function(e){addEventListener(e,fire,{passive:true})});setTimeout(fire,7000);
+ try{var sn=document.createElement('i');sn.style.cssText='display:block;height:1px';(document.getElementById('foot')||document.body).before(sn);
+  io=new IntersectionObserver(function(es){if(es[0].isIntersecting)fire()},{rootMargin:'0px 0px 400px 0px'});setTimeout(function(){if(!fired)io.observe(sn)},300)}catch(e){}
+})();
 /*BOOT-END*/
 R=fromHash();rtBoot();if(document.getElementById('pzpm'))setTimeout(function(){render();rtAfter()},0);else{render();rtAfter()}
 /* overlap effect for FAQ on service pages */
