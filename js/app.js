@@ -57,7 +57,7 @@ let secAdv=()=>`<section><h2>${t('adv')}</h2><br><ul class="adv">${ADV.map(a=>`<
 const secCon=h=>`<section>${h?`<h2 style="margin-bottom:20px">${t('contacts')}</h2>`:''}<div class="cg"><div><h3>${t('phones')}</h3>${PH.map(x=>`<a href="tel:${x.replace(/[^+\d]/g,'')}">${x}</a>`).join('')}</div><div><h3>${t('addr')}</h3>${AD.map(a=>`<p>${a[lang==='uk'?0:1]}</p>`).join('')}</div><div><h3>Email</h3><a href="mailto:plastiza.sale@gmail.com">plastiza.sale@gmail.com</a><button class="btn" data-rfq="${t('contacts')}" style="margin-top:12px">${t('quote')}</button></div></div></section>`;
 const band=()=>`<div class="band"><div><h2 style="margin:0 0 6px">${t('band')}</h2>${t('bandd')}</div><button class="btn" data-rfq="${t('drawing')}">${t('quote')}</button></div>`;
 // TODO: вписати справжній код ЄДРПОУ ТОВ «Пластіза»
-var EDRPOU='00000000',EDRPOU_URL='https://opendatabot.ua/c/'+EDRPOU;
+var EDRPOU='00000000',EDRPOU_URL='https://youcontrol.com.ua/catalog/company_details/'+EDRPOU+'/';
 // TODO: уточнити режим роботи
 const HOURS=[['Пн–Пт: 09:00–18:00','Mon–Fri: 09:00–18:00'],['Сб–Нд: вихідні','Sat–Sun: closed']];
 const bd=(c,h)=>`<div class="bd ${c}"><div class="wrap">${h}</div></div>`;
@@ -2023,7 +2023,7 @@ function ctApply(c){CTR=[];const pair=(a,b)=>{if(a&&b&&a!==b)CTR.push([a,b])},dg
  if(c.email)pair('plastiza.sale@gmail.com',c.email);
  if(Array.isArray(c.addr)&&c.addr.length){c.addr.forEach((a,i)=>{if(!a)return;if(AD[i]){pair(AD[i][0],a.uk);pair(AD[i][1],a.en)}AD[i]=[a.uk||'',a.en||a.uk||'']});AD.length=Math.min(AD.length,c.addr.length)}
  if(Array.isArray(c.hours)&&c.hours.length){c.hours.forEach((h,i)=>{if(HOURS[i]){pair(HOURS[i][0],h[0]);pair(HOURS[i][1],h[1])}HOURS[i]=[h[0]||'',h[1]||h[0]||'']});HOURS.length=c.hours.length}
- if(c.edrpou&&/^\d{6,10}$/.test(c.edrpou)){pair('ЄДРПОУ '+EDRPOU,'ЄДРПОУ '+c.edrpou);EDRPOU=c.edrpou;EDRPOU_URL='https://opendatabot.ua/c/'+EDRPOU}
+ if(c.edrpou&&/^\d{6,10}$/.test(c.edrpou)){pair('ЄДРПОУ '+EDRPOU,'ЄДРПОУ '+c.edrpou);EDRPOU=c.edrpou;EDRPOU_URL='https://youcontrol.com.ua/catalog/company_details/'+EDRPOU+'/'}
  if(c.msgr)MSGR.forEach(m=>{const u=c.msgr[m[0]];if(u&&u!==m[1]){pair(m[1],u);m[1]=u}})}
 function ctDom(root){if(!CTR||!CTR.length||!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){let t=n.nodeValue,o=t;CTR.forEach(([a,b])=>{if(t.indexOf(a)>-1)t=t.split(a).join(b)});if(t!==o)n.nodeValue=t}
  root.querySelectorAll('a[href],[data-cp],[data-copy]').forEach(el=>['href','data-cp','data-copy'].forEach(at=>{let v=el.getAttribute(at);if(!v)return;const o=v;CTR.forEach(([a,b])=>{if(v.indexOf(a)>-1)v=v.split(a).join(b)});if(v!==o)el.setAttribute(at,v)}))}
