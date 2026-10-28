@@ -4081,6 +4081,14 @@ html body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#0B35B8!import
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}}
 /* ===== форми: якщо обрано Email — поле телефону разом із плашкою країни ховається ===== */
 .phw:has(> input[hidden]),.phw:has(> input[type=tel]:disabled[hidden]){display:none!important}
+/* ===== футер: кулька у слові PLASTIZA — глибокий синій з переливом у синьо-фіолетовий ===== */
+@property --mg1{syntax:'<color>';inherits:false;initial-value:#1E3BE6}
+@property --mg2{syntax:'<color>';inherits:false;initial-value:#0A1C8A}
+@keyframes mgl{0%{--mg1:#1E3BE6;--mg2:#0A1C8A}35%{--mg1:#3B35E8;--mg2:#1B158F}70%{--mg1:#1648F0;--mg2:#24128A}100%{--mg1:#2F2BD8;--mg2:#08207F}}
+@keyframes mgd{0%{--mg1:#4F7BFF;--mg2:#3456F0}35%{--mg1:#6A6BFF;--mg2:#4A3FE6}70%{--mg1:#3F8CFF;--mg2:#3A4DFF}100%{--mg1:#5C62FF;--mg2:#2F5BFF}}
+html:root body .mega.mega{background-image:radial-gradient(circle,var(--mg1) 0,color-mix(in srgb,var(--mg1) 55%,var(--mg2)) 14%,color-mix(in srgb,var(--mg2) 88%,transparent) 27%,color-mix(in srgb,var(--mg2) 45%,transparent) 40%,color-mix(in srgb,var(--mg2) 14%,transparent) 50%,transparent 60%)!important;animation:sh 9s ease-in-out infinite alternate,mgl 4.5s ease-in-out infinite alternate!important}
+:root[data-theme="dark"] body .mega.mega{animation:sh 9s ease-in-out infinite alternate,mgd 4.5s ease-in-out infinite alternate!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body .mega.mega{animation:sh 9s ease-in-out infinite alternate,mgd 4.5s ease-in-out infinite alternate!important}}
 /*FIX1-END*/
 
 /*FIX2-START*/
