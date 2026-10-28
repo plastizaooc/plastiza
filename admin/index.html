@@ -1951,6 +1951,16 @@ function fileList9(fs){if(!fs||!fs.length)return '<span class="muted">Немає
  return `<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">${ic(u?'link':'file',15)}${u?`<a class="cl" href="${esc(u)}" target="_blank" rel="noopener" style="overflow-wrap:anywhere">${esc(o.n||u.split('/').pop())}</a>`:`<span style="overflow-wrap:anywhere">${esc(o.n||'')}</span>${o.err?' <small class="muted">(не збережено)</small>':' <small class="muted">(лише в Telegram)</small>'}`}${o.s?` <small class="muted">${Math.max(1,Math.round(o.s/1024))} КБ</small>`:''}</div>`}).join('')}
 
 function fileChips9(fs){return (fs||[]).map(f=>{const o=typeof f==='string'?{n:f,u:/^https?:/.test(f)?f:''}:f||{};const u=o.u||'';return `<a class="fl" href="${u?esc(u):'#'}" ${u?'target="_blank" rel="noopener"':'data-dl'} title="${u?'Відкрити файл':'Файл надіслано лише в Telegram'}">${ic(u?'link':'file',16)}<span>${esc(o.n||u.split('/').pop())}</span>${ic(u?'ext':'dn',14)}</a>`}).join('')}
+/* ---------- огляд: «Потребує уваги» з актуальних даних ---------- */
+function att9(){const a=[['seo','Сайт закрито від індексації','Тимчасовий домен plastiza.org — noindex на всіх сторінках. Зняти при переході на основний домен']];
+ const D=D9(),bad=rtAll(D).filter(x=>{const m=rtMeta(x.R,'uk',D);return m.t.length>65||m.t.length<30||m.d.length<120||m.d.length>160}).length;
+ if(bad)a.push(['seo',`${bad} ${bad%10===1&&bad%100!==11?'сторінка':bad%10>=2&&bad%10<=4&&(bad%100<10||bad%100>=20)?'сторінки':'сторінок'} з довгим або коротким title / description`,'Рекомендовано: title 30–65 символів, description 120–160']);
+ if(!CTS.edrpou||/^0+$/.test(CTS.edrpou))a.push(['contacts','Не вказано код ЄДРПОУ','Показується на сайті як 00000000']);
+ if(typeof PDF_DIRTY!=='undefined'&&PDF_DIRTY)a.push(['products','Оновіть PDF-каталог','Товари змінено після останнього оновлення']);
+ if(LIVE&&BLOB9===false)a.push(['media','Сховище файлів не підключене','Файли із заявок поки приходять лише в Telegram']);
+ if(PR.some(p=>p.on!==false&&!(p.n.en||'').trim()))a.push(['products','Не всі товари мають англійську назву','Без неї на англійській версії показується українська']);return a}
+if(typeof vOverview==='function'){const _ov9=vOverview;vOverview=function(){const h=_ov9.apply(this,arguments),a=att9();
+ return h.replace(/(<h2>Потребує уваги<\/h2><small>)\d+(<\/small><\/div><div class="list">)[\s\S]*?(<\/div><\/div><\/div>)/,(m,p1,p2,p3)=>p1+a.length+p2+a.map(x=>`<div class="li" data-v="${x[0]}"><span class="dot warn"></span><div><b>${esc(x[1])}</b><small>${esc(x[2])}</small></div>${ic('chev',16)}</div>`).join('')+p3)}}
 /* ---------- меню й рендер ---------- */
 (function(){const g=NAVT.find(n=>n.g==='content');if(g)g.items=[['texts','Тексти сторінок'],['blog','Блог'],['faq','Питання-відповіді'],['ticker','Бігучий рядок'],['media','Медіафайли']];
  NAV.length=0;NAVT.forEach(n=>n.g?n.items.forEach(([k,l])=>NAV.push([k,l,n.i])):NAV.push([n.k,n.l,n.i]));if(typeof NAVSEC!=='undefined')NAVSEC.texts='content';
@@ -1980,7 +1990,7 @@ document.head.insertAdjacentHTML('beforeend',`<style id="v9css">
 .tx9-c{display:grid;gap:6px;align-content:start}.tx9-l{font-size:11.5px;color:var(--mut);letter-spacing:.02em}.tx9-p{display:grid;gap:3px}.tx9-t{font-size:11px;color:var(--mut)}.tx9-na{color:var(--mut);font-size:13px;padding:8px 0}
 .tx9-c .inp,.tx9-c .ta{font-size:14px}
 .pi9{width:min(760px,94vw)}.pi9 form{display:grid;gap:12px}.pi9-h{display:flex;justify-content:space-between;align-items:center}.pi9-a{display:flex;gap:8px;flex-wrap:wrap}.pi9-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;max-height:280px;overflow:auto}.pi9-g button{all:unset;cursor:pointer;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--soft);border:2px solid transparent}.pi9-g button:hover{border-color:#0B35B8}.pi9-g img{width:100%;height:100%;object-fit:cover}
-html,body{overflow-x:clip}.li>div{min-width:0}.li small,.li b{overflow-wrap:anywhere}
+html,body{overflow-x:clip}#main .grid>*,#main .card{min-width:0}.li{min-width:0}.li>div{min-width:0}.li small,.li b{white-space:normal!important;overflow-wrap:anywhere}
 @media (max-width:700px){.t9 tr.rw{display:flex!important;flex-wrap:wrap;gap:6px 10px;align-items:center}.t9 tr.rw td{order:0!important;text-align:left!important}.t9 td.w9{flex:1 1 100%}.t9 td.n9{display:none!important}.t9 td.v9-a{margin-left:auto}.tx9-h{flex-wrap:wrap}.tx9-h small{margin-left:0;flex:1 1 auto}}.lg-c{max-width:calc(100vw - 24px)!important;box-sizing:border-box}
 @media (max-width:760px){.g2x,.g3x{grid-template-columns:1fr}.hide-m{display:none}.tx9-r{grid-template-columns:1fr}.tx9-x{justify-self:end}.rd9{grid-template-columns:1fr}
  .v9-t thead{display:none}.v9-t,.v9-t tbody,.v9-t tr,.v9-t td{display:block}.v9-t tr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}.v9-t td{padding:0!important;border:0!important}.v9-t td[data-l]::before{content:attr(data-l);display:block;font-size:11px;color:var(--mut);margin-bottom:3px}.v9-t td.v9-a{grid-column:1/-1;text-align:left}
@@ -2061,6 +2071,7 @@ table.mc10 td>:is(.tag,.chip,.sc,span,b,a,button){justify-self:start;max-width:1
 #dr .dr-b>div:last-child:has(>.btn){position:sticky;bottom:0;z-index:2;padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));margin-top:8px;background:var(--surf,#fff);box-shadow:0 -10px 16px -8px rgba(0,0,0,.08)}
 #dr :is(div,p):has(>.btn+.btn),#dr :is(div,p):has(>a.btn+.btn){flex-wrap:wrap!important}
 #dr .qas{display:flex!important;flex-wrap:wrap!important;gap:8px}#dr .qas .qa{flex:1 1 auto;justify-content:center}#dr .qas .qa.pri{flex-basis:100%}
+.em-inbox,.em-inbox>span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 /* нижня навігація */
 .bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:45;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-top:1px solid var(--line)}
 .bnav button{all:unset;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;color:var(--mut);font-size:11px;font-weight:600;-webkit-tap-highlight-color:transparent}
