@@ -1,8 +1,13 @@
 # PLASTIZA — сайт
 
-> ⚠️ **ТИМЧАСОВИЙ ДОМЕН plastiza.org — індексацію вимкнено.** На всіх сторінках `noindex, nofollow` (meta + заголовок X-Robots-Tag у vercel.json). При переході на основний домен клієнта: `INDEXING=True` і новий `DOMAIN` у build.py, прибрати X-Robots-Tag з vercel.json, додати `Sitemap:` у robots.txt, оновити sitemap.xml і змінну `SITE_URL` у Vercel, подати сайт у Google Search Console.
+> ⚠️ **ТИМЧАСОВИЙ ДОМЕН plastiza.org — індексацію вимкнено.** Сторінки віддаються з `noindex, nofollow` (meta від `api/page.js` + заголовок X-Robots-Tag у vercel.json). При переході на основний домен клієнта: у Vercel додати змінну `SITE_INDEXING=1` і оновити `SITE_URL`, прибрати X-Robots-Tag з vercel.json, додати `Sitemap: https://<домен>/sitemap.xml` у robots.txt, подати сайт у Google Search Console.
 
-Статичний сайт без збірки: відкривається будь-яким вебсервером і деплоїться на Vercel / Netlify / GitHub Pages «як є».
+## Як працює сайт
+
+- **Адреси сторінок (SEO):** українська версія без префікса (`/fiksator-nastyl-30-40`, `/blog/zakhysnyi-shar-betonu`), англійська — під `/en/` (`/en/slab-chair-nastil-30-40`). Таблиця стандартних адрес — `api/_routes.js` (`rtPages`, `rtProdSlugs`, `rtPostSlugs`); адреси можна змінювати в адмінці (SEO), старі тоді автоматично перенаправляються (301).
+- **api/page.js** віддає кожну сторінку: підставляє title/description/canonical/hreflang, базовий HTML для пошукових систем і дані з адмінки (`window.PZ_DATA`), будує `/sitemap.xml`, виконує перенаправлення.
+- **Контент з адмінки** (товари, блог, FAQ, бігучий рядок, контакти, тексти сторінок, SEO) зберігається в базі (таблиця `settings`, ключі `site.*`) і з'являється на сайті протягом ~30 секунд. Вбудовані в `js/app.js` дані — лише стандартні значення.
+- **Файли:** вкладення із заявок і фото з медіатеки — у Vercel Blob (змінна `BLOB_READ_WRITE_TOKEN`).
 
 ## Структура
 

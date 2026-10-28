@@ -79,5 +79,19 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/page?sitemap=1"
+    },
+    {
+      "source": "/",
+      "destination": "/api/page?path="
+    },
+    {
+      "source": "/:path((?!api/|assets/|css/|js/|admin|robots\\.txt|site\\.webmanifest|favicon|google[0-9a-z]+\\.html).*)",
+      "destination": "/api/page?path=:path"
+    }
   ]
 }

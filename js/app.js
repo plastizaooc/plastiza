@@ -22,7 +22,7 @@ const P=[
 [8,'form','Фіксатор «Корок»','Plug “Korok”','Пластикова заглушка циліндричної форми. Запобігає затіканню бетонної суміші в монтажні отвори опалубних щитів і герметизує отвори в монолітних конструкціях.','A cylindrical plastic plug. Keeps concrete mix out of the mounting holes in formwork panels and seals holes in monolithic structures.','pc',[['24','0.60',1000]],[MT]],
 [9,'form','Фіксатор «Труба»','Spacer tube','Утримує відстань між опалубними щитами при влаштуванні колон і пілонів та не допускає потрапляння бетону на стяжний гвинт під час заливання. Гвинт легко виймається з конструкції. Доступна з поліетилену (П/Е) і ПВХ.','Keeps the distance between formwork panels when casting columns and pylons and prevents concrete from reaching the tie rod during pouring. The rod is easy to remove. Available in PE and PVC.','m',[[['П/Е','PE'],'10.60',100],[['ПВХ','PVC'],'13.50',100]],[['Матеріал','Material','П/Е, ПВХ','PE, PVC'],['Стійкість','Resistance','До навантажень, агресивного середовища, перепаду температур','Loads, aggressive environments, temperature swings']]],
 ].map(a=>({id:a[0],cat:a[1],n:{uk:a[2],en:a[3]},d:{uk:a[4],en:a[5]},u:a[6],v:a[7],sp:a[8]}));
-const IMGD=["assets/img/products/zasuvka-1.webp","assets/img/products/konus-1.webp","assets/img/products/korok-yalynka-1.webp","assets/img/products/stiyka-4.webp","assets/img/products/stiyka-3.webp","assets/img/products/zashchipka-1.webp","assets/img/products/zirochka-1.webp","assets/img/products/zirochka-3.webp","assets/img/products/zirochka-2.webp","assets/img/products/zirochka-4.webp","assets/img/products/zirochka-5.webp","assets/img/products/zirochka-6.webp","assets/img/products/zirochka-7.webp","assets/img/products/korok-1.webp","assets/img/products/nastyl-1.webp","assets/img/products/nastyl-2.webp","assets/img/products/nastyl-3.webp","assets/img/products/nastyl-4.webp","assets/img/products/nastyl-5.webp","assets/img/products/stiyka-1.webp","assets/img/products/stiyka-2.webp","assets/img/products/truba-1.webp","assets/img/products/truba-2.webp"];
+const IMGD=["/assets/img/products/zasuvka-1.webp","/assets/img/products/konus-1.webp","/assets/img/products/korok-yalynka-1.webp","/assets/img/products/stiyka-4.webp","/assets/img/products/stiyka-3.webp","/assets/img/products/zashchipka-1.webp","/assets/img/products/zirochka-1.webp","/assets/img/products/zirochka-3.webp","/assets/img/products/zirochka-2.webp","/assets/img/products/zirochka-4.webp","/assets/img/products/zirochka-5.webp","/assets/img/products/zirochka-6.webp","/assets/img/products/zirochka-7.webp","/assets/img/products/korok-1.webp","/assets/img/products/nastyl-1.webp","/assets/img/products/nastyl-2.webp","/assets/img/products/nastyl-3.webp","/assets/img/products/nastyl-4.webp","/assets/img/products/nastyl-5.webp","/assets/img/products/stiyka-1.webp","/assets/img/products/stiyka-2.webp","/assets/img/products/truba-1.webp","/assets/img/products/truba-2.webp"];
 const IMGV={'1-0':IMGD[14],'1-1':IMGD[15],'1-2':IMGD[16],'1-3':IMGD[17],'1-4':IMGD[18],'2-0':IMGD[19],'2-1':IMGD[20],'2-2':IMGD[4],'2-3':IMGD[3],'3-0':IMGD[6],'3-1':IMGD[8],'3-2':IMGD[7],'3-3':IMGD[9],'3-4':IMGD[10],'3-5':IMGD[11],'3-6':IMGD[12],'4-0':IMGD[5],'4-1':IMGD[5],'4-2':IMGD[5],'5-0':IMGD[0],'6-0':IMGD[1],'7-0':IMGD[2],'8-0':IMGD[13],'9-0':IMGD[21],'9-1':IMGD[22]};
 const IMGS={1:IMGV['1-0'],2:IMGV['2-1'],3:IMGV['3-1'],4:IMGV['4-0'],5:IMGV['5-0'],6:IMGV['6-0'],7:IMGV['7-0'],8:IMGV['8-0'],9:IMGV['9-0']};
 const COL=['#3B4BFF','#FF8A3D','#4B5563','#1FA971'];
@@ -57,7 +57,7 @@ let secAdv=()=>`<section><h2>${t('adv')}</h2><br><ul class="adv">${ADV.map(a=>`<
 const secCon=h=>`<section>${h?`<h2 style="margin-bottom:20px">${t('contacts')}</h2>`:''}<div class="cg"><div><h3>${t('phones')}</h3>${PH.map(x=>`<a href="tel:${x.replace(/[^+\d]/g,'')}">${x}</a>`).join('')}</div><div><h3>${t('addr')}</h3>${AD.map(a=>`<p>${a[lang==='uk'?0:1]}</p>`).join('')}</div><div><h3>Email</h3><a href="mailto:plastiza.sale@gmail.com">plastiza.sale@gmail.com</a><button class="btn" data-rfq="${t('contacts')}" style="margin-top:12px">${t('quote')}</button></div></div></section>`;
 const band=()=>`<div class="band"><div><h2 style="margin:0 0 6px">${t('band')}</h2>${t('bandd')}</div><button class="btn" data-rfq="${t('drawing')}">${t('quote')}</button></div>`;
 // TODO: вписати справжній код ЄДРПОУ ТОВ «Пластіза»
-const EDRPOU='00000000',EDRPOU_URL='https://opendatabot.ua/c/'+EDRPOU;
+var EDRPOU='00000000',EDRPOU_URL='https://opendatabot.ua/c/'+EDRPOU;
 // TODO: уточнити режим роботи
 const HOURS=[['Пн–Пт: 09:00–18:00','Mon–Fri: 09:00–18:00'],['Сб–Нд: вихідні','Sat–Sun: closed']];
 const bd=(c,h)=>`<div class="bd ${c}"><div class="wrap">${h}</div></div>`;
@@ -602,7 +602,7 @@ function pdfPage(){const mob=R.a==='mob',I=LI();let ps=document.getElementById('
 return `<div class="wrap pdfv ${mob?'pdf-m':'pdf-d'}"><div class="pdf-bar no-print"><div><span class="sv-lab" style="margin:0 0 6px">${v4('pdfB')}</span><b>${mob?v4('pdfM')[0]:v4('pdfD')[0]}</b><small>${v4('pdfTip')}</small></div><div class="row"><button class="btn g" data-go="pdf" data-a="${mob?'desk':'mob'}">${mob?v4('pdfD')[0]:v4('pdfM')[0]}</button><button class="btn" data-print>${ICO.doc}${v4('pdfSave')}</button></div></div>
 <div class="pdf-doc"><section class="pdf-cv"><span class="pdf-lg">PLASTIZA</span><h1>${v4('pdfCover')}</h1><p>${t('tag')}</p><div class="pdf-ct">${PH.join(' · ')}<br>plastiza.sale@gmail.com</div></section>
 <nav class="pdf-toc" id="pdf-toc"><h2>${v4('pdfToc')}</h2>${CATS.map(c=>`<h3>${c[lang]}</h3><ol>${P.filter(p=>p.cat===c.id).map(p=>`<li><a href="#pdf-p${p.id}">${title(p)}</a><span>${p.v.length}</span></li>`).join('')}</ol>`).join('')}</nav>
-${P.map(p=>`<section class="pdf-p" id="pdf-p${p.id}"><div class="pdf-im"><img src="${IMGS[p.id]}" alt=""></div><div class="pdf-tx"><span class="pdf-k">${CATS.find(c=>c.id===p.cat)[lang]}</span><h2>${title(p)}</h2><p>${p.d[lang]}</p><table><thead><tr><th>${t('size')}</th><th>${t('price')}</th><th>${t('pack')}</th></tr></thead><tbody>${p.v.map(v=>`<tr><td>${sz(v)}</td><td>${t('from')} ${fp(v[1])} ${cur()}/${un(p)}</td><td>${v[2]?v[2]+' '+un(p):'—'}</td></tr>`).join('')}</tbody></table><div class="pdf-ln"><a href="#pdf-toc">${v4('pdfTop')}</a><a href="${(()=>{try{return location.href.split('#')[0]}catch(_){return''}})()}#p-${p.id}" target="_blank" rel="noopener">${v4('pdfOpen')} ↗</a></div></div></section>`).join('')}</div></div>`}
+${P.map(p=>`<section class="pdf-p" id="pdf-p${p.id}"><div class="pdf-im"><img src="${IMGS[p.id]}" alt=""></div><div class="pdf-tx"><span class="pdf-k">${CATS.find(c=>c.id===p.cat)[lang]}</span><h2>${title(p)}</h2><p>${p.d[lang]}</p><table><thead><tr><th>${t('size')}</th><th>${t('price')}</th><th>${t('pack')}</th></tr></thead><tbody>${p.v.map(v=>`<tr><td>${sz(v)}</td><td>${t('from')} ${fp(v[1])} ${cur()}/${un(p)}</td><td>${v[2]?v[2]+' '+un(p):'—'}</td></tr>`).join('')}</tbody></table><div class="pdf-ln"><a href="#pdf-toc">${v4('pdfTop')}</a><a href="${rtAbsP(p.id)}" target="_blank" rel="noopener">${v4('pdfOpen')} ↗</a></div></div></section>`).join('')}</div></div>`}
 
 // ===== advantages v3 =====
 const ADV3={uk:{cap:'Для надійних поставок<br>на кожному об’єкті',pill:'Переваги',it:[
@@ -789,7 +789,7 @@ TICK.splice(5,0,{uk:'Комплектація будівельних об’єк
 SV5.uk.num='напрями';
 
 /* capacity section: TPA showcase (numbers editable) */
-const CAP={n:12,kgh:45,hours:16,days:22,model:'Wittmann Battenfeld MacroPower 800',kn:8000,img:"assets/img/sections/tpa-macropower-800.webp"};
+const CAP={n:12,kgh:45,hours:16,days:22,model:'Wittmann Battenfeld MacroPower 800',kn:8000,img:"/assets/img/sections/tpa-macropower-800.webp"};
 function secCap(){const u=lang==='uk',m=CAP.kgh*CAP.hours*CAP.days/1000,tot=m*CAP.n,f=v=>v.toLocaleString(u?'uk-UA':'en-US',{maximumFractionDigits:1});
 return `<section class="cap"><div class="s5-top cap-top"><div>${secLab(u?'Потужності':'Capacity')}<h2 class="s5-h">${u?'Потужності<br>виробництва':'Production<br>capacity'}</h2></div><div class="s5-tr"><p class="cap-k">${u?'Термопластавтомати<br>для лиття під тиском':'Injection molding<br>machines'}</p></div></div>
 <div class="cap-st"><span class="cap-bg" aria-hidden="true">MACROPOWER</span><img src="${CAP.img}" alt="${u?'Термопластавтомат':'Injection molding machine'} ${CAP.model}" loading="lazy"><span class="cap-tag cap-t1">${u?'Вузол змикання':'Clamping unit'}<br><span style="text-transform:none">${f(CAP.kn)} kN</span></span><span class="cap-tag cap-t2">${u?'Робот-маніпулятор':'Take-out robot'}</span><span class="cap-tag cap-t3">${u?'Вузол упорскування':'Injection unit'}</span></div>
@@ -928,7 +928,7 @@ parts:[[u?'Призначення':'Purpose',p.d[L]],[u?'Розміри та в�
 [u?'Доставка':'Delivery',u?'Відправляємо Новою поштою, Укрпоштою або приватним перевізником — по Україні та в країни Європи. Можливий самовивіз зі складів у Львові та Києві.':'We ship via Nova Post, Ukrposhta or private carriers across Ukraine and to Europe. Pickup from Lviv and Kyiv warehouses.']],
 keys:[[cat,'catalog',p.cat],[u?'Усі фіксатори':'All products','catalog','all'],[u?'Доставка та оплата':'Delivery & payment','delivery',''],[u?'Комплектація об’єктів':'Site supply','soon','2']]}};
 SEOX[k]={uk:mk('uk'),en:mk('en')};return k}
-const SPB_IMG='<img src="assets/img/sections/construction-site.webp" alt="">';
+const SPB_IMG='<img src="/assets/img/sections/construction-site.webp" alt="">';
 
 /* service pages: two other services + per-service FAQ */
 const SVQ=[{uk:[['Які пластики ви використовуєте для лиття?','Працюємо з поліпропіленом, поліетиленом, ABS та іншими термопластами. Матеріал підбираємо під навантаження, температуру й умови експлуатації виробу.'],['Чи можна замовити невелику партію?','Так. Можемо відлити пробну партію для перевірки виробу, а потім перейти до серійного виробництва потрібного обсягу.'],['Що робити, якщо в мене немає креслення?','Надішліть зразок або фото з розмірами — ми підготуємо 3D-модель і погодимо її з вами перед виготовленням пресформи.'],['Скільки триває виготовлення партії?','Термін залежить від складності виробу, наявності пресформи та обсягу. Точні терміни називаємо разом із розрахунком вартості.'],['Чи можна використати мою пресформу?','Так, якщо вона сумісна з нашим обладнанням. Перед запуском перевіряємо пресформу й робимо пробне лиття.']],
@@ -1237,7 +1237,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('.sr3-f');if(!f)
 if(!d.get('name')||!d.get('phone')){er.textContent=lang==='uk'?'Вкажіть ім’я та телефон.':'Enter your name and phone.';er.hidden=false;return}er.hidden=true;
 pushLead({name:d.get('name'),phone:d.get('phone'),contact:'call',type:'callback',source:leadSource('site-supply'),okText:t('qfok')});f.reset()});
 
-/*MOLDIMG*/const MOLD2="assets/img/sections/injection-mold-exploded.webp";/*/MOLDIMG*/
+/*MOLDIMG*/const MOLD2="/assets/img/sections/injection-mold-exploded.webp";/*/MOLDIMG*/
 function mxPar(){const hd=document.querySelector('#view .sp5-hd.mh');if(!hd)return;const img=hd.querySelector('.mh-im img');if(!img)return;const r=hd.getBoundingClientRect(),vh=innerHeight,p=Math.min(1,Math.max(0,scrollY/Math.max(1,r.top+scrollY+r.height)));
 const box=img.parentElement,ov=Math.max(0,img.offsetHeight-box.clientHeight);const cr=hd.querySelector('.crumb'),off=innerWidth>900&&cr?Math.max(0,cr.getBoundingClientRect().top-box.getBoundingClientRect().top):14;img.style.transform=`translate3d(-50%,${(off-ov*.38*p).toFixed(1)}px,0)`}
 addEventListener('scroll',()=>requestAnimationFrame(mxPar),{passive:true});addEventListener('resize',mxPar);
@@ -1259,7 +1259,7 @@ const cover=`<section class="pq-cv"><div class="pq-cv-t"><span class="pq-lg">PLA
 <div class="pq-cv-k"><div><b>${P.length}</b><span>${u?'видів виробів':'product lines'}</span></div><div><b>${nV}</b><span>${u?'розмірів у каталозі':'sizes in stock range'}</span></div><div><b>${u?'від 100':'100+'}</b><span>${u?'шт. в упаковці':'pcs per pack'}</span></div><div><b>UA+EU</b><span>${u?'доставка в Україні та ЄС':'delivery to Ukraine & EU'}</span></div></div>
 <div class="pq-cv-c"><span>${PH.map(x=>`<a href="tel:${x.replace(/[^+\d]/g,'')}">${x}</a>`).join('<br>')}</span><span><a href="mailto:plastiza.sale@gmail.com">plastiza.sale@gmail.com</a><br>${['WhatsApp','Telegram','Viber'].map(n=>{const m=MSGR.find(x=>x[0]===n);return `<a href="${m[1]}" target="_blank" rel="noopener">${n}</a>`}).join(' · ')}</span><span>${AD.map(x=>x[u?0:1].replace(/^\d{5},?\s*/,'')).join('<br>')}</span></div></section>`;
 const toc=`<nav class="pq-toc" id="pdf-toc"><div class="pq-hd">${L(u?'Зміст':'Contents')}<h2>${u?'Зміст каталогу':'Catalog contents'}</h2></div><div class="pq-toc-g">${CATS.map(c=>`<div><h3>${c[lang]}</h3><ol>${P.filter(p=>p.cat===c.id).map(p=>`<li><a href="#pdf-p${p.id}">${title(p)}</a><i></i><span>${p.v.length} ${u?'розм.':'sizes'}</span></li>`).join('')}</ol></div>`).join('')}<div><h3>${u?'Додатково':'More'}</h3><ol><li><a href="#pdf-srv">${u?'Послуги виробництва':'Services'}</a><i></i><span>03</span></li><li><a href="#pdf-pay">${u?'Оплата':'Payment'}</a><i></i><span>02</span></li><li><a href="#pdf-dlv">${u?'Доставка':'Delivery'}</a><i></i><span>04</span></li></ol></div></div></nav>`;
-const prods=P.map((p,i)=>`<section class="pq-p" id="pdf-p${p.id}"><div class="pq-im"><span class="pq-n">${String(i+1).padStart(2,'0')}</span><img src="${IMGS[p.id]}" alt=""></div><div class="pq-tx">${L(CATS.find(c=>c.id===p.cat)[lang])}<h2>${title(p)}</h2><p>${p.d[lang]}</p><table><thead><tr><th>${t('size')}</th><th>${t('price')}</th><th>${t('pack')}</th></tr></thead><tbody>${p.v.map(v=>`<tr><td>${sz(v)}</td><td><b>${fp(v[1])}</b> ${cur()}/${un(p)}</td><td>${v[2]?v[2]+' '+un(p):'—'}</td></tr>`).join('')}</tbody></table><div class="pq-ln"><a href="#pdf-toc">↑ ${u?'До змісту':'Contents'}</a><a href="${(()=>{try{return location.href.split('#')[0]}catch(_){return''}})()}#p-${p.id}" target="_blank" rel="noopener">${u?'На сайті':'On the website'} ↗</a></div></div></section>`).join('');
+const prods=P.map((p,i)=>`<section class="pq-p" id="pdf-p${p.id}"><div class="pq-im"><span class="pq-n">${String(i+1).padStart(2,'0')}</span><img src="${IMGS[p.id]}" alt=""></div><div class="pq-tx">${L(CATS.find(c=>c.id===p.cat)[lang])}<h2>${title(p)}</h2><p>${p.d[lang]}</p><table><thead><tr><th>${t('size')}</th><th>${t('price')}</th><th>${t('pack')}</th></tr></thead><tbody>${p.v.map(v=>`<tr><td>${sz(v)}</td><td><b>${fp(v[1])}</b> ${cur()}/${un(p)}</td><td>${v[2]?v[2]+' '+un(p):'—'}</td></tr>`).join('')}</tbody></table><div class="pq-ln"><a href="#pdf-toc">↑ ${u?'До змісту':'Contents'}</a><a href="${rtAbsP(p.id)}" target="_blank" rel="noopener">${u?'На сайті':'On the website'} ↗</a></div></div></section>`).join('');
 const SV=[0,1,2].map(k=>[SRV[k][lang],SRV[k].s[lang],(SV5[lang].s[k]||{meta:['','']}).meta.join(' ')]);
 const srv=`<section class="pq-x" id="pdf-srv"><div class="pq-hd">${L(u?'Послуги':'Services')}<h2>${u?'Послуги виробництва':'Manufacturing services'}</h2><p>${u?'Окрім власної продукції, виготовляємо вироби та пресформи під замовлення й комплектуємо будівельні об’єкти.':'Besides our own range, we mold parts and build molds to order and supply construction sites.'}</p></div><div class="pq-3">${SV.map((x,k)=>`<div class="pq-c"><span class="pq-cn">${String(k+1).padStart(2,'0')}</span><h3>${x[0]}</h3><p>${x[1]}</p><small>${x[2]}</small></div>`).join('')}</div></section>`;
 const PY=u?[['Безготівковий розрахунок','Для компаній і ФОП: рахунок на ТОВ «Пластіза», відвантаження після оплати.',['Рахунок-фактура','Видаткова накладна','Звітні документи']],['Готівкою','При самовивозі зі складу у Львові або Києві за попередньою домовленістю.',['При самовивозі','Львів · Київ']]]:[['Bank transfer','For companies and sole traders: invoice from PLASTIZA LLC, shipped after payment.',['Invoice','Delivery note','Reporting docs']],['Cash','On pickup from our Lviv or Kyiv warehouse by appointment.',['On pickup','Lviv · Kyiv']]];
@@ -1345,7 +1345,7 @@ const _pdfPage3=pdfPage;pdfPage=function(){const site=lang,pl=pdfLang||site;cons
 document.addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(b){e.preventDefault();e.stopPropagation();if(b.dataset.pl!==(pdfLang||lang)){pdfLang=b.dataset.pl;const y=scrollY;render();scrollTo(0,y)}return}if(e.target.closest('[data-l]'))pdfLang=null},true);
 
 /* ===== Hero v6: content left, looping production video right ===== */
-const HV_SRC='assets/hero/hero-loop.mp4',HV_POSTER='assets/hero/poster.jpg',HV_ANIM='assets/hero/hero-m.webp';
+const HV_SRC='/assets/hero/hero-loop.mp4',HV_POSTER='/assets/hero/poster.jpg',HV_ANIM='/assets/hero/hero-m.webp';
 const hvSmall=()=>false;
 const _homeV6=home;home=function(){let h=_homeV6();const u=lang==='uk';
 const ring=(u?'ЛИТТЯ ПЛАСТИКУ • ПРЕСФОРМИ • ФІКСАТОРИ • ':'INJECTION MOLDING • MOLDS • SPACERS • ').repeat(1);
@@ -1765,7 +1765,7 @@ new MutationObserver(()=>requestAnimationFrame(rlCtl)).observe(document.getEleme
 const PDF_V='202610271850';
 function pdfFile(){const L=(typeof pdfLang!=='undefined'&&pdfLang)||lang;return `plastiza-catalog-${L==='uk'?'ua':'en'}-${R.a==='mob'?'mobile':'desktop'}.pdf`}
 const _pdfBlobs={};
-const PDF_BASE=location.protocol==='file:'||/^(localhost|127\.)/.test(location.hostname)||!/claude/.test(location.hostname)?'assets/pdf/':'https://plastiza.org/assets/pdf/';
+const PDF_BASE=location.protocol==='file:'||/^(localhost|127\.)/.test(location.hostname)||!/claude/.test(location.hostname)?'/assets/pdf/':'https://plastiza.org/assets/pdf/';
 const pdfUrl=n=>PDF_BASE+n+'?v='+PDF_V;
 function pdfPre(){if(R.p!=='pdf')return;const n=pdfFile();if(_pdfBlobs[n])return;_pdfBlobs[n]=fetch(pdfUrl(n),{mode:'cors'}).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>(_pdfBlobs[n]=new File([b],n,{type:'application/pdf'}))).catch(()=>{delete _pdfBlobs[n];return null})}
 function pdfAbs(n){return new URL(pdfUrl(n),location.href).href}
@@ -1821,7 +1821,7 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  body.append('data',JSON.stringify(d));let tot=0;files.slice(0,5).forEach(f=>{tot+=f.size;if(tot<=4*1024*1024)body.append('files',f,f.name)});
  fetch(LEAD_API,{method:'POST',body}).then(r=>r.ok?r.json():Promise.reject(r.status)).catch(()=>{const el=$('#toast');el.textContent=u?'Не вдалося надіслати заявку. Зателефонуйте нам: +380 (96) 682-14-63':'Could not send the request. Please call +380 96 682 14 63';el.classList.add('on');setTimeout(()=>el.classList.remove('on'),6000)})};
 
-R=fromHash();render();
+R=fromHash();rtBoot();render();rtAfter();
 /* overlap effect for FAQ on service pages */
 function ovSetup2(){document.querySelectorAll('#view .sp5>.sp6-f').forEach(f=>{if(f.parentElement.classList.contains('ov-wrap'))return;const prev=f.previousElementSibling;if(!prev)return;f.classList.add('ov-top','ov-sp');prev.classList.add('ov-under','ov-sp');const w=document.createElement('div');w.className='ov-wrap';prev.before(w);w.append(prev,f)});if(typeof ovPos==='function')ovPos()}
 new MutationObserver(()=>requestAnimationFrame(ovSetup2)).observe(document.getElementById('view'),{childList:true});requestAnimationFrame(ovSetup2);
@@ -1897,3 +1897,169 @@ side();
  const _qc=qc;qc=function(open){if(!open&&!window.__qcX){const dd=document.getElementById('phdd'),f=document.activeElement,inp=f&&f.closest&&f.closest('#qcp')&&/^(INPUT|TEXTAREA)$/.test(f.tagName);
   if(Date.now()-(window.__qcKeep||0)<700||dd||inp){try{qcY=scrollY}catch(_){}return}}window.__qcX=false;return _qc.apply(this,arguments)}})();
 /*FIXJS1-END*/
+/*SYNC-START*/
+/* ===================== Синхронізація з адмінкою + SEO-адреси =====================
+   window.PZ_DATA підставляє сервер (api/page.js) з бази: товари, статті, FAQ, бігучий рядок,
+   контакти, тексти сторінок, SEO. Без нього сайт працює на вбудованих даних.
+   Адреси: UA — /fiksator-nastyl, EN — /en/slab-chair-nastil. У превʼю (claude.ai, file://) — #/шлях. */
+/*ROUTES-START*/
+/* ===== SEO-адреси сторінок (спільний код: сайт, сервер, адмінка) =====
+   Українська версія — без префікса, англійська — під /en.
+   R = {p, a} — внутрішній маршрут сайту; D — дані (товари, статті, перевизначення slug-ів і мета з адмінки). */
+function rtPages(){return {
+ home:['',''],catalog:['katalog','catalog'],cat_rebar:['fiksatory-armatury','rebar-spacers'],cat_form:['fiksatory-dlia-opalubky','formwork-accessories'],
+ oem:['posluhy','services'],srv0:['lyttia-plastyku','injection-molding'],srv1:['vyhotovlennia-presform','mold-making'],srv2:['komplektatsiia-obiektiv','construction-supply'],
+ about:['vyrobnytstvo','production'],delivery:['dostavka','delivery'],contacts:['kontakty','contacts'],faq:['pytannia-vidpovidi','faq'],blog:['blog','blog'],
+ pdf:['katalog-pdf','pdf-catalog'],pdfm:['katalog-pdf-mobilnyi','pdf-catalog-mobile']}}
+function rtPageNames(){return {home:['Головна','Home'],catalog:['Каталог','Catalog'],cat_rebar:['Фіксатори арматури','Rebar spacers'],cat_form:['Фіксатори для опалубки','Formwork accessories'],oem:['Послуги','Services'],srv0:['Лиття пластикових виробів','Plastic injection molding'],srv1:['Виготовлення пресформ','Mold making'],srv2:['Комплектація будівельних об’єктів','Construction site supply'],about:['Виробництво','Production'],delivery:['Доставка','Delivery'],contacts:['Контакти','Contacts'],faq:['Питання-відповіді','FAQ'],blog:['Блог','Blog'],pdf:['PDF-каталог (ПК)','PDF catalog (desktop)'],pdfm:['PDF-каталог (мобільний)','PDF catalog (mobile)']}}
+function rtProdSlugs(){return {1:['fiksator-nastyl','slab-chair-nastil'],2:['fiksator-stiika','rebar-chair-stiika'],3:['fiksator-zirochka','star-spacer-zirochka'],4:['fiksator-zashchipka','clip-spacer-zashchipka'],5:['fiksator-zasuvka','slide-spacer-zasuvka'],6:['fiksator-konus','cone-spacer-konus'],7:['korok-yalynka','fir-tree-plug'],8:['fiksator-korok','formwork-plug-korok'],9:['dystantsiina-truba','spacer-tube']}}
+function rtPostSlugs(){return {1:['yak-obraty-fiksator-armatury','how-to-choose-rebar-spacer'],2:['zakhysnyi-shar-betonu','concrete-cover'],3:['lyttia-pid-tyskom','injection-molding-process'],4:['presforma-pid-vash-vyrib','custom-mold-checklist'],5:['korky-i-konusy-dlia-opalubky','formwork-plugs-and-cones']}}
+/* транслітерація за постановою КМУ №55 (2010) */
+function rtSlugify(s){s=String(s==null?'':s).toLowerCase().replace(/[«»“”"'’ʼ`]/g,'');
+ const M={а:'a',б:'b',в:'v',г:'h',ґ:'g',д:'d',е:'e',є:'ie',ж:'zh',з:'z',и:'y',і:'i',ї:'i',й:'i',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'kh',ц:'ts',ч:'ch',ш:'sh',щ:'shch',ь:'',ю:'iu',я:'ia',ы:'y',э:'e',ё:'io',ъ:''},S={є:'ye',ї:'yi',й:'y',ю:'yu',я:'ya'};
+ let o='';for(let i=0;i<s.length;i++){const c=s[i],st=i===0||!/[а-яіїєґa-z0-9]/.test(s[i-1]);if(c==='з'&&s[i+1]==='г'){o+='zgh';i++;continue}o+=st&&S[c]?S[c]:(M[c]!=null?M[c]:c)}
+ return o.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').replace(/-{2,}/g,'-').slice(0,80)}
+function rtLi(L){return L==='en'?1:0}
+function rtPageSlug(id,L,D){const o=D&&D.slugs&&D.slugs[id];const v=o&&o[L];return v!=null&&v!==''?String(v):rtPages()[id][rtLi(L)]}
+function rtProdBase(p,L){if(p.slug&&p.slug[L])return p.slug[L];const d=rtProdSlugs()[p.id];if(d)return d[rtLi(L)];const n=p.n&&(p.n[L]||p.n.uk);return rtSlugify(n)||('product-'+p.id)}
+function rtSizeSlug(v,L){const s=Array.isArray(v[0])?v[0][1]||v[0][0]:v[0];return rtSlugify(s)}
+function rtProdSlug(p,vi,L){const b=rtProdBase(p,L);if(!vi)return b;const v=p.v&&p.v[vi];return v?b+'-'+rtSizeSlug(v,L):b}
+function rtPostSlug(po,L){if(po.slug&&po.slug[L])return po.slug[L];const d=rtPostSlugs()[po.id];if(d)return d[rtLi(L)];const t=po.t&&(po.t[rtLi(L)]||po.t[0]);return rtSlugify(t)||('post-'+po.id)}
+/* R → ключ сторінки (для SEO, slug-ів і адмінки) */
+function rtKey(R){if(!R)return 'home';const p=R.p,a=R.a;
+ if(p==='home')return 'home';if(p==='catalog'){const c=a&&a.cat||a;return c==='rebar'?'cat_rebar':c==='form'?'cat_form':'catalog'}
+ if(p==='soon')return 'srv'+(+a||0);if(p==='pdf')return a==='mob'?'pdfm':'pdf';
+ if(p==='product'){const s=String(a).split('-');return 'p'+s[0]+'-'+(+s[1]||0)}
+ if(p==='post')return 'b'+a;return p}
+function rtFromKey(k){const m={home:{p:'home'},catalog:{p:'catalog',a:'all'},cat_rebar:{p:'catalog',a:'rebar'},cat_form:{p:'catalog',a:'form'},pdf:{p:'pdf',a:'desk'},pdfm:{p:'pdf',a:'mob'}};
+ if(m[k])return m[k];let x;if((x=/^srv(\d+)$/.exec(k)))return {p:'soon',a:x[1]};if((x=/^p(\d+)-(\d+)$/.exec(k)))return {p:'product',a:x[1]+'-'+x[2]};if((x=/^b(.+)$/.exec(k)))return {p:'post',a:x[1]};return {p:k}}
+function rtPath(R,L,D){const pre=L==='en'?'/en':'',k=rtKey(R);let s;
+ if(/^p\d+-\d+$/.test(k)){const [id,vi]=k.slice(1).split('-').map(Number),p=(D&&D.prods||[]).find(x=>x.id==id);s=p?rtProdSlug(p,vi,L):'product-'+id}
+ else if(k[0]==='b'&&k!=='blog'){const po=(D&&D.posts||[]).find(x=>String(x.id)===String(R.a));s=rtPageSlug('blog',L,D)+'/'+(po?rtPostSlug(po,L):R.a)}
+ else if(rtPages()[k])s=rtPageSlug(k,L,D);else s='';
+ return s?pre+'/'+s:(pre||'/')}
+/* усі сторінки сайту (для sitemap і SEO-таблиці в адмінці) */
+function rtAll(D){const out=Object.keys(rtPages()).map(k=>({k,R:rtFromKey(k)}));
+ (D&&D.prods||[]).filter(p=>p.on!==false).forEach(p=>(p.v||[]).forEach((v,vi)=>out.push({k:'p'+p.id+'-'+vi,R:{p:'product',a:p.id+'-'+vi}})));
+ (D&&D.posts||[]).filter(p=>p.st!=='draft').forEach(p=>out.push({k:'b'+p.id,R:{p:'post',a:String(p.id)}}));return out}
+/* шлях → {L,R,k}; null — сторінки не існує */
+function rtIndex(D){const ix={};rtAll(D).forEach(x=>['uk','en'].forEach(L=>{ix[rtPath(x.R,L,D)]={L,R:x.R,k:x.k}}));return ix}
+function rtParse(path,D,IX){path=String(path||'/').split(/[?#]/)[0];try{path=decodeURIComponent(path)}catch(_){}path=path.toLowerCase().replace(/\/{2,}/g,'/');if(path.length>1)path=path.replace(/\/+$/,'');if(!path)path='/';
+ const ix=IX||rtIndex(D);return ix[path]||null}
+/* ціна для мета: 1.728 → 1,728 (UA) */
+function rtPrice(v,L){const s=String(v==null?'':v);return L==='en'?s:s.replace('.',',')}
+function rtCut(s,n){s=String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();if(s.length<=n)return s;const c=s.slice(0,n-1);return c.slice(0,Math.max(c.lastIndexOf(' '),n-25)).replace(/[,.;:—–-]+$/,'')+'…'}
+/* мета за замовчуванням + перевизначення з адмінки (D.seo[key][L] = {t,d}) */
+function rtMeta(R,L,D){const k=rtKey(R),u=L!=='en',B=' | PLASTIZA';let t='',d='';
+ const DEF={
+  home:[['Виробник фіксаторів арматури та пластикових виробів'+B,'ТОВ «Пластіза» — український виробник пластикових фіксаторів арматури та елементів опалубки. Лиття пластику на замовлення, пресформи. Ціни від виробника, доставка по Україні та в ЄС.'],['Rebar spacers and plastic parts manufacturer'+B,'PLASTIZA is a Ukrainian manufacturer of plastic rebar spacers and formwork accessories. Custom injection molding and mold making. Factory prices, delivery across Ukraine and the EU.']],
+  catalog:[['Каталог фіксаторів арматури та елементів опалубки'+B,'Фіксатори «Настил», «Стійка», «Зірочка», «Защіпка», «Засувка», конуси, корки й дистанційні труби для опалубки. Ціни та фасування від виробника.'],['Rebar spacers and formwork accessories catalog'+B,'Slab chairs, rebar chairs, star and clip spacers, cones, plugs and spacer tubes for formwork. Manufacturer prices and pack sizes.']],
+  cat_rebar:[['Фіксатори арматури від виробника — купити оптом'+B,'Пластикові фіксатори арматури для захисного шару бетону: «Настил», «Стійка», «Зірочка», «Защіпка», «Засувка». Фасування від 100 шт, ціни від виробника.'],['Plastic rebar spacers from the manufacturer'+B,'Plastic rebar spacers for concrete cover: slab chairs, rebar chairs, star, clip and slide spacers. Packs from 100 pcs at manufacturer prices.']],
+  cat_form:[['Фіксатори для опалубки: конуси, корки, труби'+B,'Конуси, корки та дистанційні труби ПВХ і П/Е для опалубки від виробника. Захист стяжних гвинтів, герметизація отворів, ціни та фасування.'],['Formwork accessories: cones, plugs, spacer tubes'+B,'Cones, plugs and PVC/PE spacer tubes for formwork from the manufacturer. Tie protection and hole sealing, prices and pack sizes.']],
+  oem:[['Лиття пластикових виробів і виготовлення пресформ'+B,'Лиття пластику під тиском на замовлення — від прототипу до серії, виготовлення пресформ під ваш виріб і комплектація будівельних об’єктів.'],['Plastic injection molding and mold making services'+B,'Custom plastic injection molding from prototype to series, mold making for your part and construction site supply.']],
+  srv0:[['Лиття пластикових виробів на замовлення'+B,'Лиття пластику під тиском за вашими кресленнями: від пробної партії до великих тиражів. Підбір матеріалу, контроль якості, доставка.'],['Custom plastic injection molding'+B,'Injection molding to your drawings, from trial runs to large volumes. Material selection, quality control and delivery.']],
+  srv1:[['Виготовлення пресформ для лиття пластику'+B,'Проєктуємо та виготовляємо пресформи під ваш виріб — для лиття на вашому підприємстві або на наших потужностях.'],['Injection mold making'+B,'We design and build molds for your part — to run at your plant or on our production line.']],
+  srv2:[['Комплектація будівельних об’єктів'+B,'Постачаємо фіксатори, елементи опалубки та будівельні матеріали на об’єкт за одним замовленням. Доставка по Україні.'],['Construction site supply'+B,'Rebar spacers, formwork accessories and building materials delivered to your site in one order.']],
+  about:[['Виробництво фіксаторів арматури та пластикових виробів'+B,'Власне виробництво повного циклу: пресформи, лиття пластику під тиском, контроль якості та відвантаження фіксаторів арматури.'],['Rebar spacer and plastic parts production'+B,'Full-cycle in-house production: molds, injection molding, quality control and shipping of rebar spacers.']],
+  delivery:[['Доставка фіксаторів арматури по Україні та в ЄС'+B,'Доставка Новою поштою, Укрпоштою та перевізниками по Україні й у країни Європи. Самовивіз зі складів у Львові та Києві, оплата для юросіб і ФОП.'],['Delivery across Ukraine and the EU'+B,'Shipping by Nova Post, Ukrposhta and freight carriers across Ukraine and to Europe. Pickup in Lviv and Kyiv, payment terms for businesses.']],
+  contacts:[['Контакти — офіси у Львові та Києві'+B,'Телефони, email і адреси офісів ТОВ «Пластіза» у Львові та Києві. Зв’яжіться з менеджером, щоб отримати розрахунок вартості.'],['Contacts — offices in Lviv and Kyiv'+B,'Phones, email and office addresses of PLASTIZA in Lviv and Kyiv. Contact a manager for a quote.']],
+  faq:[['Питання та відповіді про фіксатори й лиття пластику'+B,'Відповіді на часті питання: як обрати фіксатор арматури, мінімальна партія, виготовлення пресформ, доставка та оплата.'],['FAQ about rebar spacers and injection molding'+B,'Answers to common questions: choosing a rebar spacer, minimum order, mold making, delivery and payment.']],
+  blog:[['Блог про фіксатори арматури та лиття пластику'+B,'Корисні статті про фіксатори арматури, захисний шар бетону, елементи опалубки, лиття пластику та пресформи.'],['Blog about rebar spacers and injection molding'+B,'Useful articles on rebar spacers, concrete cover, formwork accessories, plastic injection molding and molds.']],
+  pdf:[['PDF-каталог продукції'+B,'Завантажте PDF-каталог фіксаторів арматури та елементів опалубки з цінами й фасуванням.'],['PDF product catalog'+B,'Download the PDF catalog of rebar spacers and formwork accessories with prices and pack sizes.']],
+  pdfm:[['PDF-каталог для телефона'+B,'Мобільна версія PDF-каталогу фіксаторів арматури та елементів опалубки.'],['PDF catalog for phones'+B,'Mobile version of the PDF catalog of rebar spacers and formwork accessories.']],
+  '404':[['Сторінку не знайдено'+B,''],['Page not found'+B,'']]};
+ if(DEF[k]){[t,d]=DEF[k][u?0:1]}
+ else if(/^p\d+-\d+$/.test(k)){const [id,vi]=k.slice(1).split('-').map(Number),p=(D&&D.prods||[]).find(x=>x.id==id);if(p&&p.v[vi]){const v=p.v[vi],nm=p.n[L]||p.n.uk,sz=Array.isArray(v[0])?v[0][u?0:1]:v[0],un=p.u==='m'?(u?'м':'m'):(u?'шт':'pc');
+   t=u?`${nm} ${sz} — ціна від ${rtPrice(v[1],L)} грн${B}`:`${nm} ${sz} — from ${rtPrice(v[1],L)} UAH${B}`;
+   d=rtCut(u?`${nm} ${sz} від виробника: ${rtPrice(v[1],L)} грн/${un}, ${v[2]||'—'} ${un} в упаковці. ${p.d&&p.d.uk||''}`:`${nm} ${sz} from the manufacturer: ${v[1]} UAH/${un}, ${v[2]||'—'} ${un} per pack. ${p.d&&p.d.en||''}`,160)}}
+ else if(k[0]==='b'){const po=(D&&D.posts||[]).find(x=>String(x.id)===String(R.a));if(po){const i=u?0:1,tt=po.t[i]||po.t[0];t=(tt+B).length<=68?tt+B:tt;d=rtCut(po.e&&(po.e[i]||po.e[0]),160)}}
+ const o=D&&D.seo&&D.seo[k]&&D.seo[k][L];if(o){if(o.t)t=o.t;if(o.d)d=o.d}
+ return {t:t||'PLASTIZA',d:d||''}}
+/*ROUTES-END*/
+function rtPM(){try{return /^https?:$/.test(location.protocol)&&!/claude|anthropic/.test(location.hostname)}catch(_){return false}}
+var RT_IX,RT_SEO,RT_SL,CTR,TXC; /* без ініціалізації: rtBoot() заповнює їх раніше, ніж виконується цей рядок */
+function rtD(){return {prods:P,posts:POSTS,slugs:RT_SL||{},seo:RT_SEO||{}}}
+function rtIx(){return RT_IX||(RT_IX=rtIndex(rtD()))}
+function rtNorm(){if(R.p==='catalog')return {p:'catalog',a:F.cat&&F.cat!=='all'?F.cat:'all'};if(R.p==='product'){const s=String(R.a).split('-');return {p:'product',a:s[0]+'-'+(+s[1]||0)}}return R}
+function rtHere(){return rtPath(rtNorm(),lang,rtD())}
+function rtAbs(path){try{return rtPM()?location.origin+path:'https://plastiza.org'+path}catch(_){return path}}
+function rtAbsP(id){return rtAbs(rtPath({p:'product',a:id+'-0'},lang,rtD()))}
+function rtCat(){if(R.p==='catalog'){const c=R.a&&R.a.cat||R.a;F.cat=c==='rebar'||c==='form'?c:'all'}}
+function rtSet(push){if(R.p==='404')return;const path=rtHere();try{if(rtPM()){if(location.pathname!==path||push&&location.hash)history[push?'pushState':'replaceState'](null,'',path+(push?'':location.search))}
+ else if(location.protocol!=='file:'||location.hash){const h='#'+path;if(location.hash!==h)history[push?'pushState':'replaceState'](null,'',h)}}catch(_){}}
+function rtMetaTag(sel,mk){let el=document.head.querySelector(sel);if(!el){el=mk();document.head.appendChild(el)}return el}
+function rtHead(){const D=rtD(),Rn=rtNorm(),m=rtMeta(Rn,lang,D);document.title=m.t;
+ const md=(n,v,prop)=>{const el=rtMetaTag(`meta[${prop?'property':'name'}="${n}"]`,()=>{const e=document.createElement('meta');e.setAttribute(prop?'property':'name',n);return e});el.setAttribute('content',v)};
+ md('description',m.d);md('og:title',m.t,1);md('og:description',m.d,1);md('og:locale',lang==='en'?'en_US':'uk_UA',1);
+ if(!rtPM())return;const c404=R.p==='404';document.head.querySelectorAll('link[rel=canonical],link[rel=alternate][hreflang]').forEach(e=>{if(c404)e.remove()});if(c404)return;const here=location.origin+rtPath(Rn,lang,D);md('og:url',here,1);
+ rtMetaTag('link[rel="canonical"]',()=>{const e=document.createElement('link');e.rel='canonical';return e}).href=here;
+ [['uk','uk'],['en','en'],['x-default','uk']].forEach(([hl,L])=>{rtMetaTag(`link[rel="alternate"][hreflang="${hl}"]`,()=>{const e=document.createElement('link');e.rel='alternate';e.hreflang=hl;return e}).href=location.origin+rtPath(Rn,L,D)})}
+/* завантаження: дані з бази → маршрут з адреси (викликається перед першим рендером) */
+function rtBoot(){try{pzApply(window.PZ_DATA)}catch(e){console.warn('PZ',e)}
+ let h='';try{h=location.hash||''}catch(_){}
+ if(h.length>1&&h[1]!=='/'){const n=fromHash();if(n.p!=='404'){R=n;rtCat();return}}
+ const pm=rtPM(),path=pm?location.pathname:(h.slice(0,2)==='#/'?h.slice(1):null);if(path==null)return;
+ const m=rtParse(path,rtD(),rtIx());if(m){R=m.R;lang=m.L;rtCat()}else R={p:'404'}}
+/* ---------- застосування даних з адмінки ---------- */
+function pzPh(){return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#ECEEF3"/><text x="200" y="210" text-anchor="middle" font-family="Arial" font-size="26" font-weight="700" fill="#A3A9B6" letter-spacing="4">PLASTIZA</text></svg>')}
+function pzApply(Z){if(!Z||typeof Z!=='object')return;
+ if(Z.seo){RT_SEO=Z.seo.meta||{};RT_SL=Z.seo.slugs||{}}
+ if(Array.isArray(Z.prods)&&Z.prods.length){P.length=0;Z.prods.forEach(p=>{if(!p||p.on===false||!Array.isArray(p.v)||!p.v.length)return;p.sp=p.sp||[];p.n=p.n||{uk:'',en:''};p.d=p.d||{uk:'',en:''};P.push(p);
+   if(p.img)IMGS[p.id]=p.img;else if(!IMGS[p.id])IMGS[p.id]=pzPh();
+   p.v.forEach((v,i)=>{const k=p.id+'-'+i;if(p.vimg&&p.vimg[i])IMGV[k]=p.vimg[i];else if(p.img||!IMGV[k])IMGV[k]=IMGS[p.id]});
+   if(Array.isArray(p.tg)&&p.tg.length)TAGS[p.id]=p.tg;if(p.pos!==undefined){if(p.pos)POS[p.id]=p.pos;else delete POS[p.id]}})}
+ if(Array.isArray(Z.posts)){POSTS.length=0;Z.posts.filter(p=>p&&p.st!=='draft').forEach(p=>{const o=Object.assign({},p);if(typeof o.img==='string'&&o.img&&!IMGS[o.img]){IMGS['b'+o.id]=o.img;o.img='b'+o.id}else if(o.img==null||o.img==='')o.img=IMGS[o.id]?o.id:1;
+   if(!o.min){const w=(o.b&&o.b[0]||[]).map(x=>String(x[1]||'')).join(' ').split(/\s+/).length;o.min=Math.max(1,Math.round(w/180))}
+   o.tag=o.tag||['',''];o.t=o.t||['',''];o.e=o.e||['',''];o.b=o.b||[[],[]];POSTS.push(o)});
+  try{POSTS.forEach(p=>{const k=p.tag[0];if(k&&!BGC.uk.some(x=>x[0]===k)){BGC.uk.push([k,k]);BGC.en.push([k,p.tag[1]||k])}})}catch(_){}}
+ if(Array.isArray(Z.faqs)&&Z.faqs.length){['uk','en'].forEach(L=>{FQ[L].items=Z.faqs.filter(f=>f&&f.on!==false).map(f=>[f.c||'gen',(f.q&&(f.q[L]||f.q.uk))||'',(f.a&&(f.a[L]||f.a.uk))||''])})}
+ if(Array.isArray(Z.tick)&&Z.tick.length){TICK.length=0;Z.tick.forEach(x=>x&&TICK.push(x))}
+ if(Z.contacts)ctApply(Z.contacts);
+ if(Z.texts&&Z.texts.T){['uk','en'].forEach(L=>{const o=Z.texts.T[L]||{};Object.keys(o).forEach(k=>{if(o[k]!==''&&o[k]!=null&&T[L])T[L][k]=o[k]})})}
+ TXC={};RT_IX=null}
+/* контакти: оновлюємо дані сайту + підміна захардкоджених значень у розмітці */
+function ctApply(c){CTR=[];const pair=(a,b)=>{if(a&&b&&a!==b)CTR.push([a,b])},dg=s=>String(s||'').replace(/\D/g,'');
+ if(Array.isArray(c.phones)&&c.phones.length){const old=PH.slice();c.phones.forEach((p,i)=>{if(!p)return;if(old[i]){pair(old[i],p);pair(dg(old[i]),dg(p))}});PH.splice(0,PH.length,...c.phones.filter(Boolean))}
+ if(c.email)pair('plastiza.sale@gmail.com',c.email);
+ if(Array.isArray(c.addr)&&c.addr.length){c.addr.forEach((a,i)=>{if(!a)return;if(AD[i]){pair(AD[i][0],a.uk);pair(AD[i][1],a.en)}AD[i]=[a.uk||'',a.en||a.uk||'']});AD.length=Math.min(AD.length,c.addr.length)}
+ if(Array.isArray(c.hours)&&c.hours.length){c.hours.forEach((h,i)=>{if(HOURS[i]){pair(HOURS[i][0],h[0]);pair(HOURS[i][1],h[1])}HOURS[i]=[h[0]||'',h[1]||h[0]||'']});HOURS.length=c.hours.length}
+ if(c.edrpou&&/^\d{6,10}$/.test(c.edrpou)){pair('ЄДРПОУ '+EDRPOU,'ЄДРПОУ '+c.edrpou);EDRPOU=c.edrpou;EDRPOU_URL='https://opendatabot.ua/c/'+EDRPOU}
+ if(c.msgr)MSGR.forEach(m=>{const u=c.msgr[m[0]];if(u&&u!==m[1]){pair(m[1],u);m[1]=u}})}
+function ctDom(root){if(!CTR||!CTR.length||!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){let t=n.nodeValue,o=t;CTR.forEach(([a,b])=>{if(t.indexOf(a)>-1)t=t.split(a).join(b)});if(t!==o)n.nodeValue=t}
+ root.querySelectorAll('a[href],[data-cp],[data-copy]').forEach(el=>['href','data-cp','data-copy'].forEach(at=>{let v=el.getAttribute(at);if(!v)return;const o=v;CTR.forEach(([a,b])=>{if(v.indexOf(a)>-1)v=v.split(a).join(b)});if(v!==o)el.setAttribute(at,v)}))}
+/* тексти сторінок: заміна блоку, якщо його HTML збігається зі стандартним */
+/* регулярні вирази всередині функцій: txPass() викликається ще до виконання цього блоку */
+function txInl(c){return /^(B|I|EM|STRONG|BR|SUP|SUB|SMALL|U|MARK|ABBR|TIME|WBR|S|Q|CODE)$/.test(c.tagName)||(c.tagName==='SPAN'||c.tagName==='A')&&!c.getAttribute('class')}
+function txLeaf(el){if(!/\S/.test(el.textContent))return false;const ok=e=>{for(const c of e.children){if(!txInl(c)||!ok(c))return false}return true};return ok(el)}
+function txCands(root){const out=[];const walk=el=>{for(const c of el.children){if(/^(SCRIPT|STYLE|SVG|TEXTAREA|SELECT|OPTION|INPUT|IMG|VIDEO|CANVAS|IFRAME|TEMPLATE|PICTURE|svg)$/.test(c.tagName))continue;if(txLeaf(c))out.push(c);else walk(c)}};if(root)walk(root);return out}
+function txDec(n){return n.nodeType===1&&(n.getAttribute('aria-hidden')==='true'||n.tagName==='svg'||/^[↗→←↓✕✓✦•·+]$/.test(n.textContent.trim()))}
+/* редагована частина блоку (без іконок-стрілок) — так її показує адмінка */
+function txVal(el){const c=el.cloneNode(true);[...c.childNodes].forEach(n=>{if(txDec(n))n.remove()});return c.innerHTML.trim()}
+function txSet(el,val){const kids=[...el.childNodes],dec=kids.filter(txDec);if(!dec.length){el.innerHTML=val;return}
+ const first=kids.findIndex(n=>!dec.includes(n)&&/\S/.test(n.textContent)),pre=dec.filter(n=>first>-1&&kids.indexOf(n)<first),suf=dec.filter(n=>!pre.includes(n));
+ const body=kids.filter(n=>!dec.includes(n)),tx=body.map(n=>n.textContent).join('');if(pre.length&&/^\s/.test(tx))val=' '+val;if(suf.length&&/\s$/.test(tx))val=val+' ';
+ el.innerHTML=val;pre.reverse().forEach(n=>el.prepend(n));suf.forEach(n=>el.append(n))}
+function txMap(){const Z=window.PZ_DATA,o=Z&&Z.texts&&Z.texts[lang];if(!o)return null;TXC=TXC||{};if(TXC[lang])return TXC[lang];const m=new Map();Object.keys(o).forEach(k=>{const v=o[k];if(typeof v==='string'&&v!=='')m.set(k,v)});return TXC[lang]=m}
+function txPass(){const M=txMap();['view','foot','side'].forEach(id=>{const r=document.getElementById(id);if(!r)return;if(window.__txCap&&id!=='side')window.__txCap(id,r);
+ if(M&&M.size)txCands(r).forEach(el=>{const k=el.innerHTML.trim();if(M.has(k))txSet(el,M.get(k))});ctDom(r)});lnPass()}
+/* посилання в статтях: href="@ключ" (з адмінки) → справжня адреса сторінки */
+function lnPass(){document.querySelectorAll('#view a[href^="@"]').forEach(a=>{const k=a.getAttribute('href').slice(1);a.setAttribute('href',rtPath(rtFromKey(k),lang,rtD()));a.dataset.rk=k})}
+/* внутрішні посилання <a href="/…"> відкриваємо без перезавантаження */
+document.addEventListener('click',e=>{if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;const a=e.target.closest&&e.target.closest('#view a[href],#foot a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;
+ let h=a.getAttribute('href')||'';if(a.dataset.rk){const m=rtFromKey(a.dataset.rk);e.preventDefault();go(m.p,m.a);return}if(h[0]!=='/'||h[1]==='/')return;const m=rtParse(h,rtD(),rtIx());if(!m)return;e.preventDefault();if(m.L!==lang)lang=m.L;go(m.R.p,m.R.a)});
+/* одразу після першого рендеру — до того, як інші шари перетворять стрілки на іконки */
+function rtAfter(){try{txPass()}catch(e){console.warn(e)}}
+/* ---------- навігація ---------- */
+go=function(p,a){const keep=p==='product'&&R.p==='product'&&String(R.a).split('-')[0]===String(a).split('-')[0];R={p,a};rtCat();if(p==='product')F.col=COL[0];try{menu(false)}catch(_){}rtSet(true);render();if(!keep)scrollTo(0,0)};
+var _rtFH=fromHash;fromHash=function(){let h='';try{h=location.hash||''}catch(_){}
+ if(h.slice(0,2)==='#/'){const m=rtParse(h.slice(1),rtD(),rtIx());if(m){lang=m.L;return m.R}return {p:'404'}}
+ if(rtPM())return R;return _rtFH()};
+addEventListener('popstate',()=>{if(!rtPM())return;const m=rtParse(location.pathname,rtD(),rtIx()),n=m?m.R:{p:'404'};if(m&&rtKey(n)===rtKey(rtNorm())&&m.L===lang)return;
+ const keep=n.p==='product'&&R.p==='product'&&String(R.a).split('-')[0]===String(n.a).split('-')[0];if(m)lang=m.L;R=n;rtCat();render();if(!keep)scrollTo(0,0)});
+var _rtRender=render;render=function(){const r=_rtRender.apply(this,arguments);try{txPass();rtSet(false);rtHead()}catch(e){console.warn(e)}return r};
+if(typeof updCat==='function'){var _rtUpd=updCat;updCat=function(){const r=_rtUpd.apply(this,arguments);try{rtSet(false);rtHead()}catch(_){}return r}}
+/* перший рендер уже відбувся до цього блоку — доводимо адресу, мета й тексти */
+try{txPass();rtSet(false);rtHead();try{side()}catch(_){}}catch(e){console.warn(e)}
+/* превʼю поза доменом: підтягуємо дані з бази сайту */
+if(!window.PZ_DATA&&!rtPM()&&location.protocol!=='file:'){fetch('https://plastiza.org/api/page?json=1').then(r=>r.ok?r.json():null).then(j=>{if(!j)return;window.PZ_DATA=j;pzApply(j);const k=rtKey(rtNorm());if(R.p==='product'||R.p==='post'){if(!rtParse(rtHere(),rtD(),rtIx()))R={p:'home'}}render()}).catch(()=>{})}
+/*SYNC-END*/

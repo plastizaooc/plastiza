@@ -3,8 +3,9 @@
 const API = 'https://blob.vercel-storage.com';
 export const BLOB_TOKEN = () => (process.env.BLOB_READ_WRITE_TOKEN || '').trim();
 export const hasBlob = () => !!BLOB_TOKEN();
+const TR = { а:'a',б:'b',в:'v',г:'h',ґ:'g',д:'d',е:'e',є:'ie',ж:'zh',з:'z',и:'y',і:'i',ї:'i',й:'i',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'kh',ц:'ts',ч:'ch',ш:'sh',щ:'shch',ь:'',ю:'iu',я:'ia',ы:'y',э:'e',ё:'io',ъ:'' };
 export const safeName = (n) => {
-  const s = String(n || 'file').normalize('NFKD').replace(/[^\w.\-]+/g, '_').replace(/_+/g, '_').replace(/^[_.]+/, '').slice(-80);
+  const s = String(n || 'file').toLowerCase().replace(/[а-яіїєґыэёъ]/g, (c) => TR[c] ?? '').normalize('NFKD').replace(/[^\w.\-]+/g, '-').replace(/-+/g, '-').replace(/^[-.]+/, '').slice(-80);
   return s || 'file';
 };
 export async function blobPut(path, body, contentType) {

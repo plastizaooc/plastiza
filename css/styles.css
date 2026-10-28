@@ -4080,3 +4080,15 @@ html body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#0B35B8!import
 :root[data-theme="dark"] body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}}
 /*FIX1-END*/
+
+/*FIX2-START*/
+/* SEO-вміст до запуску JS (сервер підставляє в #view) */
+.ssr{padding:120px 16px 60px;max-width:900px}.ssr h1{font-size:clamp(26px,3vw,40px);line-height:1.15;margin:0 0 16px}.ssr h2{font-size:20px;margin:28px 0 8px}.ssr p,.ssr li,.ssr dd{color:var(--mut);line-height:1.6}.ssr-nav ul{display:flex;flex-wrap:wrap;gap:8px 16px;padding:0;list-style:none;margin:32px 0 0}.ssr a{color:inherit}
+/* статті блогу: списки, цитати, фото, кнопки з адмінки */
+.pa-b ul,.pa-b ol{margin:0 0 1.2em;padding-left:1.3em;line-height:1.7}.pa-b li{margin:.3em 0}
+.pa-b blockquote{margin:1.4em 0;padding:4px 0 4px 20px;border-left:2px solid #0B35B8;font-size:1.08em;color:var(--ink)}
+.pa-b figure{margin:1.6em 0}.pa-b figure img{width:100%;height:auto;border-radius:20px;display:block}
+.pa-b a:not(.btn){color:#0B35B8;text-decoration:underline;text-underline-offset:3px}.pa-b a.btn{display:inline-flex;text-decoration:none;margin:.4em 0}
+:root[data-theme="dark"] .pa-b a:not(.btn){color:#7FA0FF}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pa-b a:not(.btn){color:#7FA0FF}}
+.pa-b h3{margin:1.4em 0 .5em}
+/*FIX2-END*/
