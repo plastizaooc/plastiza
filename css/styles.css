@@ -4079,6 +4079,8 @@ html body #view :is(.st2,.sp6-st).stk-row>li::after{content:""!important;display
 html body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#0B35B8!important;border-color:#0B35B8!important;box-shadow:0 0 0 4px rgba(11,53,184,.16)}
 :root[data-theme="dark"] body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body #view :is(.st2,.sp6-st).stk>li.stk-on::after{background:#5A86FF!important;border-color:#5A86FF!important;box-shadow:0 0 0 4px rgba(90,134,255,.2)}}
+/* ===== форми: якщо обрано Email — поле телефону разом із плашкою країни ховається ===== */
+.phw:has(> input[hidden]),.phw:has(> input[type=tel]:disabled[hidden]){display:none!important}
 /*FIX1-END*/
 
 /*FIX2-START*/
