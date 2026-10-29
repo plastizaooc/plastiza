@@ -42,6 +42,8 @@ render=function(){if(__pzT){__pzT=[];}
    __pzR0();var hh=document.getElementById('view').innerHTML;K.forEach(function(k){if(hh.indexOf('Q'+k+'Q')>-1)dep.push(k)});window.__pzDep=dep}catch(e){window.__pzDep=null}}}
  if(__pzB&&__pzT===null&&!window.__txCap){var v=document.getElementById('view'),k=[].slice.call(v.children);__pzT=[];
   if(k.length>3){__pzT=k.slice(2);__pzT.forEach(function(n){n.remove()});document.documentElement.classList.add('pz-part')}}return r};
+/* решту сторінки можна домалювати одразу (напр., кнопка «Гортайте» веде до наступного блоку) */
+window.__pzTailNow=function(){var v=document.getElementById('view');if(!__pzT||!v)return;while(__pzT.length)v.appendChild(__pzT.shift())};
 function __pzTail(done){var v=document.getElementById('view');
  (function next(){if(!__pzT||!__pzT.length){document.documentElement.classList.remove('pz-part');__pzTD=1;try{window.rtAfter&&rtAfter()}catch(e){}done();return}
   var n=__pzT.shift();v.appendChild(n);requestAnimationFrame(function(){setTimeout(next,0)})})()}
@@ -157,6 +159,22 @@ side();
  const run=()=>document.querySelectorAll('#view :is(.pa-c,.bc-c,.bc2-c)>img').forEach(i=>{const c=i.parentElement,ph=isPh(i.getAttribute('src'));if(c.classList.contains('is-ph')!==ph)c.classList.toggle('is-ph',ph)});
  let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;run()})}).observe(document.getElementById('view'),{childList:true,subtree:true});run()})();
 /*FIXJS5-END*/
+/*FIXJS7-START*/
+/* 29.10: «Гортайте ↓» — натискається й прокручує до наступного блоку: його верхній край стає верхом екрана */
+(function(){
+ const nextOf=c=>{let el=c.closest('.st6')||c.closest('section,.bd');while(el&&el.id!=='view'&&el!==document.body){let n=el.nextElementSibling;while(n&&!n.getBoundingClientRect().height)n=n.nextElementSibling;if(n)return n;el=el.parentElement}return null};
+ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('.st6-c');if(!c)return;e.preventDefault();
+  try{window.__pzTailNow&&window.__pzTailNow()}catch(_){}
+  const t=nextOf(c);if(!t)return;const top=()=>Math.round(t.getBoundingClientRect().top+scrollY);
+  scrollTo({top:top(),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  /* після прокрутки — точне вирівнювання (блоки вище могли змінити висоту) */
+  let k=0;const fix=()=>{const d=t.getBoundingClientRect().top;if(Math.abs(d)>2&&k++<3){scrollTo({top:scrollY+d,behavior:'auto'})}};
+  if('onscrollend' in window)addEventListener('scrollend',fix,{once:true});setTimeout(fix,1100)});
+ document.addEventListener('keydown',e=>{const c=e.target.closest&&e.target.closest('.st6-c');if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();c.click()}});
+ const a11y=()=>document.querySelectorAll('.st6-c:not([tabindex])').forEach(c=>{c.tabIndex=0;c.setAttribute('role','button')});
+ new MutationObserver(()=>requestAnimationFrame(a11y)).observe(document.getElementById('view'),{childList:true,subtree:true});a11y();
+})();
+/*FIXJS7-END*/
 /*SYNC-START*/
 /* ===================== Синхронізація з адмінкою + SEO-адреси =====================
    window.PZ_DATA підставляє сервер (api/page.js) з бази: товари, статті, FAQ, бігучий рядок,
