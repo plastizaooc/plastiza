@@ -7,9 +7,9 @@ import { hasBlob, blobPut, blobDel, safeName } from './_blob.js';
 
 const SA = 'Суперадмін';
 const ROLE_PERMS = {
-  'Суперадмін': ['leads', 'clients', 'products', 'content', 'seo', 'contacts', 'mail', 'i18n', 'team', 'integrations'],
-  'Менеджер': ['leads', 'clients', 'products'],
-  'Контент-менеджер': ['content', 'seo', 'i18n', 'mail'],
+  'Суперадмін': ['leads', 'clients', 'products', 'content', 'seo', 'contacts', 'mail', 'i18n', 'team', 'integrations', 'bulk', 'delete'],
+  'Менеджер': ['leads', 'clients', 'products', 'bulk'],
+  'Контент-менеджер': ['content', 'seo', 'i18n', 'mail', 'bulk'],
 };
 const STATUSES = ['new', 'work', 'kp', 'done'];
 const ST_LABEL = { new: 'Новий', work: 'В обробці', kp: 'КП надіслано', done: 'Закрито' };
@@ -128,6 +128,36 @@ const OPS = {
     if (ev.length) await log(me, `Заявка #${id}: ${ev.map((e) => e[1]).join(', ')}`, 'Заявки');
     return {};
   },
+  /* масові дії із заявками: статус / відповідальний (право «bulk») і видалення (право «delete») */
+  async 'leads.bulk'({ ids, status, manager_id }, req, me) {
+    need(can(me, 'bulk'), 403, 'Немає права на масові дії');
+    ids = (Array.isArray(ids) ? ids : []).map(Number).filter(Boolean).slice(0, 500); need(ids.length, 400, 'Не вибрано заявок');
+    if (status) need(STATUSES.includes(status), 400, 'Невідомий статус');
+    let mName = null; if (manager_id !== undefined && manager_id) { const m = (await sql('SELECT name FROM users WHERE id = $1', [manager_id]))[0]; need(m, 400, 'Невідомий менеджер'); mName = m.name; }
+    const rows = await sql('SELECT id, status, manager_id FROM leads WHERE id = ANY(string_to_array($1, chr(44))::int[])', [ids.join(',')]); let n = 0;
+    for (const l of rows) {
+      const ev = [];
+      if (status && status !== l.status) ev.push(['status', `Статус: ${ST_LABEL[status]}`]);
+      if (manager_id !== undefined && (manager_id || null) !== l.manager_id) ev.push(['assign', mName ? `Призначено: ${mName}` : 'Знято відповідального']);
+      if (!ev.length) continue;
+      await sql('UPDATE leads SET status = $2, manager_id = $3 WHERE id = $1', [l.id, status || l.status, manager_id === undefined ? l.manager_id : (manager_id || null)]);
+      for (const [k, t] of ev) await sql('INSERT INTO lead_events(lead_id, kind, text, user_id) VALUES($1,$2,$3,$4)', [l.id, k, t, me.id]);
+      n++;
+    }
+    if (n) await log(me, `Масово змінив(ла) ${n} ${n % 10 === 1 && n % 100 !== 11 ? 'заявку' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'заявки' : 'заявок'}${status ? ': ' + ST_LABEL[status] : ''}${mName ? ' → ' + mName : manager_id === null ? ' (без відповідального)' : ''}`, 'Заявки');
+    return { changed: n };
+  },
+  async 'leads.delete'({ ids }, req, me) {
+    need(can(me, 'delete'), 403, 'Немає права на видалення');
+    ids = (Array.isArray(ids) ? ids : []).map(Number).filter(Boolean).slice(0, 500); need(ids.length, 400, 'Не вибрано заявок');
+    const rows = await sql('SELECT id, files FROM leads WHERE id = ANY(string_to_array($1, chr(44))::int[])', [ids.join(',')]);
+    const urls = rows.flatMap((r) => (Array.isArray(r.files) ? r.files : []).map((f) => f && (f.u || f.url || (typeof f === 'string' ? f : ''))).filter((u) => /vercel-storage\.com/.test(String(u))));
+    await sql('DELETE FROM lead_events WHERE lead_id = ANY(string_to_array($1, chr(44))::int[])', [ids.join(',')]);
+    await sql('DELETE FROM leads WHERE id = ANY(string_to_array($1, chr(44))::int[])', [ids.join(',')]);
+    if (urls.length && hasBlob()) await blobDel(urls).catch(() => {});
+    await log(me, `Видалив(ла) заявки: ${rows.map((r) => '#' + r.id).join(', ')}`, 'Заявки');
+    return { deleted: rows.length };
+  },
   async 'leads.event'({ id, kind, text }, req, me) {
     need(String(text || '').trim(), 400, 'Опишіть дію');
     await sql('INSERT INTO lead_events(lead_id, kind, text, user_id) VALUES($1,$2,$3,$4)', [id, String(kind || 'note'), String(text).slice(0, 2000), me.id]);
@@ -184,6 +214,13 @@ const OPS = {
     need(key && value !== undefined, 400, 'Немає даних');
     const sec = SET_SEC[String(key)] || 'content';
     need(can(me, sec), 403, 'Немає доступу до цього розділу');
+    /* видалення товарів і статей — лише з правом «delete» */
+    if (['site.prods', 'adm.blog', 'site.posts'].includes(String(key)) && !can(me, 'delete') && Array.isArray(value)) {
+      const prev = (await sql('SELECT value FROM settings WHERE key = $1', [String(key)]))[0];
+      const ids = new Set((Array.isArray(prev && prev.value) ? prev.value : []).map((x) => String(x && x.id)));
+      const now = new Set(value.map((x) => String(x && x.id)));
+      need([...ids].every((i) => now.has(i)), 403, 'Немає права на видалення');
+    }
     await sql(`INSERT INTO settings(key, value, updated_at, updated_by) VALUES($1,$2::jsonb, now(), $3) ON CONFLICT (key) DO UPDATE SET value = $2::jsonb, updated_at = now(), updated_by = $3`, [String(key), JSON.stringify(value), me.id]);
     await log(me, `Зберіг(ла) «${key}»`, section || 'Налаштування');
     return {};

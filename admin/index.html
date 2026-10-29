@@ -2136,6 +2136,84 @@ function pw10(root){(root||document).querySelectorAll('input[type=password]:not(
 new MutationObserver(()=>pw10()).observe(document.body,{childList:true,subtree:true});pw10();
 document.head.insertAdjacentHTML('beforeend',`<style>.pw10{position:relative;display:block;width:100%}.pw10>input{width:100%;padding-right:48px!important;box-sizing:border-box}.pw10-b{all:unset;cursor:pointer;position:absolute;right:6px;top:50%;transform:translateY(-50%);width:36px;height:36px;display:grid;place-items:center;border-radius:10px;color:var(--mut)}.pw10-b:hover{color:var(--ink);background:var(--soft)}.pw10-b:focus-visible{outline:2px solid #0B35B8;outline-offset:1px}</style>`);
 
+/* ===== v11: масові дії в таблицях (заявки, товари, статті) =====
+   Галочки в рядках + «вибрати всі», панель дій знизу. Права:
+   «Масові дії» (bulk) — змінити статус / відповідального, показати / приховати, опублікувати / в чернетку;
+   «Видалення» (delete) — видалити вибране. Суперадмін має обидва; іншим вмикаються в «Команда й доступ». */
+(function(){
+if(typeof SECS!=='undefined'&&!SECS.some(s=>s[0]==='bulk'))SECS.push(['bulk','Масові дії (статуси, показ на сайті)'],['delete','Видалення (заявки, товари, статті)']);
+const canP=k=>!LIVE||ME.role==='Суперадмін'||(ME.perms||[]).includes(k);
+const BK={leads:{row:'data-lead',name:['заявку','заявки','заявок']},products:{row:'data-pe9',name:['товар','товари','товарів']},blog:{row:'data-bo9',name:['статтю','статті','статей']}};
+const pl=(n,f)=>{const m=n%10,h=n%100;return n+' '+(m===1&&h!==11?f[0]:m>=2&&m<=4&&(h<12||h>14)?f[1]:f[2])};
+let SEL=new Set(),SV=null;
+function cfg(){const c=BK[VIEW];if(!c)return null;if(VIEW==='products'&&typeof PDR!=='undefined'&&PDR)return null;if(VIEW==='blog'&&typeof BSEL9!=='undefined'&&BSEL9!=null)return null;return c}
+function decorate(){const c=cfg();if(SV!==VIEW){SEL=new Set();SV=VIEW}
+ if(!c||!(canP('bulk')||canP('delete'))){bar();return}
+ document.querySelectorAll('#main table').forEach(t=>{const rows=[...t.querySelectorAll(`tbody tr[${c.row}]`)];if(!rows.length)return;
+  if(!t.querySelector('thead .bk11-c')){const th=t.querySelector('thead th');if(th){th.classList.add('bk11');th.insertAdjacentHTML('afterbegin','<label class="bk11-c" title="Вибрати всі"><input type="checkbox" data-bkall aria-label="Вибрати всі"></label>')}t.classList.add('bk11-t')}
+  rows.forEach(r=>{if(r.querySelector('.bk11-c'))return;const id=r.getAttribute(c.row),td=r.querySelector('td');if(!td)return;td.classList.add('bk11');
+   td.insertAdjacentHTML('afterbegin',`<label class="bk11-c"><input type="checkbox" data-bk="${id}" ${SEL.has(id)?'checked':''} aria-label="Вибрати"></label>`);
+   td.querySelector('.bk11-c').addEventListener('click',e=>e.stopPropagation());r.classList.toggle('bk11-on',SEL.has(id))});
+  const wrap=t.closest('.tw')||t;if(!wrap.previousElementSibling||!wrap.previousElementSibling.classList.contains('bk11-allw'))wrap.insertAdjacentHTML('beforebegin','<label class="bk11-allw"><input type="checkbox" data-bkall data-bkm aria-label="Вибрати всі"><span>Вибрати всі</span></label>');
+  const am=wrap.previousElementSibling.querySelector('[data-bkall]');if(am){const ids=rows.map(r=>r.getAttribute(c.row));am.checked=ids.length&&ids.every(i=>SEL.has(i));am.indeterminate=!am.checked&&ids.some(i=>SEL.has(i))}
+  const all=t.querySelector('thead [data-bkall]');if(all){const ids=rows.map(r=>r.getAttribute(c.row));all.checked=ids.length&&ids.every(i=>SEL.has(i));all.indeterminate=!all.checked&&ids.some(i=>SEL.has(i));all.closest('label').addEventListener('click',e=>e.stopPropagation())}});
+ bar()}
+function bar(){let b=document.getElementById('bkbar');const c=cfg();if(!c||!SEL.size){if(b)b.remove();document.body.classList.remove('has-bk');return}
+ if(!b){b=document.createElement('div');b.id='bkbar';b.className='bkbar';document.body.appendChild(b)}document.body.classList.add('has-bk');
+ const st=canP('bulk'),del=canP('delete');let acts='';
+ if(VIEW==='leads'&&st)acts+=`<select class="sel" data-bkst aria-label="Новий статус"><option value="">Змінити статус…</option>${Object.entries(ST).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('')}</select>`+(LIVE&&TEAM.length?`<select class="sel" data-bkmg aria-label="Відповідальний"><option value="">Відповідальний…</option><option value="0">— без відповідального</option>${TEAM.filter(u=>u.on).map(u=>`<option value="${u.id}">${esc(u.n)}</option>`).join('')}</select>`:'');
+ if(VIEW==='products'&&st)acts+=`<button class="btn s sm" data-bkon="1">Показати на сайті</button><button class="btn s sm" data-bkon="0">Приховати</button>`;
+ if(VIEW==='blog'&&st)acts+=`<button class="btn s sm" data-bkpub="pub">Опублікувати</button><button class="btn s sm" data-bkpub="draft">У чернетки</button>`;
+ if(del)acts+=`<button class="btn s sm bk11-del" data-bkdel>${ic('trash',14)}Видалити</button>`;
+ b.innerHTML=`<span><b>Вибрано: ${pl(SEL.size,c.name)}</b><button class="bk11-x" data-bkclr>Скасувати</button></span><div>${acts||'<small class="muted">Немає прав на масові дії</small>'}</div>`}
+document.addEventListener('change',async e=>{const t=e.target;
+ if(t.matches('[data-bk]')){t.checked?SEL.add(t.dataset.bk):SEL.delete(t.dataset.bk);t.closest('tr').classList.toggle('bk11-on',t.checked);decorate();return}
+ if(t.matches('[data-bkall]')){const c=cfg(),tb=t.closest('table')||(()=>{const w=t.closest('.bk11-allw').nextElementSibling;return w.matches('table')?w:w.querySelector('table')})();tb.querySelectorAll(`tbody tr[${c.row}]`).forEach(r=>{const id=r.getAttribute(c.row);t.checked?SEL.add(id):SEL.delete(id);const cb=r.querySelector('[data-bk]');if(cb)cb.checked=t.checked;r.classList.toggle('bk11-on',t.checked)});decorate();return}
+ if(t.matches('[data-bkst]')&&t.value){const s=t.value;if(!confirm(`Змінити статус для ${pl(SEL.size,BK.leads.name)} на «${ST[s][0]}»?`)){t.value='';return}await leadsBulk({status:s},`Статус змінено: ${ST[s][0]}`);return}
+ if(t.matches('[data-bkmg]')&&t.value!==''){const id=+t.value,u=TEAM.find(x=>x.id===id);if(!confirm(`${u?'Призначити '+u.n:'Зняти відповідального'} для ${pl(SEL.size,BK.leads.name)}?`)){t.value='';return}await leadsBulk({manager_id:id||null},u?`Призначено: ${u.n}`:'Відповідального знято');return}});
+async function leadsBulk(args,msg){const ids=[...SEL].map(Number);
+ if(!LIVE){L.forEach(l=>{if(ids.includes(+l.id)){if(args.status)l.st=args.status}});SEL.clear();render();toast(msg+' (демо)');return}
+ try{const r=await api('leads.bulk',{ids,...args});SEL.clear();await loadAll();render();toast(`${msg} · ${pl(r.changed||0,BK.leads.name)}`)}catch(er){toast('⚠️ '+er.message)}}
+document.addEventListener('click',async e=>{const q=s=>e.target.closest(s);
+ if(q('[data-bkclr]')){SEL.clear();render();return}
+ const on=q('[data-bkon]');if(on){const v=on.dataset.bkon==='1',ids=[...SEL];PR.forEach(p=>{if(ids.includes(String(p.id)))p.on=v});SEL.clear();if(await sv9(['site.prods'],v?'Товари показано на сайті':'Товари приховано'))logIt(`${v?'Показав(ла)':'Приховав(ла)'} товари: ${ids.length}`,'Товари');render();return}
+ const pb=q('[data-bkpub]');if(pb){const v=pb.dataset.bkpub,ids=[...SEL];BL.forEach(b=>{if(ids.includes(String(b.id)))b.st=v});SEL.clear();if(await sv9(['adm.blog','site.posts'],v==='pub'?'Статті опубліковано':'Статті перенесено в чернетки'))logIt(`${v==='pub'?'Опублікував(ла)':'Зняв(ла) з публікації'} статті: ${ids.length}`,'Блог');render();return}
+ if(q('[data-bkdel]')){const c=cfg(),ids=[...SEL];if(!c||!ids.length)return;
+  if(!confirm(`Видалити ${pl(ids.length,c.name)} назавжди? Цю дію не можна скасувати.`))return;
+  if(VIEW==='leads'){if(!LIVE){for(let i=L.length-1;i>=0;i--)if(ids.includes(String(L[i].id)))L.splice(i,1);SEL.clear();render();toast('Видалено (демо)');return}
+   try{const r=await api('leads.delete',{ids:ids.map(Number)});SEL.clear();await loadAll();render();toast(`Видалено: ${pl(r.deleted||0,BK.leads.name)}`)}catch(er){toast('⚠️ '+er.message)}return}
+  if(VIEW==='products'){const old=pathsOf9(DA9());PR.filter(p=>ids.includes(String(p.id))).forEach(p=>{const cat=p.cat==='form'?'cat_form':'cat_rebar';Object.keys(old).filter(k=>k.startsWith('p'+p.id+'-')).forEach(k=>addRedir9(old[k],path9(cat,k.split('|')[1])))});
+   for(let i=PR.length-1;i>=0;i--)if(ids.includes(String(PR[i].id)))PR.splice(i,1);SEL.clear();if(await sv9(['site.prods','redirects'],'Товари видалено — старі адреси ведуть на каталог'))logIt(`Видалив(ла) товари: ${ids.length}`,'Товари');render();return}
+  if(VIEW==='blog'){const old=pathsOf9(DA9());ids.forEach(id=>Object.keys(old).filter(k=>k.startsWith('b'+id+'|')).forEach(k=>addRedir9(old[k],path9('blog',k.split('|')[1]))));
+   for(let i=BL.length-1;i>=0;i--)if(ids.includes(String(BL[i].id)))BL.splice(i,1);SEL.clear();if(await sv9(['adm.blog','site.posts','redirects'],'Статті видалено — старі адреси ведуть у блог'))logIt(`Видалив(ла) статті: ${ids.length}`,'Блог');render();return}}});
+const _r11=render;render=function(){const r=_r11.apply(this,arguments);try{decorate()}catch(e){console.warn('bulk',e)}return r};
+document.head.insertAdjacentHTML('beforeend',`<style id="v11css">
+.bk11-t td.bk11,.bk11-t th.bk11{position:relative;padding-left:52px!important}
+.bk11-c{position:absolute;left:12px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:30px;height:30px;cursor:pointer;z-index:1}
+.bk11-c input{width:18px;height:18px;margin:0;accent-color:var(--acc,#0B35B8);cursor:pointer}
+tr.bk11-on,tr.bk11-on>td{background:color-mix(in srgb,var(--acc,#0B35B8) 6%,transparent)!important}
+@media (max-width:760px){tr.bk11-on>td{background:transparent!important}}
+.bk11-allw{display:none;align-items:center;gap:10px;margin:0 0 10px;padding:4px 2px;font-size:14px;cursor:pointer;width:max-content}
+.bk11-allw input{width:20px;height:20px;margin:0;accent-color:var(--acc,#0B35B8)}
+.bkbar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;max-width:calc(100vw - 32px);padding:12px 14px 12px 20px;border-radius:18px;background:var(--surf2,#fff);border:1px solid var(--line);box-shadow:0 20px 50px -18px rgba(10,20,40,.35)}
+.bkbar>span{display:flex;align-items:center;gap:14px;font-size:14px;white-space:nowrap}
+.bkbar>div{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bkbar .sel{height:36px;font-size:13px;width:auto;min-width:170px}
+.bk11-x{all:unset;cursor:pointer;font-size:13px;color:var(--mut);text-decoration:underline}
+.bk11-del{color:#C0362C!important}
+body.has-bk .ebar{bottom:96px}
+@media (max-width:760px){
+ .bkbar{left:12px;right:12px;transform:none;bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:12px;gap:10px}
+ .bkbar>span{width:100%;justify-content:space-between}
+ .bkbar>div{width:100%}.bkbar .sel{flex:1 1 100%;min-width:0;height:44px;font-size:16px}.bkbar .btn{flex:1 1 auto;justify-content:center}
+ .bk11-allw{display:inline-flex}
+ .bk11-t tr[class~="rw"]{position:relative;padding-left:52px!important}
+ .bk11-t td.bk11{position:static!important;padding-left:0!important}
+ .bk11-t td.bk11 .bk11-c{top:12px;transform:none}
+}
+</style>`);
+})();
+
 </script>
 
 </body></html>
