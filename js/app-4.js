@@ -138,6 +138,19 @@ side();
  if(document.readyState==='complete')setTimeout(sched,400);else addEventListener('load',()=>setTimeout(sched,400));
  new MutationObserver(()=>{if(document.readyState==='complete')sched()}).observe(document.getElementById('view'),{childList:true})})();
 /*FIXJS2-END*/
+/*FIXJS4-START*/
+/* 29.10: код країни в полях телефону — за країною відвідувача (визначає сервер за IP);
+   невідомо / прихована / помилка — український. Запам’ятовується на сесію. */
+(function(){if(typeof ccEnhance!=='function'||typeof PCC==='undefined')return;
+ const ok=c=>c&&PCC.some(x=>x[0]===c);let CC=null;try{CC=sessionStorage.getItem('pzcc')}catch(_){}
+ const apply=()=>{if(!ok(CC)||CC==='UA')return;document.querySelectorAll('.phw input[data-cc="UA"]').forEach(el=>{if(!el.value&&!el.dataset.ccg&&document.activeElement!==el){el.dataset.ccg=1;ccSet(el,CC)}})};
+ new MutationObserver(()=>{if(CC)requestAnimationFrame(apply)}).observe(document.body,{childList:true,subtree:true});
+ if(CC)apply();
+ else{const go=()=>fetch('/api/page?geo=1',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(j=>{CC=ok(j.cc)?j.cc:'UA';try{sessionStorage.setItem('pzcc',CC)}catch(_){}apply()}).catch(()=>{CC='UA'});
+  if(/^(localhost|127\.)/.test(location.hostname)||location.protocol==='file:'||/claude/.test(location.hostname)){CC='UA';return}
+  (window.requestIdleCallback||setTimeout)(go,{timeout:3000})}
+})();
+/*FIXJS4-END*/
 /*SYNC-START*/
 /* ===================== Синхронізація з адмінкою + SEO-адреси =====================
    window.PZ_DATA підставляє сервер (api/page.js) з бази: товари, статті, FAQ, бігучий рядок,

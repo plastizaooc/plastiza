@@ -143,6 +143,8 @@ function preHtml(k, L, Z) {
 
 export async function GET(req) {
   const url = new URL(req.url);
+  /* країна відвідувача (Vercel визначає за IP) — для коду телефону за замовчуванням; не кешується */
+  if (url.searchParams.has('geo')) { const cc = String(req.headers.get('x-vercel-ip-country') || '').toUpperCase(); return new Response(JSON.stringify({ cc: /^[A-Z]{2}$/.test(cc) ? cc : '' }), { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'private, no-store' } }); }
   const rows = await loadDb(), Z = pzOf(rows), D = dataFor(Z), origin = ORIGIN();
   if (url.searchParams.has('json')) return new Response(JSON.stringify(Z), { headers: { 'content-type': 'application/json; charset=utf-8', 'access-control-allow-origin': '*', 'cache-control': 'public, max-age=0, s-maxage=20' } });
   if (url.searchParams.has('sitemap')) return new Response(sitemap(D, origin), { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=0, s-maxage=300' } });

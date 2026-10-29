@@ -2039,6 +2039,26 @@ document.addEventListener('change',e=>{const s=e.target.closest('[data-txsel10]'
 /* SEO: підписи до лічильників на телефоні */
 const _vSeo10=vSeo9;vSeo9=function(){return _vSeo10().replace(/<td><span class="sc ([^"]*)">(\d+)<\/span><\/td><td><span class="sc ([^"]*)">(\d+)<\/span><\/td><\/tr>/g,'<td data-l="Title"><span class="sc $1">$2</span></td><td data-l="Description"><span class="sc $3">$4</span></td></tr>')};V9.seo=vSeo9;
 document.head.insertAdjacentHTML('beforeend',`<style id="v10css">
+/* 29.10: картки-секції з класом grid (напр. «Адреси офісів») мали нульові внутрішні відступи */
+.main>.card.grid.sec{padding:18px 20px;background:var(--surf)}
+@media (max-width:760px){.main>.card.grid.sec{padding:16px}}
+/* 29.10: таблиці розмірів і характеристик товару на телефоні — правила таблиці заявок (порядок, вирівнювання праворуч) їм не підходять */
+@media (max-width:760px){
+.v9-t,.v9-t tbody{display:block!important;width:100%!important}
+.v9-t thead{display:none!important}
+.v9-t tr{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:14px 0!important;border-bottom:1px solid var(--line)}
+.v9-t tr:last-child{border-bottom:0}
+.v9-t td{display:block!important;order:0!important;grid-column:auto!important;padding:0!important;border:0!important;text-align:left!important;min-width:0}
+.v9-t td[data-l]::before{content:attr(data-l)!important;display:block!important;font-size:11px;line-height:1.3;color:var(--mut);margin:0 0 4px!important;text-align:left!important}
+.v9-t td .inp{width:100%!important;min-width:0!important;box-sizing:border-box}
+.v9-t td.v9-a{grid-column:1/-1!important;order:99!important;display:flex!important;gap:6px;justify-content:flex-end}
+.v9-t td.v9-a::before{content:none!important}
+.card .tw{overflow:visible}
+.card .tw:has(> .v9-t){border:0!important;background:none!important;border-radius:0!important;padding:0!important;box-shadow:none!important}
+.v9-t td[data-l="Фото"]{align-self:end}
+.v9-t tr:has(td[data-l="Фото"]) td.v9-a{grid-column:2!important;align-self:end}
+}
+
 .bnav{display:none}
 .ced10{width:32px;height:32px;margin-left:8px;flex:0 0 32px}.ced10w{display:flex;justify-content:flex-end;margin:-4px -4px 4px 0}
 .card-h:has(.ced10){align-items:center}
