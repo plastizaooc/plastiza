@@ -28,7 +28,7 @@ function rtKey(R){if(!R)return 'home';const p=R.p,a=R.a;
  if(p==='soon')return 'srv'+(+a||0);if(p==='pdf')return a==='mob'?'pdfm':'pdf';
  if(p==='product'){const s=String(a).split('-');return 'p'+s[0]+'-'+(+s[1]||0)}
  if(p==='post')return 'b'+a;return p}
-function rtFromKey(k){const m={home:{p:'home'},catalog:{p:'catalog',a:'all'},cat_rebar:{p:'catalog',a:'rebar'},cat_form:{p:'catalog',a:'form'},pdf:{p:'pdf',a:'desk'},pdfm:{p:'pdf',a:'mob'}};
+function rtFromKey(k){const m={home:{p:'home'},catalog:{p:'catalog',a:'all'},cat_rebar:{p:'catalog',a:'rebar'},cat_form:{p:'catalog',a:'form'},pdf:{p:'pdf',a:'desk'},pdfm:{p:'pdf',a:'mob'},blog:{p:'blog'}};
  if(m[k])return m[k];let x;if((x=/^srv(\d+)$/.exec(k)))return {p:'soon',a:x[1]};if((x=/^p(\d+)-(\d+)$/.exec(k)))return {p:'product',a:x[1]+'-'+x[2]};if((x=/^b(.+)$/.exec(k)))return {p:'post',a:x[1]};return {p:k}}
 function rtPath(R,L,D){const pre=L==='en'?'/en':'',k=rtKey(R);let s;
  if(/^p\d+-\d+$/.test(k)){const [id,vi]=k.slice(1).split('-').map(Number),p=(D&&D.prods||[]).find(x=>x.id==id);s=p?rtProdSlug(p,vi,L):'product-'+id}
