@@ -1,13 +1,3 @@
-new MutationObserver(()=>requestAnimationFrame(mp2Slide)).observe(document.getElementById('view'),{childList:true});
-
-document.addEventListener('click',e=>{const li=e.target.closest('.lf3-row li');document.querySelectorAll('.lf3-row li.open').forEach(x=>{if(x!==li)x.classList.remove('open')});if(li&&matchMedia('(hover:none)').matches)li.classList.toggle('open')});
-
-function lfAcc(ms,em,cp){const u=lang==='uk',CP=window.ICO_CP||'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
-PHI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
-MLI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
-row=(href,txt,ic)=>`<div class="lfa-r"><a class="lfa-p" href="${href}">${ic}<span>${txt}</span></a><button type="button" class="dc-cp lfa-cp" data-cp="${txt}" aria-label="${cp} ${txt}" title="${cp}">${CP}</button></div>`,
-it=(t,body,open)=>`<details class="lfa-i" name="lfacc"${open?' open':''}><summary><span>${t}</span><i aria-hidden="true"></i></summary><div class="lfa-b">${body}</div></details>`;
-return `<div class="lfa">${it(u?'Месенджери':'Messengers',`<div class="lfa-ms">${ms}</div>`,1)}${it('Email',row('mailto:'+em,em,MLI))}${it(u?'Телефони':'Phones',PH.map(p=>row('tel:'+p.replace(/[^+\d]/g,''),p,PHI)).join(''))}</div>`}
 document.addEventListener('toggle',e=>{const d=e.target;if(!d.classList||!d.classList.contains('lfa-i')||!d.open)return;d.parentNode.querySelectorAll('.lfa-i[open]').forEach(x=>{if(x!==d)x.open=false})},true);
 
 /* clickable slider dots (blog, related, advantages, process) */
@@ -668,3 +658,24 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  body.append('data',JSON.stringify(d));let tot=0;files.slice(0,5).forEach(f=>{tot+=f.size;if(tot<=4*1024*1024)body.append('files',f,f.name)});
  fetch(LEAD_API,{method:'POST',body}).then(r=>r.ok?r.json():Promise.reject(r.status)).catch(()=>{const el=$('#toast');el.textContent=u?'Не вдалося надіслати заявку. Зателефонуйте нам: +380 (96) 682-14-63':'Could not send the request. Please call +380 96 682 14 63';el.classList.add('on');setTimeout(()=>el.classList.remove('on'),6000)})};
 
+/*FIXJS9-START*//*@BEFORE-BOOT*/
+/* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
+(function(){
+  /* плашка «Потужності ×12 ТПА» — як на головній, у правому нижньому куті відео */
+  const capCard=u=>{try{return `<button class="hv-card" data-cap-go><span class="hv-ck">[ ${u?'Потужності':'Capacity'} ]</span><span class="hv-cn"><b><small>×</small>${CAP.n}</b><span class="hv-cl">${u?'термопласт&shy;автоматів<br>у нашому цеху':'injection molding<br>machines in our shop'}</span><span class="hv-cs">${u?'ТПА<br>у цеху':'IMMs<br>in our shop'}</span></span><img class="hv-ci" src="${String(CAP.img).replace('tpa-macropower-800.webp','tpa-macropower-340.webp')}" alt="" draggable="false"><i aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button>`}catch(e){return ''}};
+ const _about8=about;about=function(){let h=_about8();const u=lang==='uk';
+  h=h.replace('доставляємо їх у будь-яку точку України та Європи.','доставляємо їх по Україні та в будь-яку країну світу.').replace('deliver them anywhere in Ukraine and Europe.','deliver them across Ukraine and worldwide.');
+  /* праворуч — лише відео з підписом, як на головній (без плиток і без плашки потужностей) */
+  const v=`<div class="hv pri-hvc"><div class="hv-f"><img class="hv-v" src="${HV_POSTER}" alt="" fetchpriority="high" decoding="sync"><video class="hv-v" data-src="${HV_SRC}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video><span class="hv-sh" aria-hidden="true"></span><span class="hv-lb">[ ${u?'Власний цех':'Own production'} <i aria-hidden="true">•</i> ${u?'Львів':'Lviv'} ]</span>${capCard(u)}</div></div>`;
+  /* компактні картки (Повний цикл, ТПА, Львів, Світ) — у ліву колонку, над описом */
+  {const r=h.match(/<div class="pri-r pri-row">([\s\S]*?)<div class="pri-v">/);const tl=r?(r[1].match(/<div class="pri-c[^"]*">[\s\S]*?<\/b><\/div>/g)||[]):[];
+   /* картку «ТПА» не показуємо — потужності вже є на плашці у відео та в наступних блоках */
+   const t3=tl.filter(x=>!/<span>(ТПА|IMM|IMMs|Machines)<\/span>|змикання|clamp|800/i.test(x))
+    .map(x=>x.replace(/<span>(Світ|World|UA \+ EU|UA\+EU)<\/span><b>[^<]*<\/b>/,()=>u?'<span>Весь світ</span><b>доставка в будь-яку країну</b>':'<span>Worldwide</span><b>shipping to any country</b>'));
+   if(t3.length)h=h.replace('<p class="pri-d">',`<div class="pri-tl">${t3.join('')}</div><p class="pri-d">`)}
+  h=h.replace(/<div class="pri-r pri-row">[\s\S]*?<div class="pri-v">[\s\S]*?<\/span><\/div>/,`<div class="pri-r pri-row pri-r1">${v}`);
+  return h};
+ /* лічильники цифр фіксують ширину на час анімації; при зміні ширини вікна знімаємо її, щоб цифри не вилазили за край */
+ let rzT=0;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>document.querySelectorAll('#view .cnt').forEach(e=>e.style.removeProperty('--w')),120)});
+})();
+/*FIXJS9-END*/

@@ -1,12 +1,3 @@
-document.addEventListener('click',e=>{const t0=e.target;
-const op=t0.closest('[data-att-open]');if(op){fmForm=op.closest('form');fmRender();$('#fmod').showModal();return}
-if(t0.closest('[data-fm-x]')){$('#fmod').close();return}
-if(t0===$('#fmod')){$('#fmod').close();return}
-if(t0.closest('[data-fm-link]')){const i=$('#fml'),v=i.value.trim();if(!/^https?:\/\/\S+\.\S+/.test(v)){i.setAttribute('aria-invalid','true');i.focus();return}if(att(fmForm).filter(x=>x.url).length>=3)return;att(fmForm).push({url:v,name:v.replace(/^https?:\/\//,'').slice(0,60)});fmRender();attSync(fmForm);return}
-const x=t0.closest('[data-att-x]');if(x){const f=x.dataset.ctx==='m'?fmForm:x.closest('form');att(f).splice(+x.dataset.attX,1);attSync(f);if(x.dataset.ctx==='m')fmRender();return}
-const db=t0.closest('.dd-b');if(db){const m=db.nextElementSibling,o=m.hidden;document.querySelectorAll('.dd-m').forEach(z=>{z.hidden=true;z.previousElementSibling.setAttribute('aria-expanded','false')});m.hidden=!o;db.setAttribute('aria-expanded',o);if(o)m.querySelector('[aria-selected=true]').focus();return}
-const dv=t0.closest('[data-dv]');if(dv){const dd=dv.closest('.dd'),v=dv.dataset.dv,mi=MSGR.find(m=>m[0]===v);dd.querySelector('input').value=v;dd.querySelector('.dd-v').textContent=v;dd.querySelector('.dd-b .dd-i').innerHTML=mi[2];dd.querySelectorAll('[data-dv]').forEach(o=>o.setAttribute('aria-selected',o===dv));const m=dd.querySelector('.dd-m');m.hidden=true;dd.querySelector('.dd-b').setAttribute('aria-expanded','false');dd.querySelector('.dd-b').focus();return}
-if(!t0.closest('.dd'))document.querySelectorAll('.dd-m').forEach(z=>{if(!z.hidden){z.hidden=true;z.previousElementSibling.setAttribute('aria-expanded','false')}})});
 document.addEventListener('keydown',e=>{const m=e.target.closest&&e.target.closest('.dd-m');if(!m)return;const o=[...m.querySelectorAll('[data-dv]')],i=o.indexOf(e.target);
 if(e.key==='ArrowDown'){e.preventDefault();o[(i+1)%o.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();o[(i-1+o.length)%o.length].focus()}else if(e.key==='Escape'){m.hidden=true;m.previousElementSibling.setAttribute('aria-expanded','false');m.previousElementSibling.focus()}});
 document.addEventListener('change',e=>{if(e.target.id==='fmf'){const a=att(fmForm);[...e.target.files].slice(0,Math.max(0,3-a.filter(x=>!x.url).length)).forEach(f=>a.push({name:f.name,size:f.size}));fmRender();attSync(fmForm);return}
@@ -44,7 +35,7 @@ let h=_product();const i0=h.lastIndexOf('<section style="padding-bottom:clamp(56
 return h+bd('w pr-rel',relRow(p,vi))+supplyBand()+bd('w',secFaq())+bd('',leadForm('product'))+bd('w',secSeo(prodSeoKey(p,vi)))};
 
 /* ---------- «Виробництво» page ---------- */
-about=()=>{const nums=[[450,'+','s1'],[12,'','s2'],[20000,'+','s3']];
+about=()=>{const nums=[[2900,'+','s1'],[12,'','s2'],[200000,'+','s3']];
 return `<h1 class="sr">${v4('prH')}</h1>${prIntro()}`+
 bd('w',stmtH(x('aboutP').join(' '),bx('introLab'),`<dl class="st6-k">${nums.map(n=>`<div><dt class="num"><span class="cnt" data-n="${n[0]}" data-s="${n[1]}">${fmtN(n[0])}${n[1]}</span></dt><dd>${t(n[2])}</dd></div>`).join('')}</dl>`))+
 bd('',`<section><div class="hs2-h"><div>${secLab(v4('mvLab'))}<h2 class="x-h" style="margin:0">${v4('mvH')}</h2></div></div><div class="mv3 mv3n">${v4('mv').map((m,i)=>`<div class="mv3-i"><h3>${m[0]}</h3><p>${m[1]}</p></div>`).join('')}</div></section>`)+
@@ -333,7 +324,7 @@ ${payBlock()}
 ${leadForm('delivery')}</div>`}
 
 /* Europe delivery map */
-var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611022001';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
+var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611022158';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
 const CNAME={uk:{ALB:'Албанія',AND:'Андорра',AUT:'Австрія',BEL:'Бельгія',BIH:'Боснія і Герцеговина',BGR:'Болгарія',HRV:'Хорватія',CYP:'Кіпр',CZE:'Чехія',DNK:'Данія',EST:'Естонія',FIN:'Фінляндія',FRA:'Франція',DEU:'Німеччина',GRC:'Греція',HUN:'Угорщина',ISL:'Ісландія',IRL:'Ірландія',ITA:'Італія',KOS:'Косово',LVA:'Латвія',LIE:'Ліхтенштейн',LTU:'Литва',LUX:'Люксембург',MLT:'Мальта',MDA:'Молдова',MCO:'Монако',MNE:'Чорногорія',NLD:'Нідерланди',MKD:'Північна Македонія',NOR:'Норвегія',POL:'Польща',PRT:'Португалія',ROU:'Румунія',SMR:'Сан-Марино',SRB:'Сербія',SVK:'Словаччина',SVN:'Словенія',ESP:'Іспанія',SWE:'Швеція',CHE:'Швейцарія',UKR:'Україна',GBR:'Велика Британія',VAT:'Ватикан'},
 en:{ALB:'Albania',AND:'Andorra',AUT:'Austria',BEL:'Belgium',BIH:'Bosnia and Herzegovina',BGR:'Bulgaria',HRV:'Croatia',CYP:'Cyprus',CZE:'Czechia',DNK:'Denmark',EST:'Estonia',FIN:'Finland',FRA:'France',DEU:'Germany',GRC:'Greece',HUN:'Hungary',ISL:'Iceland',IRL:'Ireland',ITA:'Italy',KOS:'Kosovo',LVA:'Latvia',LIE:'Liechtenstein',LTU:'Lithuania',LUX:'Luxembourg',MLT:'Malta',MDA:'Moldova',MCO:'Monaco',MNE:'Montenegro',NLD:'Netherlands',MKD:'North Macedonia',NOR:'Norway',POL:'Poland',PRT:'Portugal',ROU:'Romania',SMR:'San Marino',SRB:'Serbia',SVK:'Slovakia',SVN:'Slovenia',ESP:'Spain',SWE:'Sweden',CHE:'Switzerland',UKR:'Ukraine',GBR:'United Kingdom',VAT:'Vatican'}};
 const NPC=['POL','MDA','LTU','CZE','ROU','DEU','SVK','LVA','EST','HUN','ITA','GBR','ESP','FRA','AUT','NLD'];
@@ -432,11 +423,11 @@ facts:[['1','supplier instead of many',''],['1','invoice and document set',''],[
 parts:[['Own products','Spacers and formwork parts direct from our plant.'],['Related materials','Other materials sourced to your specification from trusted suppliers.'],['Delivery schedule','Batches delivered by construction stage.'],['Paperwork and payment','Bank transfer against invoice with full documents.']],
 keys:[['Rebar spacers','catalog','rebar'],['Delivery & payment','delivery',''],['Injection molding','soon','0'],['All services','oem','']]}},
 oem:{uk:{lab:'Послуги',h:'Послуги виробництва: лиття, пресформи, комплектація об’єктів',lead:'ТОВ «Пластіза» — це не лише каталог фіксаторів. Ми відливаємо пластикові вироби на замовлення, виготовляємо пресформи та комплектуємо будівельні об’єкти — усе на базі власного виробництва.',
-facts:[['3','напрями послуг',''],['12','років досвіду',''],['450','задоволених клієнтів','+']],
+facts:[['3','напрями послуг',''],['12','років досвіду',''],['2 900','задоволених клієнтів','+']],
 parts:[['Лиття пластикових виробів','Від пробної партії до серійних тиражів за вашими кресленнями чи зразком.'],['Виготовлення пресформ','Проєктування, виготовлення, випробування та ремонт пресформ під ваш виріб.'],['Комплектація будівельних об’єктів','Фіксатори, елементи опалубки й супутні матеріали одним замовленням з доставкою під етапи робіт.'],['Як замовити','Залиште заявку з описом завдання й файлами — менеджер підготує розрахунок і запропонує варіанти.']],
 keys:[['Лиття пластикових виробів','soon','0'],['Виготовлення пресформ','soon','1'],['Комплектація об’єктів','soon','2'],['Каталог продукції','catalog','all']]},
 en:{lab:'Services',h:'Manufacturing services: molding, molds, site supply',lead:'PLASTIZA is more than a spacer catalog: we mold plastic parts to order, build molds and supply construction sites — all from our own plant.',
-facts:[['3','service areas',''],['12','years of experience',''],['450','happy clients','+']],
+facts:[['3','service areas',''],['12','years of experience',''],['2,900','happy clients','+']],
 parts:[['Injection molding','From trial batch to series, to your drawings or sample.'],['Mold making','Design, build, trials and repair of molds.'],['Site supply','Spacers, formwork parts and related materials in one order.'],['How to order','Send a request with files — we’ll prepare a quote.']],
 keys:[['Injection molding','soon','0'],['Mold making','soon','1'],['Site supply','soon','2'],['Product catalog','catalog','all']]}}});
 
@@ -611,3 +602,13 @@ r.addEventListener('scroll',()=>requestAnimationFrame(up),{passive:true});
 const go=()=>{if(innerWidth>640||hold>Date.now()||!sec.isConnected)return;const i=idx(),n=(i+1)%items.length;r.scrollTo({left:items[n].offsetLeft-items[0].offsetLeft,behavior:'smooth'})};
 ['touchstart','touchmove','pointerdown','wheel'].forEach(ev=>r.addEventListener(ev,()=>{hold=Date.now()+7000},{passive:true}));
 const io=new IntersectionObserver(es=>{const v=es[0].isIntersecting;clearInterval(t);if(v&&!matchMedia('(prefers-reduced-motion: reduce)').matches)t=setInterval(go,3200)},{threshold:.4});io.observe(r);up()})}
+new MutationObserver(()=>requestAnimationFrame(mp2Slide)).observe(document.getElementById('view'),{childList:true});
+
+document.addEventListener('click',e=>{const li=e.target.closest('.lf3-row li');document.querySelectorAll('.lf3-row li.open').forEach(x=>{if(x!==li)x.classList.remove('open')});if(li&&matchMedia('(hover:none)').matches)li.classList.toggle('open')});
+
+function lfAcc(ms,em,cp){const u=lang==='uk',CP=window.ICO_CP||'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+PHI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
+MLI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+row=(href,txt,ic)=>`<div class="lfa-r"><a class="lfa-p" href="${href}">${ic}<span>${txt}</span></a><button type="button" class="dc-cp lfa-cp" data-cp="${txt}" aria-label="${cp} ${txt}" title="${cp}">${CP}</button></div>`,
+it=(t,body,open)=>`<details class="lfa-i" name="lfacc"${open?' open':''}><summary><span>${t}</span><i aria-hidden="true"></i></summary><div class="lfa-b">${body}</div></details>`;
+return `<div class="lfa">${it(u?'Месенджери':'Messengers',`<div class="lfa-ms">${ms}</div>`,1)}${it('Email',row('mailto:'+em,em,MLI))}${it(u?'Телефони':'Phones',PH.map(p=>row('tel:'+p.replace(/[^+\d]/g,''),p,PHI)).join(''))}</div>`}
