@@ -1,24 +1,3 @@
-document.addEventListener('toggle',e=>{const d=e.target;if(!d.classList||!d.classList.contains('lfa-i')||!d.open)return;d.parentNode.querySelectorAll('.lfa-i[open]').forEach(x=>{if(x!==d)x.open=false})},true);
-
-/* clickable slider dots (blog, related, advantages, process) */
-document.addEventListener('click',e=>{const dot=e.target.closest('.bg-dots i,.sl-dots i,.mp2-dots i');if(!dot)return;const box=dot.parentNode,idx=[...box.children].indexOf(dot);
-let sc=null,el=box;for(let k=0;k<5&&el&&!sc;k++){el=el.parentElement;if(!el)break;sc=[...el.querySelectorAll('*')].find(x=>{const c=getComputedStyle(x);return /(auto|scroll)/.test(c.overflowX)&&x.scrollWidth>x.clientWidth+4})||null}
-if(!sc)return;const items=[...sc.children].filter(c=>c.getBoundingClientRect().width>0&&getComputedStyle(c).position!=='absolute');if(!items[idx])return;
-sc.scrollTo({left:items[idx].offsetLeft-items[0].offsetLeft,behavior:'smooth'});const h=sc.closest('.mp2');if(h)h.dispatchEvent(new Event('pointerdown'))});
-
-/* ===== product page: transparent supply process ===== */
-const SPX={uk:{lab:'Постачання',h:[['Від',0],['запиту',1],['до',0],['відвантаження',1],['—',0],['прозоро:',0],['з',0],['рахунком,',1],['звітними',1],['документами',1],['і',0],['доставкою',1],['на',0],['ваш',0],['об’єкт.',0]],
-lead:'Замовляєте одну позицію чи кілька — процес однаковий. Ви завжди знаєте, на якому етапі замовлення, що буде далі і хто з вами на зв’язку.',
-st:[['Запит','Обираєте позицію, розмір і кількість упаковок. Менеджер перевіряє наявність на складі та терміни.',['Відповідь у робочий час','Мінімум — 1 упаковка']],
-['Рахунок','Фіксуємо ціну й умови, виставляємо рахунок на ТОВ «Пластіза». Для регулярних поставок — договір.',['Безготівкова оплата','Готівка — при самовивозі']],
-['Комплектація','Збираємо замовлення у заводських упаковках з маркуванням розміру на кожній.',['Фасування від 100 шт','Перевірка перед відправкою']],
-['Відвантаження','Відправляємо перевізником або Новою поштою, чи готуємо до самовивозу. Повідомляємо дані відправлення.',['Україна та ЄС','Самовивіз: Львів, Київ']],
-['Документи','Разом із товаром — видаткова накладна та звітні документи для вашої бухгалтерії.',['Видаткова накладна','Звітні документи']]],
-fh:'Обговорити умови постачання',fs:'Залиште контакти — менеджер зателефонує й підготує розрахунок саме на цю позицію.',nm:'Ім’я або компанія',btn:'Обговорити постачання',ok:'Дякуємо! Менеджер зв’яжеться з вами найближчим часом.'},
-en:{lab:'Supply',h:[['From',0],['request',1],['to',0],['shipment',1],['—',0],['transparent:',0],['with',0],['invoice,',1],['reporting',1],['documents',1],['and',0],['delivery',1],['to',0],['your',0],['site.',0]],
-lead:'One item or several — the process is the same. You always know the order stage, what comes next and who is in touch.',
-st:[['Request','Choose item, size and number of packs; we check stock and lead time.',['Reply in working hours','Minimum — 1 pack']],['Invoice','We fix the price and terms and issue an invoice from PLASTIZA LLC; contract for regular supply.',['Bank transfer','Cash on pickup']],['Packing','Factory packs with size marking on each.',['Packs from 100 pcs','Checked before dispatch']],['Shipment','By carrier or Nova Poshta, or ready for pickup; we share dispatch details.',['Ukraine and EU','Pickup: Lviv, Kyiv']],['Documents','Delivery note and reporting documents come with the goods.',['Delivery note','Reporting documents']]],
-fh:'Discuss supply terms',fs:'Leave your contacts — a manager will call and prepare a quote for this item.',nm:'Name or company',btn:'Discuss supply',ok:'Thank you! A manager will contact you shortly.'}};
 function supplyProc(){const d=SPX[lang],u=lang==='uk',ms=['WhatsApp','Telegram','Viber'].map(n=>{const m=MSGR.find(x=>x[0]===n);return `<a href="${m[1]}" target="_blank" rel="noopener">${n}</a>`}).join(', ');
 return `<section class="sp7"><div class="sp7-top"><div>${secLab(d.lab)}<h2 class="sp7-h">${d.h.map(([w,a])=>a?`<em>${w}</em>`:w).join(' ')}</h2></div>
 <div class="sp7-side"><p class="sp7-c"><a href="mailto:plastiza.sale@gmail.com">plastiza.sale@gmail.com</a><br><a href="tel:${PH[0].replace(/[^+\d]/g,'')}">${PH[0]}</a><br>${ms}</p><p class="sp7-l">${d.lead}</p></div></div>
@@ -658,6 +637,36 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  body.append('data',JSON.stringify(d));let tot=0;files.slice(0,5).forEach(f=>{tot+=f.size;if(tot<=4*1024*1024)body.append('files',f,f.name)});
  fetch(LEAD_API,{method:'POST',body}).then(r=>r.ok?r.json():Promise.reject(r.status)).catch(()=>{const el=$('#toast');el.textContent=u?'Не вдалося надіслати заявку. Зателефонуйте нам: +380 (96) 682-14-63':'Could not send the request. Please call +380 96 682 14 63';el.classList.add('on');setTimeout(()=>el.classList.remove('on'),6000)})};
 
+/*FIXJS10-START*//*@BEFORE-BOOT*/
+/* 03.11: головна — секція «Переваги» замінена на «Географія» (мапа доставки) одразу під рядком послуг;
+   на мапі — Львів (виробництво та склад) і Київ (склад) з підказками; у підказці України — самовивіз зі складу */
+(function(){
+ const U=()=>lang==='uk';
+ const CITY={lviv:{xy:[703,601.2],uk:['Львів','Виробництво та склад · самовивіз'],en:['Lviv','Production & warehouse · pickup'],dx:-12,dy:24,a:'end'},
+  kyiv:{xy:[816.4,564.1],uk:['Київ','Склад · самовивіз'],en:['Kyiv','Warehouse · pickup'],dx:12,dy:-12,a:'start'}};
+ const _home10=home;home=function(){const sa=secAdv;let h;secAdv=()=>'@@GEO@@';try{h=_home10()}finally{secAdv=sa}
+  let m='';try{m=euMap()}catch(e){}
+  return h.replace('<div>@@GEO@@</div>',`<div class="geo-hm">${m}</div>`).replace('@@GEO@@',`<div class="geo-hm">${m}</div>`)};
+ /* мапа може домальовуватися пізніше (окремий файл на домені), тож доводимо її до вигляду головної вже в документі */
+ function geoFix(){const w=document.querySelector('#view .geo-hm');if(!w)return;const s=w.querySelector('section.eum:not(.eum-ld)');if(!s||s.dataset.hm)return;s.dataset.hm=1;s.classList.add('eum-hm');const u=U();
+  const n=s.querySelector('.eum-n');if(n){n.innerHTML=u?'Доставляємо в будь-яку країну світу за погодженням. На мапі — країни, куди відправляємо найчастіше: <b>сині</b> — Новою поштою, Укрпоштою або перевізником, <b>сірі</b> — Укрпоштою чи приватним перевізником. По Україні також можливий <b>самовивіз зі складів у Львові та Києві</b>.'
+   :'We deliver to any country worldwide by agreement. The map shows where we ship most often: <b>blue</b> — via Nova Post, Ukrposhta or a carrier, <b>grey</b> — via Ukrposhta or a private carrier. In Ukraine you can also <b>pick up from our warehouses in Lviv and Kyiv</b>.';
+   if(!s.querySelector('.eum-go'))n.insertAdjacentHTML('afterend',`<button class="tlink eum-go" data-go="delivery">${u?'Умови доставки':'Delivery terms'}<i aria-hidden="true">→</i></button>`)}
+  const svg=s.querySelector('.eum-m svg');if(svg&&!svg.querySelector('.mp-city')){
+   svg.insertAdjacentHTML('beforeend',Object.entries(CITY).map(([k,c])=>{const [x,y]=c.xy,t=c[u?'uk':'en'];return `<g class="mp-city" data-city="${k}" tabindex="0" role="button" aria-label="${t[0]}: ${t[1]}"><circle class="mp-cz" cx="${x}" cy="${y}" r="18"/><circle class="mp-cd" cx="${x}" cy="${y}" r="6"/><text x="${x+c.dx}" y="${y+c.dy}" text-anchor="${c.a}">${t[0]}</text></g>`}).join(''))}}
+ function cityTip(g){const m=g.closest('.eum-m'),t=m&&m.querySelector('.eum-tip');if(!t)return;const c=CITY[g.dataset.city],tx=c[U()?'uk':'en'];
+  document.querySelectorAll('.eu-c.on,.mp-city.on').forEach(x=>x.classList.remove('on'));g.classList.add('on');
+  t.innerHTML=`<b>${tx[0]}</b><span>${tx[1]}</span>`;t.hidden=false;const r=m.getBoundingClientRect(),b=g.querySelector('.mp-cd').getBoundingClientRect();
+  t.style.left=Math.min(Math.max(b.left+b.width/2-r.left,90),r.width-90)+'px';t.style.top=Math.max(b.top-r.top-10,40)+'px'}
+ /* підказка України на головній: додаємо самовивіз */
+ const _tip10=euTip;euTip=function(c,ev){_tip10(c,ev);try{document.querySelectorAll('.mp-city.on').forEach(x=>x.classList.remove('on'));
+  if(c==='UKR'){const t=document.querySelector('.eum-hm .eum-tip');if(t&&!t.hidden){const sp=t.querySelector('span');if(sp&&!/самовивіз|pickup/i.test(sp.textContent))sp.textContent+=U()?', самовивіз зі складу (Львів, Київ)':', pickup from warehouse (Lviv, Kyiv)'}}}catch(e){}};
+ document.addEventListener('mousemove',e=>{const g=e.target.closest&&e.target.closest('.mp-city');if(g)cityTip(g)});
+ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.mp-city');if(g){e.stopPropagation();cityTip(g)}},true);
+ document.addEventListener('focusin',e=>{const g=e.target.closest&&e.target.closest('.mp-city');if(g)cityTip(g)});
+ let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;geoFix()})}).observe(document.getElementById('view'),{childList:true,subtree:true});geoFix();
+})();
+/*FIXJS10-END*/
 /*FIXJS9-START*//*@BEFORE-BOOT*/
 /* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
 (function(){

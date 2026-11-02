@@ -1,7 +1,3 @@
-document.addEventListener('keydown',e=>{const m=e.target.closest&&e.target.closest('.dd-m');if(!m)return;const o=[...m.querySelectorAll('[data-dv]')],i=o.indexOf(e.target);
-if(e.key==='ArrowDown'){e.preventDefault();o[(i+1)%o.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();o[(i-1+o.length)%o.length].focus()}else if(e.key==='Escape'){m.hidden=true;m.previousElementSibling.setAttribute('aria-expanded','false');m.previousElementSibling.focus()}});
-document.addEventListener('change',e=>{if(e.target.id==='fmf'){const a=att(fmForm);[...e.target.files].slice(0,Math.max(0,3-a.filter(x=>!x.url).length)).forEach(f=>a.push({name:f.name,size:f.size}));fmRender();attSync(fmForm);return}
-const f=e.target.closest('form[data-v3]');if(f&&e.target.name==='how'){const v=e.target.value;f.querySelector('.lf-ms').hidden=v!=='messenger';f.phone.hidden=v==='email';f.email.hidden=v!=='email';(v==='email'?f.email:f.phone).focus({preventScroll:true});f.querySelector('.lf-err').hidden=true}});
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-v3]');if(!f)return;e.preventDefault();const d=new FormData(f),er=f.querySelector('.lf-err');
 f.name.setAttribute('aria-invalid',!d.get('name'));
 if(!d.get('name')){er.textContent=lf('nm')+' — '+(lang==='uk'?'обов’язкове поле.':'required.');er.hidden=false;return}
@@ -324,7 +320,7 @@ ${payBlock()}
 ${leadForm('delivery')}</div>`}
 
 /* Europe delivery map */
-var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611022158';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
+var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611022231';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
 const CNAME={uk:{ALB:'Албанія',AND:'Андорра',AUT:'Австрія',BEL:'Бельгія',BIH:'Боснія і Герцеговина',BGR:'Болгарія',HRV:'Хорватія',CYP:'Кіпр',CZE:'Чехія',DNK:'Данія',EST:'Естонія',FIN:'Фінляндія',FRA:'Франція',DEU:'Німеччина',GRC:'Греція',HUN:'Угорщина',ISL:'Ісландія',IRL:'Ірландія',ITA:'Італія',KOS:'Косово',LVA:'Латвія',LIE:'Ліхтенштейн',LTU:'Литва',LUX:'Люксембург',MLT:'Мальта',MDA:'Молдова',MCO:'Монако',MNE:'Чорногорія',NLD:'Нідерланди',MKD:'Північна Македонія',NOR:'Норвегія',POL:'Польща',PRT:'Португалія',ROU:'Румунія',SMR:'Сан-Марино',SRB:'Сербія',SVK:'Словаччина',SVN:'Словенія',ESP:'Іспанія',SWE:'Швеція',CHE:'Швейцарія',UKR:'Україна',GBR:'Велика Британія',VAT:'Ватикан'},
 en:{ALB:'Albania',AND:'Andorra',AUT:'Austria',BEL:'Belgium',BIH:'Bosnia and Herzegovina',BGR:'Bulgaria',HRV:'Croatia',CYP:'Cyprus',CZE:'Czechia',DNK:'Denmark',EST:'Estonia',FIN:'Finland',FRA:'France',DEU:'Germany',GRC:'Greece',HUN:'Hungary',ISL:'Iceland',IRL:'Ireland',ITA:'Italy',KOS:'Kosovo',LVA:'Latvia',LIE:'Liechtenstein',LTU:'Lithuania',LUX:'Luxembourg',MLT:'Malta',MDA:'Moldova',MCO:'Monaco',MNE:'Montenegro',NLD:'Netherlands',MKD:'North Macedonia',NOR:'Norway',POL:'Poland',PRT:'Portugal',ROU:'Romania',SMR:'San Marino',SRB:'Serbia',SVK:'Slovakia',SVN:'Slovenia',ESP:'Spain',SWE:'Sweden',CHE:'Switzerland',UKR:'Ukraine',GBR:'United Kingdom',VAT:'Vatican'}};
 const NPC=['POL','MDA','LTU','CZE','ROU','DEU','SVK','LVA','EST','HUN','ITA','GBR','ESP','FRA','AUT','NLD'];
@@ -612,3 +608,24 @@ MLI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.
 row=(href,txt,ic)=>`<div class="lfa-r"><a class="lfa-p" href="${href}">${ic}<span>${txt}</span></a><button type="button" class="dc-cp lfa-cp" data-cp="${txt}" aria-label="${cp} ${txt}" title="${cp}">${CP}</button></div>`,
 it=(t,body,open)=>`<details class="lfa-i" name="lfacc"${open?' open':''}><summary><span>${t}</span><i aria-hidden="true"></i></summary><div class="lfa-b">${body}</div></details>`;
 return `<div class="lfa">${it(u?'Месенджери':'Messengers',`<div class="lfa-ms">${ms}</div>`,1)}${it('Email',row('mailto:'+em,em,MLI))}${it(u?'Телефони':'Phones',PH.map(p=>row('tel:'+p.replace(/[^+\d]/g,''),p,PHI)).join(''))}</div>`}
+document.addEventListener('toggle',e=>{const d=e.target;if(!d.classList||!d.classList.contains('lfa-i')||!d.open)return;d.parentNode.querySelectorAll('.lfa-i[open]').forEach(x=>{if(x!==d)x.open=false})},true);
+
+/* clickable slider dots (blog, related, advantages, process) */
+document.addEventListener('click',e=>{const dot=e.target.closest('.bg-dots i,.sl-dots i,.mp2-dots i');if(!dot)return;const box=dot.parentNode,idx=[...box.children].indexOf(dot);
+let sc=null,el=box;for(let k=0;k<5&&el&&!sc;k++){el=el.parentElement;if(!el)break;sc=[...el.querySelectorAll('*')].find(x=>{const c=getComputedStyle(x);return /(auto|scroll)/.test(c.overflowX)&&x.scrollWidth>x.clientWidth+4})||null}
+if(!sc)return;const items=[...sc.children].filter(c=>c.getBoundingClientRect().width>0&&getComputedStyle(c).position!=='absolute');if(!items[idx])return;
+sc.scrollTo({left:items[idx].offsetLeft-items[0].offsetLeft,behavior:'smooth'});const h=sc.closest('.mp2');if(h)h.dispatchEvent(new Event('pointerdown'))});
+
+/* ===== product page: transparent supply process ===== */
+const SPX={uk:{lab:'Постачання',h:[['Від',0],['запиту',1],['до',0],['відвантаження',1],['—',0],['прозоро:',0],['з',0],['рахунком,',1],['звітними',1],['документами',1],['і',0],['доставкою',1],['на',0],['ваш',0],['об’єкт.',0]],
+lead:'Замовляєте одну позицію чи кілька — процес однаковий. Ви завжди знаєте, на якому етапі замовлення, що буде далі і хто з вами на зв’язку.',
+st:[['Запит','Обираєте позицію, розмір і кількість упаковок. Менеджер перевіряє наявність на складі та терміни.',['Відповідь у робочий час','Мінімум — 1 упаковка']],
+['Рахунок','Фіксуємо ціну й умови, виставляємо рахунок на ТОВ «Пластіза». Для регулярних поставок — договір.',['Безготівкова оплата','Готівка — при самовивозі']],
+['Комплектація','Збираємо замовлення у заводських упаковках з маркуванням розміру на кожній.',['Фасування від 100 шт','Перевірка перед відправкою']],
+['Відвантаження','Відправляємо перевізником або Новою поштою, чи готуємо до самовивозу. Повідомляємо дані відправлення.',['Україна та ЄС','Самовивіз: Львів, Київ']],
+['Документи','Разом із товаром — видаткова накладна та звітні документи для вашої бухгалтерії.',['Видаткова накладна','Звітні документи']]],
+fh:'Обговорити умови постачання',fs:'Залиште контакти — менеджер зателефонує й підготує розрахунок саме на цю позицію.',nm:'Ім’я або компанія',btn:'Обговорити постачання',ok:'Дякуємо! Менеджер зв’яжеться з вами найближчим часом.'},
+en:{lab:'Supply',h:[['From',0],['request',1],['to',0],['shipment',1],['—',0],['transparent:',0],['with',0],['invoice,',1],['reporting',1],['documents',1],['and',0],['delivery',1],['to',0],['your',0],['site.',0]],
+lead:'One item or several — the process is the same. You always know the order stage, what comes next and who is in touch.',
+st:[['Request','Choose item, size and number of packs; we check stock and lead time.',['Reply in working hours','Minimum — 1 pack']],['Invoice','We fix the price and terms and issue an invoice from PLASTIZA LLC; contract for regular supply.',['Bank transfer','Cash on pickup']],['Packing','Factory packs with size marking on each.',['Packs from 100 pcs','Checked before dispatch']],['Shipment','By carrier or Nova Poshta, or ready for pickup; we share dispatch details.',['Ukraine and EU','Pickup: Lviv, Kyiv']],['Documents','Delivery note and reporting documents come with the goods.',['Delivery note','Reporting documents']]],
+fh:'Discuss supply terms',fs:'Leave your contacts — a manager will call and prepare a quote for this item.',nm:'Name or company',btn:'Discuss supply',ok:'Thank you! A manager will contact you shortly.'}};
