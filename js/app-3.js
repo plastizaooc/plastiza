@@ -556,7 +556,9 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
   kyiv:{xy:[816.4,564.1],uk:['Київ','Склад · самовивіз'],en:['Kyiv','Warehouse · pickup'],dx:12,dy:-12,a:'start'}};
  const _home10=home;home=function(){const sa=secAdv;let h;secAdv=()=>'@@GEO@@';try{h=_home10()}finally{secAdv=sa}
   let m='';try{m=euMap()}catch(e){}
-  h=h.replace(/<dl class="st6-k">[\s\S]*?<\/dl>/,''); /* друга секція — без цифр: вони тільки на сторінці «Виробництво» */
+  /* друга секція: цифри (2 900+ / 12 / 200 000+) між текстом «PLASTIZA — …» і кнопкою «Виробництво» */
+  {const m=h.match(/<dl class="st6-k">[\s\S]*?<\/dl>/),bt=h.match(/<button class="tlink" data-go="about">[\s\S]*?<\/button>/);
+   if(m&&bt&&h.indexOf(bt[0])<h.indexOf(m[0])){h=h.replace(m[0],'');h=h.replace(bt[0],m[0]+bt[0])}}
   return h.replace('<div>@@GEO@@</div>',`<div class="geo-hm">${m}</div>`).replace('@@GEO@@',`<div class="geo-hm">${m}</div>`)};
  /* мапа може домальовуватися пізніше (окремий файл на домені), тож доводимо її до вигляду головної вже в документі */
  function geoFix(){const w=document.querySelector('#view .geo-hm');if(!w)return;const s=w.querySelector('section.eum:not(.eum-ld)');if(!s||s.dataset.hm)return;s.dataset.hm=1;s.classList.add('eum-hm');const u=U();
