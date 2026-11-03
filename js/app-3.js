@@ -1,8 +1,3 @@
-function phCentre(el){if(!el||!el.classList.contains('phw-i'))return;const w=el.closest('.phw'),b=w&&w.querySelector('.phc');if(!b||!b.offsetWidth)return;
-if(innerWidth>760){el.style.setProperty('text-align','left','important');return}
-const cs=getComputedStyle(el);_phCv.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;const ls=parseFloat(cs.letterSpacing)||0;const txt=el.value||el.placeholder||'';const tw=_phCv.measureText(txt).width+ls*txt.length;
-const W=el.offsetWidth,minL=b.offsetLeft+b.offsetWidth+12;const L=Math.max(minL,(W-tw)/2);
-el.style.setProperty('text-align','left','important');el.style.setProperty('padding-left',Math.round(L)+'px','important');el.style.setProperty('padding-right','12px','important')}
 function phCentreAll(){document.querySelectorAll('.phw-i').forEach(phCentre)}
 document.addEventListener('input',e=>{if(e.target.classList&&e.target.classList.contains('phw-i'))phCentre(e.target)});
 addEventListener('resize',()=>requestAnimationFrame(phCentreAll));
@@ -476,6 +471,15 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  document.addEventListener('click',e=>{const r=e.target.closest&&e.target.closest('[data-rs]');if(r){const s=r.closest('.pa3-rel').querySelector('.pa3-rs'),c=s.firstElementChild;if(!c)return;s.scrollBy({left:(+r.dataset.rs)*(c.getBoundingClientRect().width+12),behavior:'smooth'})}});
 })();
 /*FIXJS17-END*/
+/*FIXJS18-START*//*@BEFORE-BOOT*/
+/* 03.11 (лише артефакт): стаття блогу на ПК — ліва половина зафіксована (крихти, заголовок, підзаголовок, тег, дата, фото 4:3),
+   права половина — текст статті, гортається. Нижче — «Вам також може бути цікаво» і форма у звичайному вигляді */
+(function(){
+ const _pp18=postPage;postPage=function(){let h=_pp18.apply(this,arguments);
+  const m=h.match(/<figure class="pa3-f">([\s\S]*?)<\/figure>/);if(!m)return h;
+  return h.replace('<article class="pa pa3">','<article class="pa pa3 pa4">').replace('</div></header>',`</div><figure class="pa4-f">${m[1]}</figure></header>`)};
+})();
+/*FIXJS18-END*/
 /*FIXJS9-START*//*@BEFORE-BOOT*/
 /* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
 (function(){

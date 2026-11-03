@@ -99,7 +99,7 @@ ${payBlock()}
 ${leadForm('delivery')}</div>`}
 
 /* Europe delivery map */
-var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611031833';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
+var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611032003';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
 const CNAME={uk:{ALB:'Албанія',AND:'Андорра',AUT:'Австрія',BEL:'Бельгія',BIH:'Боснія і Герцеговина',BGR:'Болгарія',HRV:'Хорватія',CYP:'Кіпр',CZE:'Чехія',DNK:'Данія',EST:'Естонія',FIN:'Фінляндія',FRA:'Франція',DEU:'Німеччина',GRC:'Греція',HUN:'Угорщина',ISL:'Ісландія',IRL:'Ірландія',ITA:'Італія',KOS:'Косово',LVA:'Латвія',LIE:'Ліхтенштейн',LTU:'Литва',LUX:'Люксембург',MLT:'Мальта',MDA:'Молдова',MCO:'Монако',MNE:'Чорногорія',NLD:'Нідерланди',MKD:'Північна Македонія',NOR:'Норвегія',POL:'Польща',PRT:'Португалія',ROU:'Румунія',SMR:'Сан-Марино',SRB:'Сербія',SVK:'Словаччина',SVN:'Словенія',ESP:'Іспанія',SWE:'Швеція',CHE:'Швейцарія',UKR:'Україна',GBR:'Велика Британія',VAT:'Ватикан'},
 en:{ALB:'Albania',AND:'Andorra',AUT:'Austria',BEL:'Belgium',BIH:'Bosnia and Herzegovina',BGR:'Bulgaria',HRV:'Croatia',CYP:'Cyprus',CZE:'Czechia',DNK:'Denmark',EST:'Estonia',FIN:'Finland',FRA:'France',DEU:'Germany',GRC:'Greece',HUN:'Hungary',ISL:'Iceland',IRL:'Ireland',ITA:'Italy',KOS:'Kosovo',LVA:'Latvia',LIE:'Liechtenstein',LTU:'Lithuania',LUX:'Luxembourg',MLT:'Malta',MDA:'Moldova',MCO:'Monaco',MNE:'Montenegro',NLD:'Netherlands',MKD:'North Macedonia',NOR:'Norway',POL:'Poland',PRT:'Portugal',ROU:'Romania',SMR:'San Marino',SRB:'Serbia',SVK:'Slovakia',SVN:'Slovenia',ESP:'Spain',SWE:'Sweden',CHE:'Switzerland',UKR:'Ukraine',GBR:'United Kingdom',VAT:'Vatican'}};
 const NPC=['POL','MDA','LTU','CZE','ROU','DEU','SVK','LVA','EST','HUN','ITA','GBR','ESP','FRA','AUT','NLD'];
@@ -809,3 +809,8 @@ document.addEventListener('reset',e=>setTimeout(()=>e.target.querySelectorAll&&e
 
 /* mobile: optically centre the phone number in the whole field without touching the country chip */
 const _phCv=document.createElement('canvas').getContext('2d');
+function phCentre(el){if(!el||!el.classList.contains('phw-i'))return;const w=el.closest('.phw'),b=w&&w.querySelector('.phc');if(!b||!b.offsetWidth)return;
+if(innerWidth>760){el.style.setProperty('text-align','left','important');return}
+const cs=getComputedStyle(el);_phCv.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;const ls=parseFloat(cs.letterSpacing)||0;const txt=el.value||el.placeholder||'';const tw=_phCv.measureText(txt).width+ls*txt.length;
+const W=el.offsetWidth,minL=b.offsetLeft+b.offsetWidth+12;const L=Math.max(minL,(W-tw)/2);
+el.style.setProperty('text-align','left','important');el.style.setProperty('padding-left',Math.round(L)+'px','important');el.style.setProperty('padding-right','12px','important')}
