@@ -623,3 +623,7 @@ en:{cap:'For reliable supply<br>on every site',pill:'Advantages',it:[
 ['International cooperation','We have experience with partners abroad and fulfil orders to their specific requirements.'],
 ['Eco-friendliness','We treat raw materials and processes responsibly and care about the durability of every part.'],
 ['Ukrainian manufacturer','We manufacture in Ukraine and support domestic construction with reliable plastic parts.']]}};
+secAdv=()=>{const d=ADV3[lang];return `<section class="av3"><div class="s5-top av3-top"><div>${secLab(d.pill)}<h2 class="s5-h">${lang==='uk'?'Переваги<br>роботи з нами':'Why work<br>with us'}</h2></div><div class="s5-tr"><span class="s5-cnt"><b class="num">${String(d.it.length).padStart(2,'0')}</b>${lang==='uk'?'переваг':'reasons'}</span><p class="av3-cap2">${d.cap}</p></div></div>
+<div class="av3-g">${d.it.map((a,i)=>`<article class="av3-c"><span class="av3-ic" aria-hidden="true">${AVI[i%AVI.length]}</span><h3>${a[0]}</h3><p>${a[1]}</p></article>`).join('')}</div><div class="sl-dots av3-dots" aria-hidden="true"></div></section>`};
+
+// ===== shared product row (home + catalog) =====
