@@ -552,7 +552,7 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
    на мапі — Львів (виробництво та склад) і Київ (склад) з підказками; у підказці України — самовивіз зі складу */
 (function(){
  const U=()=>lang==='uk';
- const CITY={lviv:{xy:[703,601.2],uk:['Львів','Виробництво та склад · самовивіз'],en:['Lviv','Production & warehouse · pickup'],dx:-12,dy:24,a:'end'},
+ const CITY={lviv:{xy:[703,601.2],uk:['Львів','Виробництво та склад · самовивіз'],en:['Lviv','Production & warehouse · pickup'],dx:12,dy:-12,a:'start'},
   kyiv:{xy:[816.4,564.1],uk:['Київ','Склад · самовивіз'],en:['Kyiv','Warehouse · pickup'],dx:12,dy:-12,a:'start'}};
  const _home10=home;home=function(){const sa=secAdv;let h;secAdv=()=>'@@GEO@@';try{h=_home10()}finally{secAdv=sa}
   let m='';try{m=euMap()}catch(e){}
@@ -599,7 +599,7 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
   const i=+b.id.split('-').pop(),M=MEDIA[i];if(!M)return;b.dataset.m=1;const g=b.querySelector('.s5-g'),c1=g&&g.querySelector('.s5-c1'),c2=g.querySelector('.s5-c2'),c3=g.querySelector('.s5-c3');if(!c1||!c2||!c3)return;
   const u=U(),k2=c2.querySelector('.s5-k').textContent,k3=c3.querySelector('.s5-k').textContent;
   g.classList.add('s5-g2');c2.hidden=true;c3.hidden=true;
-  c1.insertAdjacentHTML('beforeend',`<div class="s5-mb">${M.cat?`<button type="button" class="s5-mbtn" data-s5cat><i aria-hidden="true">+</i>${u?'Що ми пропонуємо':'What we supply'}</button>`:`<button type="button" class="s5-mbtn" data-s5m="inc"><i aria-hidden="true">+</i>${k2}</button>`}<button type="button" class="s5-mbtn" data-s5m="how"><i aria-hidden="true">+</i>${k3}</button></div>`);
+  c1.insertAdjacentHTML('beforeend',`<div class="s5-mb${M.cat?' s5-mb-short':''}">${M.cat?`<button type="button" class="s5-mbtn" data-s5cat><i aria-hidden="true">+</i><span class="s5-lg">${u?'Що ми пропонуємо':'What we supply'}</span><span class="s5-sh">${u?'Асортимент':'Range'}</span></button>`:`<button type="button" class="s5-mbtn" data-s5m="inc"><i aria-hidden="true">+</i>${k2}</button>`}<button type="button" class="s5-mbtn" data-s5m="how"><i aria-hidden="true">+</i>${M.cat?`<span class="s5-lg">${k3}</span><span class="s5-sh">${u?'Процес':'Process'}</span>`:k3}</button></div>`);
   g.insertAdjacentHTML('beforeend',`<div class="s5-md"><div class="hv-f"><img src="${M.img}" alt="${M[lang]||M.uk}" loading="lazy" decoding="async"><span class="hv-sh" aria-hidden="true"></span><span class="hv-lb">[ ${M[lang]||M.uk} ]</span></div></div>`);
   /* «Детальніше про послугу» — у стовпчик з описом, унизу на рівні нижнього краю фото */
   const ft=b.querySelector('.s5-ft');if(ft){ft.classList.add('s5-ft2');c1.appendChild(ft)}})}
