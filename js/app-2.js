@@ -1,21 +1,3 @@
-const ADV3={uk:{cap:'Для надійних поставок<br>на кожному об’єкті',pill:'Переваги',it:[
-['Власне виробництво','Повний цикл на власних потужностях: від пресформи до готової партії без посередників і зайвих націнок.'],
-['Висока якість','Контролюємо геометрію та якість на кожному етапі, тож усі вироби в партії мають стабільні характеристики.'],
-['Конкурентна ціна','Працюємо напряму як виробник, тому пропонуємо чесні ціни та гнучкі умови для оптових замовлень.'],
-['Комплексне постачання','Усі фіксатори та елементи опалубки для об’єкта можна замовити в одному місці й одним відвантаженням.'],
-['Надійне партнерство','Консультуємо щодо вибору виробів, супроводжуємо кожне замовлення й дотримуємося погоджених термінів.'],
-['Міжнародна співпраця','Маємо досвід роботи із закордонними партнерами та виконуємо замовлення відповідно до їхніх вимог.'],
-['Екологічність','Відповідально ставимося до сировини й виробничих процесів і дбаємо про довговічність кожного виробу.'],
-['Український виробник','Виробляємо в Україні та підтримуємо вітчизняне будівництво надійними пластиковими деталями.']]},
-en:{cap:'For reliable supply<br>on every site',pill:'Advantages',it:[
-['In-house production','Full cycle at our own plant: from the mold to the finished batch, with no middlemen or extra markups.'],
-['High quality','We check geometry and quality at every stage, so every part in the batch has consistent properties.'],
-['Competitive prices','We sell directly as the manufacturer, offering fair prices and flexible terms for wholesale orders.'],
-['Complete supply','Order every spacer and formwork part for your site in one place and receive it in one shipment.'],
-['Reliable partnership','We advise on product choice, support every order and stick to the lead times we agree on.'],
-['International cooperation','We have experience with partners abroad and fulfil orders to their specific requirements.'],
-['Eco-friendliness','We treat raw materials and processes responsibly and care about the durability of every part.'],
-['Ukrainian manufacturer','We manufacture in Ukraine and support domestic construction with reliable plastic parts.']]}};
 secAdv=()=>{const d=ADV3[lang];return `<section class="av3"><div class="s5-top av3-top"><div>${secLab(d.pill)}<h2 class="s5-h">${lang==='uk'?'Переваги<br>роботи з нами':'Why work<br>with us'}</h2></div><div class="s5-tr"><span class="s5-cnt"><b class="num">${String(d.it.length).padStart(2,'0')}</b>${lang==='uk'?'переваг':'reasons'}</span><p class="av3-cap2">${d.cap}</p></div></div>
 <div class="av3-g">${d.it.map((a,i)=>`<article class="av3-c"><span class="av3-ic" aria-hidden="true">${AVI[i%AVI.length]}</span><h3>${a[0]}</h3><p>${a[1]}</p></article>`).join('')}</div><div class="sl-dots av3-dots" aria-hidden="true"></div></section>`};
 
@@ -266,7 +248,7 @@ ${payBlock()}
 ${leadForm('delivery')}</div>`}
 
 /* Europe delivery map */
-var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611031340';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
+var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611031419';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
 const CNAME={uk:{ALB:'Албанія',AND:'Андорра',AUT:'Австрія',BEL:'Бельгія',BIH:'Боснія і Герцеговина',BGR:'Болгарія',HRV:'Хорватія',CYP:'Кіпр',CZE:'Чехія',DNK:'Данія',EST:'Естонія',FIN:'Фінляндія',FRA:'Франція',DEU:'Німеччина',GRC:'Греція',HUN:'Угорщина',ISL:'Ісландія',IRL:'Ірландія',ITA:'Італія',KOS:'Косово',LVA:'Латвія',LIE:'Ліхтенштейн',LTU:'Литва',LUX:'Люксембург',MLT:'Мальта',MDA:'Молдова',MCO:'Монако',MNE:'Чорногорія',NLD:'Нідерланди',MKD:'Північна Македонія',NOR:'Норвегія',POL:'Польща',PRT:'Португалія',ROU:'Румунія',SMR:'Сан-Марино',SRB:'Сербія',SVK:'Словаччина',SVN:'Словенія',ESP:'Іспанія',SWE:'Швеція',CHE:'Швейцарія',UKR:'Україна',GBR:'Велика Британія',VAT:'Ватикан'},
 en:{ALB:'Albania',AND:'Andorra',AUT:'Austria',BEL:'Belgium',BIH:'Bosnia and Herzegovina',BGR:'Bulgaria',HRV:'Croatia',CYP:'Cyprus',CZE:'Czechia',DNK:'Denmark',EST:'Estonia',FIN:'Finland',FRA:'France',DEU:'Germany',GRC:'Greece',HUN:'Hungary',ISL:'Iceland',IRL:'Ireland',ITA:'Italy',KOS:'Kosovo',LVA:'Latvia',LIE:'Liechtenstein',LTU:'Lithuania',LUX:'Luxembourg',MLT:'Malta',MDA:'Moldova',MCO:'Monaco',MNE:'Montenegro',NLD:'Netherlands',MKD:'North Macedonia',NOR:'Norway',POL:'Poland',PRT:'Portugal',ROU:'Romania',SMR:'San Marino',SRB:'Serbia',SVK:'Slovakia',SVN:'Slovenia',ESP:'Spain',SWE:'Sweden',CHE:'Switzerland',UKR:'Ukraine',GBR:'United Kingdom',VAT:'Vatican'}};
 const NPC=['POL','MDA','LTU','CZE','ROU','DEU','SVK','LVA','EST','HUN','ITA','GBR','ESP','FRA','AUT','NLD'];

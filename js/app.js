@@ -605,3 +605,21 @@ return `<div class="wrap pdfv ${mob?'pdf-m':'pdf-d'}"><div class="pdf-bar no-pri
 ${P.map(p=>`<section class="pdf-p" id="pdf-p${p.id}"><div class="pdf-im"><img src="${IMGS[p.id]}" alt=""></div><div class="pdf-tx"><span class="pdf-k">${CATS.find(c=>c.id===p.cat)[lang]}</span><h2>${title(p)}</h2><p>${p.d[lang]}</p><table><thead><tr><th>${t('size')}</th><th>${t('price')}</th><th>${t('pack')}</th></tr></thead><tbody>${p.v.map(v=>`<tr><td>${sz(v)}</td><td>${t('from')} ${fp(v[1])} ${cur()}/${un(p)}</td><td>${v[2]?v[2]+' '+un(p):'—'}</td></tr>`).join('')}</tbody></table><div class="pdf-ln"><a href="#pdf-toc">${v4('pdfTop')}</a><a href="${rtAbsP(p.id)}" target="_blank" rel="noopener">${v4('pdfOpen')} ↗</a></div></div></section>`).join('')}</div></div>`}
 
 // ===== advantages v3 =====
+const ADV3={uk:{cap:'Для надійних поставок<br>на кожному об’єкті',pill:'Переваги',it:[
+['Власне виробництво','Повний цикл на власних потужностях: від пресформи до готової партії без посередників і зайвих націнок.'],
+['Висока якість','Контролюємо геометрію та якість на кожному етапі, тож усі вироби в партії мають стабільні характеристики.'],
+['Конкурентна ціна','Працюємо напряму як виробник, тому пропонуємо чесні ціни та гнучкі умови для оптових замовлень.'],
+['Комплексне постачання','Усі фіксатори та елементи опалубки для об’єкта можна замовити в одному місці й одним відвантаженням.'],
+['Надійне партнерство','Консультуємо щодо вибору виробів, супроводжуємо кожне замовлення й дотримуємося погоджених термінів.'],
+['Міжнародна співпраця','Маємо досвід роботи із закордонними партнерами та виконуємо замовлення відповідно до їхніх вимог.'],
+['Екологічність','Відповідально ставимося до сировини й виробничих процесів і дбаємо про довговічність кожного виробу.'],
+['Український виробник','Виробляємо в Україні та підтримуємо вітчизняне будівництво надійними пластиковими деталями.']]},
+en:{cap:'For reliable supply<br>on every site',pill:'Advantages',it:[
+['In-house production','Full cycle at our own plant: from the mold to the finished batch, with no middlemen or extra markups.'],
+['High quality','We check geometry and quality at every stage, so every part in the batch has consistent properties.'],
+['Competitive prices','We sell directly as the manufacturer, offering fair prices and flexible terms for wholesale orders.'],
+['Complete supply','Order every spacer and formwork part for your site in one place and receive it in one shipment.'],
+['Reliable partnership','We advise on product choice, support every order and stick to the lead times we agree on.'],
+['International cooperation','We have experience with partners abroad and fulfil orders to their specific requirements.'],
+['Eco-friendliness','We treat raw materials and processes responsibly and care about the durability of every part.'],
+['Ukrainian manufacturer','We manufacture in Ukraine and support domestic construction with reliable plastic parts.']]}};
