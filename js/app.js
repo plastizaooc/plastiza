@@ -551,3 +551,57 @@ document.addEventListener('keydown',e=>{const m=e.target.closest&&e.target.close
 if(e.key==='ArrowDown'){e.preventDefault();o[(i+1)%o.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();o[(i-1+o.length)%o.length].focus()}else if(e.key==='Escape'){m.hidden=true;m.previousElementSibling.setAttribute('aria-expanded','false');m.previousElementSibling.focus()}});
 document.addEventListener('change',e=>{if(e.target.id==='fmf'){const a=att(fmForm);[...e.target.files].slice(0,Math.max(0,3-a.filter(x=>!x.url).length)).forEach(f=>a.push({name:f.name,size:f.size}));fmRender();attSync(fmForm);return}
 const f=e.target.closest('form[data-v3]');if(f&&e.target.name==='how'){const v=e.target.value;f.querySelector('.lf-ms').hidden=v!=='messenger';f.phone.hidden=v==='email';f.email.hidden=v!=='email';(v==='email'?f.email:f.phone).focus({preventScroll:true});f.querySelector('.lf-err').hidden=true}});
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-v3]');if(!f)return;e.preventDefault();const d=new FormData(f),er=f.querySelector('.lf-err');
+f.name.setAttribute('aria-invalid',!d.get('name'));
+if(!d.get('name')){er.textContent=lf('nm')+' — '+(lang==='uk'?'обов’язкове поле.':'required.');er.hidden=false;return}
+{const hw=d.get('how'),fld=hw==='email'?f.email:f.phone;fld.setAttribute('aria-invalid',!fld.value.trim());if(!fld.value.trim()){er.textContent=hw==='email'?(lang==='uk'?'Вкажіть email.':'Enter your email.'):(lang==='uk'?'Вкажіть номер телефону.':'Enter your phone number.');er.hidden=false;return}}er.hidden=true;
+pushLead({name:d.get('name'),phone:d.get('how')==='email'?'':d.get('phone'),email:d.get('how')==='email'?d.get('email'):'',message:d.get('msg'),files:att(f).map(a=>a.url||a.name),contact:d.get('how'),messenger:d.get('how')==='messenger'?d.get('msgr'):null,source:leadSource(f.dataset.ctx),okText:lf('ok')});
+f.reset();ATT.set(f,[]);attSync(f);f.querySelector('.lf-ms').hidden=true;f.phone.hidden=false;f.email.hidden=true;msgSet(f,'Telegram')});
+
+/* ---------- catalog: every variant is its own card ---------- */
+const VARS=()=>P.flatMap(p=>p.v.map((v,i)=>({p,i,v})));
+const pcV=({p,i,v})=>{const nm=`${title(p)} ${sz(v)}`;
+return `<article class="pc5"><button class="pc5-b" data-go="product" data-a="${p.id}-${i}" aria-label="${nm}"><span class="pc5-i"><img src="${IMGV[p.id+'-'+i]||IMGS[p.id]}" alt="" loading="lazy"></span><span class="pc5-f"><span class="pc5-n">${nm}</span><span class="pc5-p"><small>${t("from")}</small> ${fp(v[1])} ${cur()}</span></span></button></article>`};
+resHtml=()=>{const ps=filt(),r=VARS().filter(o=>ps.includes(o.p)&&(!F.sz.length||F.sz.includes(sz(o.v))));return `<div class="chips">${chips()}</div><div class="cnt-r"><p class="cnt-l">${r.length} ${v4('items')}</p>${gdCtl()}</div>`+(r.length?`<div class="pgrid" ${gdAttr()}>${r.map(pcV).join('')}</div>`:`<p class="none">${t('none')}</p>`)};
+catalog=()=>`<div class="wrap"><div class="ct1"><span class="lab">${t('clab')}</span><div class="ct1-r"><button class="tlink" style="margin:0" data-pdf>${ICO.doc}${v4('pdfB')}</button><button class="lab r" data-go="home">${t('tohome')}</button></div></div><h1 class="ch">${t('ch')}</h1><p class="cs">${t('cs')}</p><div class="qn"><div class="qs">${P.map(qt).join('')}</div></div><div class="cl"><div class="fpn" id="fp">${fHtml()}</div><div id="res">${resHtml()}</div></div></div>`;
+
+/* ---------- home: product row ---------- */
+secGrid=()=>{const c=p=>`<button class="mqc" data-go="product" data-a="${p.id}"><span class="mqi"><img src="${IMGS[p.id]}" alt="" loading="lazy"></span><span class="mqn">${p.id===7?(lang==='uk'?'Ялинка':'Fir-tree'):short(p)}<i class="arw" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3 17L17 3M7.5 3H17v9.5"/></svg></i></span></button>`;
+return `<section class="hrow qsw"><span class="swh" aria-hidden="true">${(secIsl().match(/<svg[\s\S]*?<\/svg>/)||[''])[0]}${t('swipe')}</span><div class="qs hr-s">${P.map(c).join('')}</div><button class="hr-a hr-p" data-hr="-1" aria-label="Back">←</button><button class="hr-a hr-n" data-hr="1" aria-label="Next">→</button></section>`};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-hr]');if(!b)return;const s=b.parentNode.querySelector('.hr-s');s.scrollBy({left:+b.dataset.hr*Math.max(240,s.clientWidth*.7),behavior:'smooth'})});
+
+/* ---------- SEO: first paragraph + spoiler ---------- */
+secSeo=(k='home')=>{const d=SEOX[k][lang];return `<section class="seo3" id="seo">${secLab(d.lab)}<h2>${d.h}</h2><p class="seo3-l">${d.lead}</p>
+<div class="seo3-x" inert><div class="seo3-xi"><div class="seo2-f">${d.facts.map(f=>`<div><b class="num">${f[2]&&f[2]!=='+'?`<small>${f[2]}</small>`:''}${f[0]}${f[2]==='+'?'+':''}</b><span>${f[1]}</span></div>`).join('')}</div>
+<div class="seo3-p">${d.parts.map((p,i)=>`<article class="seo2-p"><span class="num">${String(i+1).padStart(2,'0')}</span><div><h3>${p[0]}</h3><p>${p[1]}</p></div></article>`).join('')}</div>
+<div class="seo2-k">${d.keys.map(([l,g,a])=>`<button class="seo2-c" data-go="${g}"${a!==''?` data-a="${a}"`:''}>${l}</button>`).join('')}</div></div></div>
+<button class="tlink seo-b" data-seo aria-expanded="false">${cx('seoMore')}<i aria-hidden="true">↓</i></button></section>`};
+document.addEventListener('click',e=>{const b=e.target.closest('.seo3 [data-seo]');if(!b)return;const x=b.closest('.seo3').querySelector('.seo3-x');if(x)x.toggleAttribute('inert',!b.closest('.seo3').classList.contains('open'))});
+
+/* ---------- product page: related as 1.5-card scroller on mobile ---------- */
+const _product=product;product=function(){const {p,vi}=pvParse(R.a);if(!p)return page404();
+let h=_product();const i0=h.lastIndexOf('<section style="padding-bottom:clamp(56px,7vw,96px)"><h2 class="x-h">');if(i0>-1){const i1=h.indexOf('</section>',i0)+10;h=h.slice(0,i0)+h.slice(i1)}
+return h+bd('w pr-rel',relRow(p,vi))+supplyBand()+bd('w',secFaq())+bd('',leadForm('product'))+bd('w',secSeo(prodSeoKey(p,vi)))};
+
+/* ---------- «Виробництво» page ---------- */
+about=()=>{const nums=[[2900,'+','s1'],[12,'','s2'],[200000,'+','s3']];
+return `<h1 class="sr">${v4('prH')}</h1>${prIntro()}`+
+bd('w',stmtH(x('aboutP').join(' '),bx('introLab'),`<dl class="st6-k">${nums.map(n=>`<div><dt class="num"><span class="cnt" data-n="${n[0]}" data-s="${n[1]}">${fmtN(n[0])}${n[1]}</span></dt><dd>${t(n[2])}</dd></div>`).join('')}</dl>`))+
+bd('',`<section><div class="hs2-h"><div>${secLab(v4('mvLab'))}<h2 class="x-h" style="margin:0">${v4('mvH')}</h2></div></div><div class="mv3 mv3n">${v4('mv').map((m,i)=>`<div class="mv3-i"><h3>${m[0]}</h3><p>${m[1]}</p></div>`).join('')}</div></section>`)+
+bd('w',secCap())+
+bd('',`<section><div class="hs2-h"><div>${secLab(v4('hiLab'))}<h2 class="x-h" style="margin:0">${v4('hiH')}</h2></div></div><ol class="isl hi3">${v4('hi').map(h=>`<li class="hi3-i"><span class="hi3-y num">${h[0]}</span><p>${h[1]}</p></li>`).join('')}</ol></section>`)+
+bd('w',secAdv())+bd('',xSteps().replace('class="x-s"','class=""'))+bd('w',secFaq())+bd('',leadForm('about'))+bd('w',secSeo('about'))};
+
+/* ---------- PDF catalog ---------- */
+(function(){const d=document.createElement('dialog');d.id='pdfm';d.className='fmod';document.body.appendChild(d)})();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pdf]');if(b){const d=$('#pdfm');d.innerHTML=`<div class="fm-h"><h3>${v4('pdfH')}</h3><button type="button" class="ic x" data-pdf-x aria-label="Close">✕</button></div><p class="fm-s">${v4('pdfS')}</p><div class="pdf-o">${[['desk',v4('pdfD'),'▭'],['mob',v4('pdfM'),'▯']].map(([k,[h,s],ic])=>`<button class="pdf-c" data-pdf-go="${k}"><span class="pdf-ic">${ic}</span><b>${h}</b><span>${s}</span></button>`).join('')}</div>`;d.showModal();return}
+if(e.target.closest('[data-pdf-x]')||e.target===$('#pdfm')){$('#pdfm').close();return}
+const g=e.target.closest('[data-pdf-go]');if(g){$('#pdfm').close();go('pdf',g.dataset.pdfGo);return}
+if(e.target.closest('[data-print]')){try{window.print()}catch(_){const el=$('#toast');el.textContent=v4('pdfTip');el.classList.add('on');setTimeout(()=>el.classList.remove('on'),3000)}}});
+function pdfPage(){const mob=R.a==='mob',I=LI();let ps=document.getElementById('pdfpage');if(!ps){ps=document.createElement('style');ps.id='pdfpage';document.head.appendChild(ps)}ps.textContent=`@page{size:${mob?'110mm 196mm':'A4 landscape'};margin:${mob?'8mm':'12mm'}}`;
+return `<div class="wrap pdfv ${mob?'pdf-m':'pdf-d'}"><div class="pdf-bar no-print"><div><span class="sv-lab" style="margin:0 0 6px">${v4('pdfB')}</span><b>${mob?v4('pdfM')[0]:v4('pdfD')[0]}</b><small>${v4('pdfTip')}</small></div><div class="row"><button class="btn g" data-go="pdf" data-a="${mob?'desk':'mob'}">${mob?v4('pdfD')[0]:v4('pdfM')[0]}</button><button class="btn" data-print>${ICO.doc}${v4('pdfSave')}</button></div></div>
+<div class="pdf-doc"><section class="pdf-cv"><span class="pdf-lg">PLASTIZA</span><h1>${v4('pdfCover')}</h1><p>${t('tag')}</p><div class="pdf-ct">${PH.join(' · ')}<br>plastiza.sale@gmail.com</div></section>
+<nav class="pdf-toc" id="pdf-toc"><h2>${v4('pdfToc')}</h2>${CATS.map(c=>`<h3>${c[lang]}</h3><ol>${P.filter(p=>p.cat===c.id).map(p=>`<li><a href="#pdf-p${p.id}">${title(p)}</a><span>${p.v.length}</span></li>`).join('')}</ol>`).join('')}</nav>
+${P.map(p=>`<section class="pdf-p" id="pdf-p${p.id}"><div class="pdf-im"><img src="${IMGS[p.id]}" alt=""></div><div class="pdf-tx"><span class="pdf-k">${CATS.find(c=>c.id===p.cat)[lang]}</span><h2>${title(p)}</h2><p>${p.d[lang]}</p><table><thead><tr><th>${t('size')}</th><th>${t('price')}</th><th>${t('pack')}</th></tr></thead><tbody>${p.v.map(v=>`<tr><td>${sz(v)}</td><td>${t('from')} ${fp(v[1])} ${cur()}/${un(p)}</td><td>${v[2]?v[2]+' '+un(p):'—'}</td></tr>`).join('')}</tbody></table><div class="pdf-ln"><a href="#pdf-toc">${v4('pdfTop')}</a><a href="${rtAbsP(p.id)}" target="_blank" rel="noopener">${v4('pdfOpen')} ↗</a></div></div></section>`).join('')}</div></div>`}
+
+// ===== advantages v3 =====
