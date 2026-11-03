@@ -668,6 +668,12 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;geoFix()})}).observe(document.getElementById('view'),{childList:true,subtree:true});geoFix();
 })();
 /*FIXJS10-END*/
+/*FIXJS11-START*//*@BEFORE-BOOT*/
+/* 03.11: головна — нове відео цеху в картці першого екрана (композиція як на домені); сторінка «Виробництво» лишається з попереднім відео */
+(function(){
+ const _home11=home;home=function(){let h=_home11();return h.replace(/hero-loop\.mp4/g,'hero-loop2.mp4').replace(/hero\/poster\.(jpg|webp)/g,'hero/poster2.$1')};
+})();
+/*FIXJS11-END*/
 /*FIXJS9-START*//*@BEFORE-BOOT*/
 /* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
 (function(){
