@@ -269,7 +269,7 @@ let [m,mi]=lines();while(m>(innerWidth<=760?6:4)&&fs>20){fs-=1;h.style.fontSize=
 let fitT=0;addEventListener('resize',()=>{clearTimeout(fitT);fitT=setTimeout(fitH1,120)});try{document.fonts.ready.then(fitH1)}catch(e){}
 function mqInit(){const m=document.querySelector('.mq-t');if(!m)return;const w=m.scrollWidth/2;m.style.setProperty('--mqd',Math.round(w/38)+'s')}
 function qsDrag(){document.querySelectorAll('.qs').forEach(q=>{if(q.dataset.dg)return;q.dataset.dg=1;
-q.addEventListener('wheel',e=>{if(q.scrollWidth<=q.clientWidth||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;const max=q.scrollWidth-q.clientWidth;if((e.deltaY<0&&q.scrollLeft<=0)||(e.deltaY>0&&q.scrollLeft>=max))return;e.preventDefault();q.scrollLeft+=e.deltaY},{passive:false});
+q.addEventListener('wheel',e=>{if(q.scrollWidth<=q.clientWidth||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;const max=q.scrollWidth-q.clientWidth,cur=q._wt!=null?q._wt:q.scrollLeft;if((e.deltaY<0&&cur<=1)||(e.deltaY>0&&cur>=max-1))return;e.preventDefault();const d=e.deltaMode===1?e.deltaY*40:e.deltaY;q._wt=Math.max(0,Math.min(max,cur+d));q.style.scrollSnapType='none';q.scrollLeft=q._wt;clearTimeout(q._wto);q._wto=setTimeout(()=>{q._wt=null;q.style.scrollSnapType=''},300)},{passive:false});
 let sx=0,sl=0,down=false,moved=false;q.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;down=true;moved=false;sx=e.clientX;sl=q.scrollLeft});
 addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-sx;if(Math.abs(dx)>5){moved=true;q.classList.add('drag')}if(moved)q.scrollLeft=sl-dx});
 addEventListener('pointerup',()=>{if(!down)return;down=false;setTimeout(()=>q.classList.remove('drag'),0)})})}
@@ -627,3 +627,6 @@ secAdv=()=>{const d=ADV3[lang];return `<section class="av3"><div class="s5-top a
 <div class="av3-g">${d.it.map((a,i)=>`<article class="av3-c"><span class="av3-ic" aria-hidden="true">${AVI[i%AVI.length]}</span><h3>${a[0]}</h3><p>${a[1]}</p></article>`).join('')}</div><div class="sl-dots av3-dots" aria-hidden="true"></div></section>`};
 
 // ===== shared product row (home + catalog) =====
+const prowCard=p=>`<button class="mqc" data-go="product" data-a="${p.id}"><span class="mqi"><img src="${IMGS[p.id]}" alt="" loading="lazy"></span><span class="mqn">${p.id===7?(lang==='uk'?'Ялинка':'Fir-tree'):short(p)}<i class="arw" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3 17L17 3M7.5 3H17v9.5"/></svg></i></span></button>`;
+const prow=()=>`<div class="prow qsw at-s"><span class="swh" aria-hidden="true">${(secIsl().match(/<svg[\s\S]*?<\/svg>/)||[''])[0]}${t('swipe')}</span><div class="qs prow-s">${P.map(prowCard).join('')}</div><button class="pr-a pr-p" data-pr="-1" aria-label="Back">←</button><button class="pr-a pr-n" data-pr="1" aria-label="Next">→</button></div>`;
+secGrid=()=>`<section class="hrow2">${prow()}</section>`;

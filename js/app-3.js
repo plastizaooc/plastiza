@@ -726,6 +726,29 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;enhance()})}).observe(document.getElementById('view'),{childList:true,subtree:true});enhance();
 })();
 /*FIXJS14-END*/
+/*FIXJS16-START*//*@BEFORE-BOOT*/
+/* 03.11: головна — секція «Чому PLASTIZA» (B2B-переваги) між «Географією» і блогом: компактно: заголовок + п’ять карток переваг */
+(function(){
+ const WHY={uk:{lab:'Чому PLASTIZA',h:'Надійний постачальник<br>для вашого об’єкта',p:'Працюємо з будівельними компаніями, забудовниками та виробниками. Виробництво, склад і логістика — на нас, а ви отримуєте все вчасно та з документами.',
+  it:[['Власний виробник, а не посередник','Самі виробляємо фіксатори й елементи опалубки: ціни від заводу, стабільна якість кожної партії.'],
+      ['Склади з запасом у Львові та Києві','Ходові позиції завжди в наявності — відвантажуємо зі складу без очікування, можливий самовивіз.'],
+      ['Доставка зручним для вас способом','Нова пошта, Укрпошта, вантажний транспорт або на об’єкт — по Україні й за кордон, під етапи робіт.'],
+      ['Звітні документи для юридичних осіб','Рахунок, накладна й ТТН до кожної поставки — для безготівкового розрахунку з компаніями та ФОП.'],
+      ['Гнучкий обсяг продукції під ваш запит','Від упаковки в 100 шт. до великих партій і регулярних поставок на ваш об’єкт за узгодженим графіком.']],
+  vl:'Склад і відвантаження',cta:'Обговорити співпрацю'},
+ en:{lab:'Why PLASTIZA',h:'A reliable supplier<br>for your project',p:'We work with contractors, developers and manufacturers. Production, storage and logistics are on us — you get everything on time, with paperwork.',
+  it:[['Our own production, not a reseller','We make rebar spacers and formwork parts ourselves: factory prices and consistent quality in every batch.'],
+      ['Stocked warehouses in Lviv and Kyiv','Fast-moving items are always in stock — shipped straight from the warehouse, no waiting; pickup available.'],
+      ['Delivery in whatever way suits you','Nova Post, Ukrposhta, freight or straight to site — across Ukraine and abroad, matched to work stages.'],
+      ['Accounting paperwork for businesses','Invoice, delivery note and waybill per shipment — for bank-transfer payment by companies and sole traders.'],
+      ['Flexible order volume for your request','From a 100-pc pack to large batches and regular deliveries to your site on an agreed schedule.']],
+  vl:'Warehouse & dispatch',cta:'Discuss cooperation'}};
+ function why(){const u=lang==='uk',W=WHY[u?'uk':'en'];
+  return `<div class="bd w wy-bd"><div class="wrap"><section class="wy" aria-label="${W.lab}"><div class="wy-top"><div>${secLab(W.lab)}<h2 class="s5-h">${W.h}</h2></div><div class="wy-tr"><p class="wy-p">${W.p}</p></div></div>
+  <ol class="wy-cards">${W.it.map((x,i)=>`<li class="wy-c"><span class="wy-n">${String(i+1).padStart(2,'0')}</span><b>${x[0]}</b><p>${x[1]}</p></li>`).join('')}</ol></section></div></div>`}
+ const _home16=home;home=function(){let h=_home16();const i=h.indexOf('class="cfb"');const j=i>-1?h.indexOf('<div class="bd',i):-1;return j>-1?h.slice(0,j)+why()+h.slice(j):h};
+})();
+/*FIXJS16-END*/
 /*FIXJS9-START*//*@BEFORE-BOOT*/
 /* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
 (function(){
