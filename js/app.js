@@ -630,3 +630,145 @@ secAdv=()=>{const d=ADV3[lang];return `<section class="av3"><div class="s5-top a
 const prowCard=p=>`<button class="mqc" data-go="product" data-a="${p.id}"><span class="mqi"><img src="${IMGS[p.id]}" alt="" loading="lazy"></span><span class="mqn">${p.id===7?(lang==='uk'?'Ялинка':'Fir-tree'):short(p)}<i class="arw" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3 17L17 3M7.5 3H17v9.5"/></svg></i></span></button>`;
 const prow=()=>`<div class="prow qsw at-s"><span class="swh" aria-hidden="true">${(secIsl().match(/<svg[\s\S]*?<\/svg>/)||[''])[0]}${t('swipe')}</span><div class="qs prow-s">${P.map(prowCard).join('')}</div><button class="pr-a pr-p" data-pr="-1" aria-label="Back">←</button><button class="pr-a pr-n" data-pr="1" aria-label="Next">→</button></div>`;
 secGrid=()=>`<section class="hrow2">${prow()}</section>`;
+catalog=()=>`<div class="wrap"><div class="ct1"><span class="lab">${t('clab')}</span><div class="ct1-r"><button class="tlink" style="margin:0" data-pdf>${ICO.doc}${v4('pdfB')}</button><button class="lab r" data-go="home">${t('tohome')}</button></div></div><h1 class="ch">${t('ch')}</h1><p class="cs">${t('cs')}</p><div class="ct-row">${prow()}</div><div class="cl"><div class="fpn" id="fp">${fHtml()}</div><div id="res">${resHtml()}</div></div></div>`;
+function prowInit(){document.querySelectorAll('.prow').forEach(w=>{const s=w.querySelector('.prow-s');const up=()=>{const m=s.scrollWidth-s.clientWidth;w.classList.toggle('at-s',s.scrollLeft<=4);w.classList.toggle('at-e',s.scrollLeft>=m-4);w.classList.toggle('nos',m<=4)};
+if(!w.dataset.pi){w.dataset.pi=1;s.addEventListener('scroll',up,{passive:true});new ResizeObserver(up).observe(s)}up()})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pr]');if(!b)return;const s=b.parentNode.querySelector('.prow-s');s.scrollBy({left:+b.dataset.pr*Math.max(240,s.clientWidth*.7),behavior:'smooth'})});
+
+let foldW=0;function heroFold(force){const hx=document.querySelector('.hx');if(!hx)return;const sp=hx.querySelector('.hx-sp'),f=hx.querySelector('.hqi')||hx.querySelector('.hqf'),hi=hx.querySelector('.hx-in'),ch=hx.querySelector('.hx-chips');if(!sp||!f)return;
+{sp.style.height='';hi.style.removeProperty('padding-top');f.style.marginTop='';ch.style.marginTop='';return}if(!force&&foldW===innerWidth)return;foldW=innerWidth;
+sp.style.height='0px';hi.style.removeProperty('padding-top');f.style.marginTop='';ch.style.marginTop='';
+const head=document.querySelector('.top').getBoundingClientRect().height,fb=f.getBoundingClientRect().bottom-hx.getBoundingClientRect().top,avail=innerHeight-head,free=avail-32-fb;
+if(free>0){const pt=Math.min(free*.4,64),cg=Math.min(free*.2,28),fm=free-pt-cg;hi.style.setProperty('padding-top',(16+pt)+'px','important');ch.style.setProperty('margin-top',(18+cg)+'px','important');f.style.setProperty('margin-top',(10+fm)+'px','important')}
+sp.style.height='56px'}
+addEventListener('resize',()=>heroFold(false));
+
+function bgSl(){document.querySelectorAll('.bg-sl').forEach(g=>{const d=g.nextElementSibling;const up=()=>{const cs=[...g.children].filter(c=>c.classList.contains('bc2'));if(innerWidth>700||cs.length<2){d.innerHTML='';return}
+const w=cs[0].getBoundingClientRect().width+12,i=Math.round(g.scrollLeft/w);if(d.childElementCount!==cs.length)d.innerHTML=cs.map(()=>'<i></i>').join('');[...d.children].forEach((x,k)=>x.classList.toggle('on',k===Math.min(i,cs.length-1)))};
+if(!g.dataset.sl){g.dataset.sl=1;g.addEventListener('scroll',up,{passive:true});new MutationObserver(()=>{g.scrollLeft=0;up()}).observe(g,{childList:true});addEventListener('resize',up)}up()})}
+
+// floating colour orb in the callback block (bounces off the edges)
+function lfoInit(){document.querySelectorAll('.lfo').forEach(o=>{if(o.dataset.on)return;o.dataset.on=1;const wide=()=>innerWidth>760,box0=o.parentNode,box=o.closest('.lf3-r')||(wide()?(o.closest('.bd')||o.closest('.x-lf')||box0):box0),ball=o.firstChild,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let x=0,y=0,vx=0,vy=0,last=0,raf=0,vis=false,W=0,H=0,S=0,L=0,Tp=0;
+const size=()=>{W=box.clientWidth;H=box.clientHeight;const fm=box.querySelector('.lf2-f');L=0;Tp=fm&&innerWidth<=760?Math.max(0,fm.getBoundingClientRect().top-box.getBoundingClientRect().top+30):0;if(fm&&innerWidth>760){const br=box.getBoundingClientRect(),fr=fm.getBoundingClientRect();L=fr.left-br.left;Tp=fr.top-br.top;W=fr.right-br.left;H=fr.bottom-br.top}S=Math.round(Math.min(Math.max((W-L)*.42,220),Math.min(440,(H-(Tp||0))*.8)));ball.style.width=ball.style.height=S+'px'};
+size();x=L+(W-L)*.5-S/2;y=Math.max(y,Tp);y=H*.18;const sp=W<700?26:38,a=Math.random()*Math.PI*2;vx=Math.cos(a)*sp;vy=Math.sin(a)*sp;if(Math.abs(vx)<sp*.4)vx=sp*.6*Math.sign(vx||1);
+const place=()=>{ball.style.transform=`translate3d(${x}px,${y}px,0)`};place();
+const m=S*.22;function f(t){raf=0;if(!o.isConnected)return;const dt=last?Math.min(.05,(t-last)/1000):0;last=t;x+=vx*dt;y+=vy*dt;
+if(x<(L?L:-m)){x=L?L:-m;vx=Math.abs(vx)}if(x>W-S+m){x=W-S+m;vx=-Math.abs(vx)}if(y<(Tp?Tp:-m)){y=Tp?Tp:-m;vy=Math.abs(vy)}if(y>H-S+m){y=H-S+m;vy=-Math.abs(vy)}
+place();if(vis)raf=requestAnimationFrame(f)}
+new ResizeObserver(()=>{size();x=Math.max(L?L:-m,Math.min(x,W-S+m));y=Math.max(Tp?Tp:-m,y);y=Math.min(y,H-S+m);place()}).observe(box);
+if(rm)return;new IntersectionObserver(e=>{vis=e[0].isIntersecting;if(vis&&!raf){last=0;raf=requestAnimationFrame(f)}}).observe(box)})}
+
+function msgSet(root,v){const dd=root.querySelector('.dd');if(!dd)return;const mi=MSGR.find(m=>m[0]===v);dd.querySelector('input').value=v;dd.querySelector('.dd-v').textContent=v;dd.querySelector('.dd-b .dd-i').innerHTML=mi[2];dd.querySelectorAll('[data-dv]').forEach(o=>o.setAttribute('aria-selected',o.dataset.dv===v));root.querySelectorAll('[data-mc]').forEach(c=>c.setAttribute('aria-checked',c.dataset.mc===v))}
+document.addEventListener('click',e=>{const c=e.target.closest('[data-mc]');if(c){msgSet(c.closest('.lf-ms'),c.dataset.mc);return}const d=e.target.closest('[data-dv]');if(d)setTimeout(()=>msgSet(d.closest('.lf-ms'),d.dataset.dv),0)});
+
+const ICO_MAIL='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>';
+const lfAlt=()=>`<div class="lf2-alt"><p class="or-l"><span>${lang==='uk'?'або зв’яжіться напряму':'or contact us directly'}</span></p><div class="alt-ph">${PH.map(p=>`<a href="tel:${p.replace(/[^+\d]/g,'')}">${p}</a>`).join('')}</div><div class="alt-ms">${MSGR.map(([n,h,i])=>`<a href="${h}" target="_blank" rel="noopener" aria-label="${n}">${i}</a>`).join('')}</div><a class="fpill alt-em" href="mailto:plastiza.sale@gmail.com">${ICO_MAIL}<span>plastiza.sale@gmail.com</span></a></div>`;
+
+// ===== catalog v5: dropdown filters on top, 4 cards per row =====
+F.o={};
+fHtml=function(){const S=[...new Set(P.flatMap(p=>p.v.map(sz)))],I=LI();
+const ck=(k,v,l,on)=>`<button class="ck" data-f="${k}" data-v="${v}" aria-pressed="${on}"><i>${on?'✓':''}</i>${l}</button>`;
+const dd=(id,key,ti,items)=>{const n=F[key].length;return `<div class="fdd${F.o[id]?' open':''}"><button class="fdb${n?' on':''}" data-acc="${id}" aria-expanded="${!!F.o[id]}" aria-haspopup="true">${ti}${n?`<b>${n}</b>`:''}<i class="chv" aria-hidden="true"><svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 1.5l5 5 5-5"/></svg></i></button>${F.o[id]?`<div class="fpop"><div class="sc">${items}</div></div>`:''}</div>`};
+const any=F.fm.length||F.ps.length||F.pu.length||F.sz.length;
+return `<input id="q" type="search" value="${F.q}" placeholder="${t('search')}" aria-label="${t('search')}">`
++dd('ps','ps',t('f_pos'),[['h',t('hor')],['v',t('ver')]].map(x=>ck('ps',x[0],x[1],F.ps.includes(x[0]))).join(''))
++dd('fm','fm',t('f_form'),P.map(p=>ck('fm',p.id,short(p),F.fm.includes(p.id))).join(''))
++dd('pu','pu',t('f_pur'),[...new Map(P.map(p=>PU(p.id)).filter(x=>x[0]).map(x=>[x[0],x])).values()].map(x=>ck('pu',x[0],x[I],F.pu.includes(x[0]))).join(''))
++dd('sz','sz',t('f_size'),S.map(v=>ck('sz',v,v,F.sz.includes(v))).join(''))
++(any?`<button class="fclr" data-fclr>${lang==='uk'?'Скинути':'Reset'}</button>`:'')};
+catalog=()=>`<div class="wrap"><div class="ct1"><span class="lab">${t('clab')}</span><div class="ct1-r"><button class="tlink" style="margin:0" data-pdf>${ICO.doc}${v4('pdfB')}</button><button class="lab r" data-go="home">${t('tohome')}</button></div></div><h1 class="ch">${t('ch')}</h1><p class="cs">${t('cs')}</p><div class="ct-row">${prow()}</div><div class="cl2"><div class="fbar" id="fp">${fHtml()}</div><div id="res">${resHtml()}</div></div></div>`;
+document.addEventListener('click',e=>{const a=e.target.closest('[data-acc]');if(a){const id=a.dataset.acc;Object.keys(F.o).forEach(k=>{if(k!==id)F.o[k]=false});return}
+if(e.target.closest('[data-fclr]')){F.fm=[];F.ps=[];F.pu=[];F.sz=[];F.o={};updCat();return}
+if(R.p==='catalog'&&Object.values(F.o).some(Boolean)&&!e.target.closest('.fdd')&&!e.target.closest('[data-f]')){F.o={};updCat()}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&R.p==='catalog'&&Object.values(F.o).some(Boolean)){F.o={};updCat()}});
+
+function fit(){document.querySelectorAll('.mega').forEach(m=>{const w=m.parentNode;if(!w||!w.clientWidth)return;const cs=getComputedStyle(w),W=w.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+m.style.fontSize='100px';m.style.marginLeft='0px';const t=m.firstChild;if(!t)return;const r=document.createRange();r.selectNodeContents(m);const rb=r.getBoundingClientRect(),mb=m.getBoundingClientRect();
+const c=document.createElement('canvas').getContext('2d');c.font=getComputedStyle(m).fontWeight+' 100px '+getComputedStyle(m).fontFamily;const x=c.measureText(m.textContent);const ink=(x.actualBoundingBoxLeft+x.actualBoundingBoxRight)||rb.width;
+const k=(W-2)/ink;m.style.fontSize=(100*k).toFixed(2)+'px';m.style.marginLeft=(x.actualBoundingBoxLeft*k).toFixed(2)+'px'})}
+addEventListener('resize',fit);try{document.fonts.load('600 100px Unbounded').then(fit);document.fonts.ready.then(fit)}catch(e){}setTimeout(fit,600);setTimeout(fit,2000);
+function footH(){const L=(p,l,a)=>`<button class="fl" data-go="${p}"${a!=null?` data-a="${a}"`:''}>${l}</button>`,I=lang==='uk'?0:1;
+return `<div class="wrap fw"><div class="fa2 f-mot"><p class="fmot"><b>${t('motA')}</b> ${t('motB')}</p></div>
+<div class="f-nav"><h4>[ ${t('fnav')} ]</h4><div class="f-ls">${L('home',t('home'))}${L('about',t('about'))}${L('catalog',v4('menuProd'),'all')}${L('oem',t('serv'))}${SRV.map((x,i)=>`<button class="fl fl2" data-go="soon" data-a="${i}">${x[lang]}</button>`).join('')}${L('faq',t('faq'))}${L('delivery',lang==='uk'?'Доставка та оплата':'Delivery & payment')}${L('blog',t('blog'))}${L('contacts',t('contacts'))}<button class="fl fl-pdf" data-go="pdf" data-a="desk">${lang==='uk'?'Каталог PDF':'PDF catalog'}</button></div></div>
+<div class="f-prod"><h4>[ ${t('fprod')} ]</h4><div class="f-ls">${P.map(p=>L('product',short(p),p.id)).join('')}</div></div>
+<div class="f-side"><div class="f-con"><h4>[ ${t('contacts')} ]</h4>${PH.map(x=>`<a class="fl" href="tel:${x.replace(/[^+\d]/g,'')}">${x}</a>`).join('')}<a class="fl" href="mailto:plastiza.sale@gmail.com">plastiza.sale@gmail.com</a></div><div class="f-msg"><h4 class="fh4">[ ${lang==='uk'?'Месенджери':'Messengers'} ]</h4>${['WhatsApp','Telegram','Viber'].map(n=>{const m=MSGR.find(x=>x[0]===n);return m?`<a class="fl" href="${m[1]}" target="_blank" rel="noopener">${n}</a>`:''}).join('')}</div><div class="f-hrs"><h4 class="fh4">[ ${t('hrs')} ]</h4>${HOURS.map(h=>`<p class="fad">${h[I]}</p>`).join('')}</div></div><div class="f-adr"><div class="fpills">${AD.map(x=>`<a class="fpill" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x[0])}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg><span>${x[I].replace(/^\d{5},?\s*/,'')}</span></a>`).join('')}</div></div></div>
+<div class="wrap fb"><span>© 2026 PLASTIZA</span><span>${t('llc')}</span></div><div class="wrap"><div class="mega" aria-hidden="true">PLASTIZA</div></div>`}
+function render(){root.lang=lang==='uk'?'uk':'en';document.title='PLASTIZA';side();const p=R.p;$('#view').innerHTML=p==='home'?home():p==='catalog'?catalog():p==='product'?product():p==='about'?about():p==='contacts'?contactsP():p==='oem'?oemP():p==='pdf'?pdfPage():p==='faq'?faqPage():p==='delivery'?deliveryP():p==='blog'?blogPage():p==='post'?postPage():p==='404'?page404():soon();document.body.classList.toggle('pg-cat',R.p==='catalog');$('#foot').innerHTML=footH();fit();pellets(document.getElementById('pel'));heroTiles(document.getElementById('hxg'));if(R.p==='home'){countUp();mqInit();requestAnimationFrame(()=>heroFold(true));try{document.fonts.ready.then(()=>heroFold(true))}catch(e){}}if(R.p==='about')countUp();swHints();qsDrag();prowInit();bgSl();lfoInit();fitH1();typer(document.getElementById('hxh'));window.sbUpd&&sbUpd();
+$('#fn').placeholder=t('name');$('#fp').placeholder=t('contact');$('#fq').placeholder=t('qty')+', '+t('pcs');$('#fs').textContent=t('send');$('#fc').textContent=t('cancel');$('#tcta').innerHTML=`<span class="cta-l">${t('quote')}</span><span class="cta-s">${lang==='uk'?'Розрахунок':'Quote'}</span>`}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){go(g.dataset.go,g.dataset.a);return}
+const l=e.target.closest('[data-l]');if(l){lang=l.dataset.l;ls.s('lang',lang);render();return}
+if(e.target.closest('#th')){const d=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;root.dataset.theme=d?'light':'dark';ls.s('theme',root.dataset.theme);return}
+const c=e.target.closest('#cols .sw');if(c){F.col=c.dataset.c;render();return}
+const r=e.target.closest('[data-rfq]');if(r){subj=r.dataset.rfq;$('#dt').textContent=t('req')+': '+subj;$('#dlg').showModal();return}
+if(e.target.closest('#burger')){menu(true);return}if(e.target.closest('#close')||e.target.id==='scrim')menu(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
+function menu(o){document.body.classList.toggle('open',o);$('#burger').setAttribute('aria-expanded',String(o));if(o)setTimeout(()=>{const x=$('#close');x&&x.focus()},60)}
+document.addEventListener('input',e=>{const i=e.target.id;if(i==='q'||i==='pf'||i==='pt'){F[i]=e.target.value;$('#res').innerHTML=resHtml()}});
+document.addEventListener('change',e=>{if(e.target.id==='mf'){F.mat=e.target.value;render()}});
+$('#fc').onclick=()=>$('#dlg').close();
+$('#f').onsubmit=e=>{pushLead({name:$('#fn').value,contact:$('#fp').value,qty:$('#fq').value,subject:subj,source:leadSource('modal')});e.target.reset()};
+function fromHash(){let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
+if(h.startsWith('p-'))return {p:'product',a:h.slice(2)};if(h.startsWith('b-'))return {p:'post',a:h.slice(2)};if(h.startsWith('soon-'))return {p:'soon',a:h.slice(5)};if(h.startsWith('pdf-'))return {p:'pdf',a:h.slice(4)};
+if(['catalog','about','oem','contacts','faq','blog','delivery'].includes(h))return {p:h,a:h==='catalog'?'all':undefined};if(!h||h==='home'||h==='top')return {p:'home'};return {p:'404'}}
+
+/* ===== services v5: big-type accordion + service pages ===== */
+const SV5={uk:{lab:'Послуги',h:'Послуги<br>виробництва',all:'Усі послуги',open:'Детальніше',close:'Згорнути',more:'Детальніше про послугу',calc:'Розрахувати вартість',about:'Про послугу',inc:'Що входить',how:'Як це відбувається',need:'Що потрібно для розрахунку',other:'Інша послуга',num:'напрями',
+notes:['Власне виробництво повного циклу','Від прототипу до серійної партії','Пресформи під ваш виріб'],
+s:[{meta:['Прототипи','/ серійні партії'],tl:'Відливаємо пластикові вироби під тиском за вашими кресленнями — від пробної партії до великих тиражів.',
+steps:[['Технічне завдання','Надсилаєте креслення, 3D-модель або зразок виробу та потрібні обсяги.'],['Підбір матеріалу','Радимо вид пластику під умови експлуатації та навантаження.'],['Пресформа','Використовуємо вашу пресформу або виготовляємо нову під виріб.'],['Пробна партія','Відливаємо зразки, погоджуємо з вами геометрію та якість.'],['Серійне лиття','Випускаємо партію з контролем якості, пакуємо й відвантажуємо.']],
+need:['Креслення або 3D-модель (STEP, IGES, DWG, PDF)','Зразок виробу — якщо креслень немає','Орієнтовний тираж і терміни','Вимоги до матеріалу, кольору та умов експлуатації']},
+{meta:['Проєктування','/ виготовлення'],tl:'Проєктуємо та виготовляємо пресформи під ваш виріб — для лиття на вашому підприємстві або на наших потужностях.',
+steps:[['Аналіз виробу','Вивчаємо креслення чи зразок, вимоги до точності й тиражу.'],['Проєктування','Розробляємо конструкцію пресформи та погоджуємо її з вами.'],['Виготовлення','Виготовляємо деталі пресформи та збираємо її.'],['Випробування','Робимо пробне лиття й доводимо пресформу до потрібних параметрів.'],['Передача або лиття','Передаємо пресформу вам або одразу відливаємо партію в нас.']],
+need:['Креслення або 3D-модель виробу','Зразок — якщо документації немає','Плановий тираж виробів','Де буде працювати пресформа: у вас чи в нас']}]},
+en:{lab:'Services',h:'Manufacturing<br>services',all:'All services',open:'Details',close:'Collapse',more:'More about this service',calc:'Request a quote',about:'About the service',inc:'What’s included',how:'How it works',need:'What we need for a quote',other:'Other service',num:'areas',
+notes:['Full-cycle in-house production','From prototype to production run','Molds built for your part'],
+s:[{meta:['Prototypes','/ production runs'],tl:'We injection-mold plastic parts to your drawings — from a trial batch to large volumes.',
+steps:[['Brief','Send a drawing, 3D model or sample and the volumes you need.'],['Material','We recommend a plastic for the operating conditions and loads.'],['Mold','We use your mold or make a new one for the part.'],['Trial batch','We mold samples and agree geometry and quality with you.'],['Production','We run the batch with quality control, pack and ship it.']],
+need:['Drawing or 3D model (STEP, IGES, DWG, PDF)','A sample — if there are no drawings','Approximate volume and timing','Material, colour and operating requirements']},
+{meta:['Design','/ manufacturing'],tl:'We design and build molds for your part — to run at your plant or with us.',
+steps:[['Part review','We study the drawing or sample, precision and volume requirements.'],['Design','We design the mold and agree it with you.'],['Manufacturing','We machine the mold parts and assemble it.'],['Trials','We run trial shots and fine-tune the mold.'],['Hand-over or molding','We hand the mold over or mold the batch with us.']],
+need:['Drawing or 3D model of the part','A sample — if there is no documentation','Planned production volume','Where the mold will run: at your plant or ours']}]}};
+const s5=()=>SV5[lang];
+const s5Row=(i,open,ctx)=>{const v=s5(),d=v.s[i],S=SRV[i],inc=x('th')[i];return `<div class="s5-i${open?' open':''}"><button class="s5-s" aria-expanded="${!!open}" aria-controls="s5b-${ctx}-${i}" id="s5h-${ctx}-${i}"><span class="s5-n">${String(i+1).padStart(2,'0')}</span><span class="s5-t">${S[lang]}</span><span class="s5-m">${d.meta.join('<br>')}</span><i class="s5-a" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7l10 10M17 9v8H9"/></svg></i></button>
+<div class="s5-b" id="s5b-${ctx}-${i}" role="region" aria-labelledby="s5h-${ctx}-${i}" ${open?'':'inert'}><div class="s5-bi"><div class="s5-g">
+<div class="s5-c1"><p class="s5-tl">${d.tl}</p><p class="s5-p">${S.d[lang]}</p></div>
+<div class="s5-c2"><span class="s5-k">${v.inc}</span><ul class="s5-inc">${inc.map(r=>`<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul></div>
+<div class="s5-c3"><span class="s5-k">${v.how}</span><ol class="s5-st">${d.steps.map((s,k)=>`<li><i>${String(k+1).padStart(2,'0')}</i>${s[0]}</li>`).join('')}</ol></div>
+</div><div class="s5-ft"><button class="btn" data-go="soon" data-a="${i}">${v.more} <span aria-hidden="true">→</span></button></div></div></div></div>`};
+const s5List=(ctx,openFirst)=>{const u=lang==='uk';return `<div class="s5-l">${SRV.map((_,i)=>s5Row(i,false,ctx)).join('')}</div>`};
+const secServ5=()=>{const v=s5(),sv=SVX[lang];return `<section class="s5"><div class="s5-top"><div>${secLab(v.lab)}<h2 class="s5-h">${v.h}</h2></div><div class="s5-tr"><span class="s5-cnt"><b class="num">0${SRV.length}</b>${v.num}</span><button class="tlink" data-go="oem">${v.all}<i aria-hidden="true">↗</i></button></div></div>
+<div class="s5-notes">${v.notes.map(n=>`<span>→ ${n}</span>`).join('')}</div>${s5List('home',false)}
+</section>`};
+document.addEventListener('click',e=>{const b=e.target.closest('.s5-s');if(!b)return;const it=b.parentNode,o=!it.classList.contains('open');if(o)it.parentNode.querySelectorAll('.s5-i.open').forEach(x=>{if(x===it)return;x.classList.remove('open');x.querySelector('.s5-s').setAttribute('aria-expanded','false');x.querySelector('.s5-b').setAttribute('inert','')});it.classList.toggle('open',o);b.setAttribute('aria-expanded',o);const r=it.querySelector('.s5-b');o?r.removeAttribute('inert'):r.setAttribute('inert','')});
+/* service page */
+soon=function(){const i=SRV[R.a]?+R.a:0,v=s5(),d=v.s[i],S=SRV[i],inc=x('th')[i],o=(i+1)%SRV.length;document.title=S[lang]+' — PLASTIZA';
+return `<div class="wrap x sp5"><div class="crumb" style="padding-top:28px"><button data-go="home">${t('home')}</button> / <button data-go="oem">${v.all}</button> / ${S[lang]}</div>
+<header class="sp5-hd"><span class="sp5-n num">${String(i+1).padStart(2,'0')}</span><h1 class="sp5-h">${S[lang]}</h1><div class="sp5-r"><p>${d.tl}</p><div class="sp5-meta">${d.meta.join(' ')}</div><div class="sp5-b"><button class="btn" data-scroll-lf>${v.calc}</button><button class="btn g" data-go="oem">${v.all}</button></div></div></header>
+<section class="sp5-s"><span class="s5-k">${v.about}</span><p class="sp5-lead">${S.d[lang]}</p></section>
+<section class="sp5-s"><span class="s5-k">${v.inc}</span><ul class="sp5-inc">${inc.map((r,k)=>`<li><i>${String(k+1).padStart(2,'0')}</i><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul></section>
+<section class="sp6"><div class="s5-top"><div>${secLab(v.how)}<h2 class="s5-h">${lang==='uk'?'Етапи<br>роботи':'How we<br>work'}</h2></div><div class="s5-tr"><span class="s5-cnt"><b class="num">0${d.steps.length}</b>${lang==='uk'?'етапів':'steps'}</span></div></div><ol class="sp6-st">${d.steps.map((s,k)=>`<li><span class="num">${String(k+1).padStart(2,'0')}</span><h3>${s[0]}</h3><p>${s[1]}</p></li>`).join('')}</ol></section>
+<section class="sp6 sp6-n"><div class="sp6-nh">${secLab(v.need)}<p>${lang==='uk'?'Чим повніша інформація — тим точніший і швидший розрахунок.':'The more complete the info, the faster and more accurate the quote.'}</p></div><ul class="sp6-l">${d.need.map((n,k)=>`<li><i aria-hidden="true">✓</i><span>${n}</span></li>`).join('')}</ul></section>
+${svcFaq(i)}<div id="sp5-lf">${leadForm('service-'+i)}</div>
+${svcOther(i)}<div class="svc-seo">${secSeo('svc'+i)}</div></div>`};
+document.addEventListener('click',e=>{if(!e.target.closest('[data-scroll-lf]'))return;const t=document.getElementById('sp5-lf');t&&t.scrollIntoView({behavior:'smooth',block:'start'})});
+/* services overview page */
+oemP=function(){const v=s5();return `<div class="wrap x"><div class="x-top"><p class="x-st">${x('srvSt')}</p></div><section class="s5 s5p"><div class="s5-notes">${v.notes.map(n=>`<span>→ ${n}</span>`).join('')}</div>${s5List('oem',true)}</section>${leadForm('services')}<div class="svc-seo">${secSeo('oem')}</div></div>`};
+
+/* catalog density toggle: PC 3/4, tablet 2/3, mobile 1/2 */
+var GD=(()=>{let d={pc:3,tab:2,mob:2};try{const v=JSON.parse(ls.g('gd')||'{}');['pc','tab','mob'].forEach(k=>{if(v[k])d[k]=v[k]})}catch(_){}return d})();
+function gdAttr(){return `data-pc="${GD.pc}" data-tab="${GD.tab}" data-mob="${GD.mob}"`}
+function gdIco(n){const w=20,g=2,c=(w-g*(n-1))/n;let r='';for(let i=0;i<n;i++)r+=`<rect x="${(c+g)*i+2}" y="4" width="${c}" height="${n>2?7:16}" rx="1.5"/>`+(n>2?`<rect x="${(c+g)*i+2}" y="13" width="${c}" height="7" rx="1.5"/>`:'');return `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${r}</svg>`}
+function gdCtl(){const u=lang==='uk',g=(bp,a,b)=>`<div class="gd gd-${bp}" role="group" aria-label="${u?'Карток у ряд':'Cards per row'}">${[a,b].map(n=>`<button type="button" data-gd="${bp}:${n}" aria-pressed="${GD[bp]===n}" aria-label="${n} ${u?'в ряд':'per row'}" title="${n} ${u?'в ряд':'per row'}">${gdIco(n)}</button>`).join('')}</div>`;return g('pc',3,4)+g('tab',2,3)+g('mob',1,2)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-gd]');if(!b)return;const[bp,n]=b.dataset.gd.split(':');GD[bp]=+n;ls.s('gd',JSON.stringify(GD));document.querySelectorAll('.pgrid[data-pc]').forEach(g=>g.dataset[bp]=n);document.querySelectorAll(`[data-gd^="${bp}:"]`).forEach(x=>x.setAttribute('aria-pressed',x===b||x.dataset.gd===b.dataset.gd))});
+
+/* news ticker (admin-managed: text + link) */
+const TICK=[
+{uk:'Ціни напряму від виробника',en:'Prices direct from the manufacturer',go:'catalog',a:'all'},
+{uk:'+380 (96) 682-14-63',en:'+380 (96) 682-14-63',href:'tel:+380966821463'},
+{uk:'Лиття пластикових виробів на замовлення',en:'Custom plastic injection molding',go:'soon',a:'0'},
+{uk:'Каталог PDF — увесь асортимент',en:'PDF catalog — full range',go:'pdf',a:'desk'},
+{uk:'Пресформи під ваш виріб',en:'Molds built for your part',go:'soon',a:'1'},
+{uk:'Офіси у Львові та Києві',en:'Offices in Lviv and Kyiv',go:'contacts'},
+{uk:'Доставка по всій Україні та в Європу',en:'Delivery across Ukraine and to Europe',go:'delivery'},
+{uk:'Корисні статті в блозі',en:'Useful articles in the blog',go:'blog'}];

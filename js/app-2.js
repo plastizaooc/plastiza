@@ -1,145 +1,3 @@
-catalog=()=>`<div class="wrap"><div class="ct1"><span class="lab">${t('clab')}</span><div class="ct1-r"><button class="tlink" style="margin:0" data-pdf>${ICO.doc}${v4('pdfB')}</button><button class="lab r" data-go="home">${t('tohome')}</button></div></div><h1 class="ch">${t('ch')}</h1><p class="cs">${t('cs')}</p><div class="ct-row">${prow()}</div><div class="cl"><div class="fpn" id="fp">${fHtml()}</div><div id="res">${resHtml()}</div></div></div>`;
-function prowInit(){document.querySelectorAll('.prow').forEach(w=>{const s=w.querySelector('.prow-s');const up=()=>{const m=s.scrollWidth-s.clientWidth;w.classList.toggle('at-s',s.scrollLeft<=4);w.classList.toggle('at-e',s.scrollLeft>=m-4);w.classList.toggle('nos',m<=4)};
-if(!w.dataset.pi){w.dataset.pi=1;s.addEventListener('scroll',up,{passive:true});new ResizeObserver(up).observe(s)}up()})}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-pr]');if(!b)return;const s=b.parentNode.querySelector('.prow-s');s.scrollBy({left:+b.dataset.pr*Math.max(240,s.clientWidth*.7),behavior:'smooth'})});
-
-let foldW=0;function heroFold(force){const hx=document.querySelector('.hx');if(!hx)return;const sp=hx.querySelector('.hx-sp'),f=hx.querySelector('.hqi')||hx.querySelector('.hqf'),hi=hx.querySelector('.hx-in'),ch=hx.querySelector('.hx-chips');if(!sp||!f)return;
-{sp.style.height='';hi.style.removeProperty('padding-top');f.style.marginTop='';ch.style.marginTop='';return}if(!force&&foldW===innerWidth)return;foldW=innerWidth;
-sp.style.height='0px';hi.style.removeProperty('padding-top');f.style.marginTop='';ch.style.marginTop='';
-const head=document.querySelector('.top').getBoundingClientRect().height,fb=f.getBoundingClientRect().bottom-hx.getBoundingClientRect().top,avail=innerHeight-head,free=avail-32-fb;
-if(free>0){const pt=Math.min(free*.4,64),cg=Math.min(free*.2,28),fm=free-pt-cg;hi.style.setProperty('padding-top',(16+pt)+'px','important');ch.style.setProperty('margin-top',(18+cg)+'px','important');f.style.setProperty('margin-top',(10+fm)+'px','important')}
-sp.style.height='56px'}
-addEventListener('resize',()=>heroFold(false));
-
-function bgSl(){document.querySelectorAll('.bg-sl').forEach(g=>{const d=g.nextElementSibling;const up=()=>{const cs=[...g.children].filter(c=>c.classList.contains('bc2'));if(innerWidth>700||cs.length<2){d.innerHTML='';return}
-const w=cs[0].getBoundingClientRect().width+12,i=Math.round(g.scrollLeft/w);if(d.childElementCount!==cs.length)d.innerHTML=cs.map(()=>'<i></i>').join('');[...d.children].forEach((x,k)=>x.classList.toggle('on',k===Math.min(i,cs.length-1)))};
-if(!g.dataset.sl){g.dataset.sl=1;g.addEventListener('scroll',up,{passive:true});new MutationObserver(()=>{g.scrollLeft=0;up()}).observe(g,{childList:true});addEventListener('resize',up)}up()})}
-
-// floating colour orb in the callback block (bounces off the edges)
-function lfoInit(){document.querySelectorAll('.lfo').forEach(o=>{if(o.dataset.on)return;o.dataset.on=1;const wide=()=>innerWidth>760,box0=o.parentNode,box=o.closest('.lf3-r')||(wide()?(o.closest('.bd')||o.closest('.x-lf')||box0):box0),ball=o.firstChild,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let x=0,y=0,vx=0,vy=0,last=0,raf=0,vis=false,W=0,H=0,S=0,L=0,Tp=0;
-const size=()=>{W=box.clientWidth;H=box.clientHeight;const fm=box.querySelector('.lf2-f');L=0;Tp=fm&&innerWidth<=760?Math.max(0,fm.getBoundingClientRect().top-box.getBoundingClientRect().top+30):0;if(fm&&innerWidth>760){const br=box.getBoundingClientRect(),fr=fm.getBoundingClientRect();L=fr.left-br.left;Tp=fr.top-br.top;W=fr.right-br.left;H=fr.bottom-br.top}S=Math.round(Math.min(Math.max((W-L)*.42,220),Math.min(440,(H-(Tp||0))*.8)));ball.style.width=ball.style.height=S+'px'};
-size();x=L+(W-L)*.5-S/2;y=Math.max(y,Tp);y=H*.18;const sp=W<700?26:38,a=Math.random()*Math.PI*2;vx=Math.cos(a)*sp;vy=Math.sin(a)*sp;if(Math.abs(vx)<sp*.4)vx=sp*.6*Math.sign(vx||1);
-const place=()=>{ball.style.transform=`translate3d(${x}px,${y}px,0)`};place();
-const m=S*.22;function f(t){raf=0;if(!o.isConnected)return;const dt=last?Math.min(.05,(t-last)/1000):0;last=t;x+=vx*dt;y+=vy*dt;
-if(x<(L?L:-m)){x=L?L:-m;vx=Math.abs(vx)}if(x>W-S+m){x=W-S+m;vx=-Math.abs(vx)}if(y<(Tp?Tp:-m)){y=Tp?Tp:-m;vy=Math.abs(vy)}if(y>H-S+m){y=H-S+m;vy=-Math.abs(vy)}
-place();if(vis)raf=requestAnimationFrame(f)}
-new ResizeObserver(()=>{size();x=Math.max(L?L:-m,Math.min(x,W-S+m));y=Math.max(Tp?Tp:-m,y);y=Math.min(y,H-S+m);place()}).observe(box);
-if(rm)return;new IntersectionObserver(e=>{vis=e[0].isIntersecting;if(vis&&!raf){last=0;raf=requestAnimationFrame(f)}}).observe(box)})}
-
-function msgSet(root,v){const dd=root.querySelector('.dd');if(!dd)return;const mi=MSGR.find(m=>m[0]===v);dd.querySelector('input').value=v;dd.querySelector('.dd-v').textContent=v;dd.querySelector('.dd-b .dd-i').innerHTML=mi[2];dd.querySelectorAll('[data-dv]').forEach(o=>o.setAttribute('aria-selected',o.dataset.dv===v));root.querySelectorAll('[data-mc]').forEach(c=>c.setAttribute('aria-checked',c.dataset.mc===v))}
-document.addEventListener('click',e=>{const c=e.target.closest('[data-mc]');if(c){msgSet(c.closest('.lf-ms'),c.dataset.mc);return}const d=e.target.closest('[data-dv]');if(d)setTimeout(()=>msgSet(d.closest('.lf-ms'),d.dataset.dv),0)});
-
-const ICO_MAIL='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>';
-const lfAlt=()=>`<div class="lf2-alt"><p class="or-l"><span>${lang==='uk'?'або зв’яжіться напряму':'or contact us directly'}</span></p><div class="alt-ph">${PH.map(p=>`<a href="tel:${p.replace(/[^+\d]/g,'')}">${p}</a>`).join('')}</div><div class="alt-ms">${MSGR.map(([n,h,i])=>`<a href="${h}" target="_blank" rel="noopener" aria-label="${n}">${i}</a>`).join('')}</div><a class="fpill alt-em" href="mailto:plastiza.sale@gmail.com">${ICO_MAIL}<span>plastiza.sale@gmail.com</span></a></div>`;
-
-// ===== catalog v5: dropdown filters on top, 4 cards per row =====
-F.o={};
-fHtml=function(){const S=[...new Set(P.flatMap(p=>p.v.map(sz)))],I=LI();
-const ck=(k,v,l,on)=>`<button class="ck" data-f="${k}" data-v="${v}" aria-pressed="${on}"><i>${on?'✓':''}</i>${l}</button>`;
-const dd=(id,key,ti,items)=>{const n=F[key].length;return `<div class="fdd${F.o[id]?' open':''}"><button class="fdb${n?' on':''}" data-acc="${id}" aria-expanded="${!!F.o[id]}" aria-haspopup="true">${ti}${n?`<b>${n}</b>`:''}<i class="chv" aria-hidden="true"><svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 1.5l5 5 5-5"/></svg></i></button>${F.o[id]?`<div class="fpop"><div class="sc">${items}</div></div>`:''}</div>`};
-const any=F.fm.length||F.ps.length||F.pu.length||F.sz.length;
-return `<input id="q" type="search" value="${F.q}" placeholder="${t('search')}" aria-label="${t('search')}">`
-+dd('ps','ps',t('f_pos'),[['h',t('hor')],['v',t('ver')]].map(x=>ck('ps',x[0],x[1],F.ps.includes(x[0]))).join(''))
-+dd('fm','fm',t('f_form'),P.map(p=>ck('fm',p.id,short(p),F.fm.includes(p.id))).join(''))
-+dd('pu','pu',t('f_pur'),[...new Map(P.map(p=>PU(p.id)).filter(x=>x[0]).map(x=>[x[0],x])).values()].map(x=>ck('pu',x[0],x[I],F.pu.includes(x[0]))).join(''))
-+dd('sz','sz',t('f_size'),S.map(v=>ck('sz',v,v,F.sz.includes(v))).join(''))
-+(any?`<button class="fclr" data-fclr>${lang==='uk'?'Скинути':'Reset'}</button>`:'')};
-catalog=()=>`<div class="wrap"><div class="ct1"><span class="lab">${t('clab')}</span><div class="ct1-r"><button class="tlink" style="margin:0" data-pdf>${ICO.doc}${v4('pdfB')}</button><button class="lab r" data-go="home">${t('tohome')}</button></div></div><h1 class="ch">${t('ch')}</h1><p class="cs">${t('cs')}</p><div class="ct-row">${prow()}</div><div class="cl2"><div class="fbar" id="fp">${fHtml()}</div><div id="res">${resHtml()}</div></div></div>`;
-document.addEventListener('click',e=>{const a=e.target.closest('[data-acc]');if(a){const id=a.dataset.acc;Object.keys(F.o).forEach(k=>{if(k!==id)F.o[k]=false});return}
-if(e.target.closest('[data-fclr]')){F.fm=[];F.ps=[];F.pu=[];F.sz=[];F.o={};updCat();return}
-if(R.p==='catalog'&&Object.values(F.o).some(Boolean)&&!e.target.closest('.fdd')&&!e.target.closest('[data-f]')){F.o={};updCat()}},true);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&R.p==='catalog'&&Object.values(F.o).some(Boolean)){F.o={};updCat()}});
-
-function fit(){document.querySelectorAll('.mega').forEach(m=>{const w=m.parentNode;if(!w||!w.clientWidth)return;const cs=getComputedStyle(w),W=w.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
-m.style.fontSize='100px';m.style.marginLeft='0px';const t=m.firstChild;if(!t)return;const r=document.createRange();r.selectNodeContents(m);const rb=r.getBoundingClientRect(),mb=m.getBoundingClientRect();
-const c=document.createElement('canvas').getContext('2d');c.font=getComputedStyle(m).fontWeight+' 100px '+getComputedStyle(m).fontFamily;const x=c.measureText(m.textContent);const ink=(x.actualBoundingBoxLeft+x.actualBoundingBoxRight)||rb.width;
-const k=(W-2)/ink;m.style.fontSize=(100*k).toFixed(2)+'px';m.style.marginLeft=(x.actualBoundingBoxLeft*k).toFixed(2)+'px'})}
-addEventListener('resize',fit);try{document.fonts.load('600 100px Unbounded').then(fit);document.fonts.ready.then(fit)}catch(e){}setTimeout(fit,600);setTimeout(fit,2000);
-function footH(){const L=(p,l,a)=>`<button class="fl" data-go="${p}"${a!=null?` data-a="${a}"`:''}>${l}</button>`,I=lang==='uk'?0:1;
-return `<div class="wrap fw"><div class="fa2 f-mot"><p class="fmot"><b>${t('motA')}</b> ${t('motB')}</p></div>
-<div class="f-nav"><h4>[ ${t('fnav')} ]</h4><div class="f-ls">${L('home',t('home'))}${L('about',t('about'))}${L('catalog',v4('menuProd'),'all')}${L('oem',t('serv'))}${SRV.map((x,i)=>`<button class="fl fl2" data-go="soon" data-a="${i}">${x[lang]}</button>`).join('')}${L('faq',t('faq'))}${L('delivery',lang==='uk'?'Доставка та оплата':'Delivery & payment')}${L('blog',t('blog'))}${L('contacts',t('contacts'))}<button class="fl fl-pdf" data-go="pdf" data-a="desk">${lang==='uk'?'Каталог PDF':'PDF catalog'}</button></div></div>
-<div class="f-prod"><h4>[ ${t('fprod')} ]</h4><div class="f-ls">${P.map(p=>L('product',short(p),p.id)).join('')}</div></div>
-<div class="f-side"><div class="f-con"><h4>[ ${t('contacts')} ]</h4>${PH.map(x=>`<a class="fl" href="tel:${x.replace(/[^+\d]/g,'')}">${x}</a>`).join('')}<a class="fl" href="mailto:plastiza.sale@gmail.com">plastiza.sale@gmail.com</a></div><div class="f-msg"><h4 class="fh4">[ ${lang==='uk'?'Месенджери':'Messengers'} ]</h4>${['WhatsApp','Telegram','Viber'].map(n=>{const m=MSGR.find(x=>x[0]===n);return m?`<a class="fl" href="${m[1]}" target="_blank" rel="noopener">${n}</a>`:''}).join('')}</div><div class="f-hrs"><h4 class="fh4">[ ${t('hrs')} ]</h4>${HOURS.map(h=>`<p class="fad">${h[I]}</p>`).join('')}</div></div><div class="f-adr"><div class="fpills">${AD.map(x=>`<a class="fpill" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x[0])}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg><span>${x[I].replace(/^\d{5},?\s*/,'')}</span></a>`).join('')}</div></div></div>
-<div class="wrap fb"><span>© 2026 PLASTIZA</span><span>${t('llc')}</span></div><div class="wrap"><div class="mega" aria-hidden="true">PLASTIZA</div></div>`}
-function render(){root.lang=lang==='uk'?'uk':'en';document.title='PLASTIZA';side();const p=R.p;$('#view').innerHTML=p==='home'?home():p==='catalog'?catalog():p==='product'?product():p==='about'?about():p==='contacts'?contactsP():p==='oem'?oemP():p==='pdf'?pdfPage():p==='faq'?faqPage():p==='delivery'?deliveryP():p==='blog'?blogPage():p==='post'?postPage():p==='404'?page404():soon();document.body.classList.toggle('pg-cat',R.p==='catalog');$('#foot').innerHTML=footH();fit();pellets(document.getElementById('pel'));heroTiles(document.getElementById('hxg'));if(R.p==='home'){countUp();mqInit();requestAnimationFrame(()=>heroFold(true));try{document.fonts.ready.then(()=>heroFold(true))}catch(e){}}if(R.p==='about')countUp();swHints();qsDrag();prowInit();bgSl();lfoInit();fitH1();typer(document.getElementById('hxh'));window.sbUpd&&sbUpd();
-$('#fn').placeholder=t('name');$('#fp').placeholder=t('contact');$('#fq').placeholder=t('qty')+', '+t('pcs');$('#fs').textContent=t('send');$('#fc').textContent=t('cancel');$('#tcta').innerHTML=`<span class="cta-l">${t('quote')}</span><span class="cta-s">${lang==='uk'?'Розрахунок':'Quote'}</span>`}
-document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){go(g.dataset.go,g.dataset.a);return}
-const l=e.target.closest('[data-l]');if(l){lang=l.dataset.l;ls.s('lang',lang);render();return}
-if(e.target.closest('#th')){const d=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;root.dataset.theme=d?'light':'dark';ls.s('theme',root.dataset.theme);return}
-const c=e.target.closest('#cols .sw');if(c){F.col=c.dataset.c;render();return}
-const r=e.target.closest('[data-rfq]');if(r){subj=r.dataset.rfq;$('#dt').textContent=t('req')+': '+subj;$('#dlg').showModal();return}
-if(e.target.closest('#burger')){menu(true);return}if(e.target.closest('#close')||e.target.id==='scrim')menu(false)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
-function menu(o){document.body.classList.toggle('open',o);$('#burger').setAttribute('aria-expanded',String(o));if(o)setTimeout(()=>{const x=$('#close');x&&x.focus()},60)}
-document.addEventListener('input',e=>{const i=e.target.id;if(i==='q'||i==='pf'||i==='pt'){F[i]=e.target.value;$('#res').innerHTML=resHtml()}});
-document.addEventListener('change',e=>{if(e.target.id==='mf'){F.mat=e.target.value;render()}});
-$('#fc').onclick=()=>$('#dlg').close();
-$('#f').onsubmit=e=>{pushLead({name:$('#fn').value,contact:$('#fp').value,qty:$('#fq').value,subject:subj,source:leadSource('modal')});e.target.reset()};
-function fromHash(){let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
-if(h.startsWith('p-'))return {p:'product',a:h.slice(2)};if(h.startsWith('b-'))return {p:'post',a:h.slice(2)};if(h.startsWith('soon-'))return {p:'soon',a:h.slice(5)};if(h.startsWith('pdf-'))return {p:'pdf',a:h.slice(4)};
-if(['catalog','about','oem','contacts','faq','blog','delivery'].includes(h))return {p:h,a:h==='catalog'?'all':undefined};if(!h||h==='home'||h==='top')return {p:'home'};return {p:'404'}}
-
-/* ===== services v5: big-type accordion + service pages ===== */
-const SV5={uk:{lab:'Послуги',h:'Послуги<br>виробництва',all:'Усі послуги',open:'Детальніше',close:'Згорнути',more:'Детальніше про послугу',calc:'Розрахувати вартість',about:'Про послугу',inc:'Що входить',how:'Як це відбувається',need:'Що потрібно для розрахунку',other:'Інша послуга',num:'напрями',
-notes:['Власне виробництво повного циклу','Від прототипу до серійної партії','Пресформи під ваш виріб'],
-s:[{meta:['Прототипи','/ серійні партії'],tl:'Відливаємо пластикові вироби під тиском за вашими кресленнями — від пробної партії до великих тиражів.',
-steps:[['Технічне завдання','Надсилаєте креслення, 3D-модель або зразок виробу та потрібні обсяги.'],['Підбір матеріалу','Радимо вид пластику під умови експлуатації та навантаження.'],['Пресформа','Використовуємо вашу пресформу або виготовляємо нову під виріб.'],['Пробна партія','Відливаємо зразки, погоджуємо з вами геометрію та якість.'],['Серійне лиття','Випускаємо партію з контролем якості, пакуємо й відвантажуємо.']],
-need:['Креслення або 3D-модель (STEP, IGES, DWG, PDF)','Зразок виробу — якщо креслень немає','Орієнтовний тираж і терміни','Вимоги до матеріалу, кольору та умов експлуатації']},
-{meta:['Проєктування','/ виготовлення'],tl:'Проєктуємо та виготовляємо пресформи під ваш виріб — для лиття на вашому підприємстві або на наших потужностях.',
-steps:[['Аналіз виробу','Вивчаємо креслення чи зразок, вимоги до точності й тиражу.'],['Проєктування','Розробляємо конструкцію пресформи та погоджуємо її з вами.'],['Виготовлення','Виготовляємо деталі пресформи та збираємо її.'],['Випробування','Робимо пробне лиття й доводимо пресформу до потрібних параметрів.'],['Передача або лиття','Передаємо пресформу вам або одразу відливаємо партію в нас.']],
-need:['Креслення або 3D-модель виробу','Зразок — якщо документації немає','Плановий тираж виробів','Де буде працювати пресформа: у вас чи в нас']}]},
-en:{lab:'Services',h:'Manufacturing<br>services',all:'All services',open:'Details',close:'Collapse',more:'More about this service',calc:'Request a quote',about:'About the service',inc:'What’s included',how:'How it works',need:'What we need for a quote',other:'Other service',num:'areas',
-notes:['Full-cycle in-house production','From prototype to production run','Molds built for your part'],
-s:[{meta:['Prototypes','/ production runs'],tl:'We injection-mold plastic parts to your drawings — from a trial batch to large volumes.',
-steps:[['Brief','Send a drawing, 3D model or sample and the volumes you need.'],['Material','We recommend a plastic for the operating conditions and loads.'],['Mold','We use your mold or make a new one for the part.'],['Trial batch','We mold samples and agree geometry and quality with you.'],['Production','We run the batch with quality control, pack and ship it.']],
-need:['Drawing or 3D model (STEP, IGES, DWG, PDF)','A sample — if there are no drawings','Approximate volume and timing','Material, colour and operating requirements']},
-{meta:['Design','/ manufacturing'],tl:'We design and build molds for your part — to run at your plant or with us.',
-steps:[['Part review','We study the drawing or sample, precision and volume requirements.'],['Design','We design the mold and agree it with you.'],['Manufacturing','We machine the mold parts and assemble it.'],['Trials','We run trial shots and fine-tune the mold.'],['Hand-over or molding','We hand the mold over or mold the batch with us.']],
-need:['Drawing or 3D model of the part','A sample — if there is no documentation','Planned production volume','Where the mold will run: at your plant or ours']}]}};
-const s5=()=>SV5[lang];
-const s5Row=(i,open,ctx)=>{const v=s5(),d=v.s[i],S=SRV[i],inc=x('th')[i];return `<div class="s5-i${open?' open':''}"><button class="s5-s" aria-expanded="${!!open}" aria-controls="s5b-${ctx}-${i}" id="s5h-${ctx}-${i}"><span class="s5-n">${String(i+1).padStart(2,'0')}</span><span class="s5-t">${S[lang]}</span><span class="s5-m">${d.meta.join('<br>')}</span><i class="s5-a" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7l10 10M17 9v8H9"/></svg></i></button>
-<div class="s5-b" id="s5b-${ctx}-${i}" role="region" aria-labelledby="s5h-${ctx}-${i}" ${open?'':'inert'}><div class="s5-bi"><div class="s5-g">
-<div class="s5-c1"><p class="s5-tl">${d.tl}</p><p class="s5-p">${S.d[lang]}</p></div>
-<div class="s5-c2"><span class="s5-k">${v.inc}</span><ul class="s5-inc">${inc.map(r=>`<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul></div>
-<div class="s5-c3"><span class="s5-k">${v.how}</span><ol class="s5-st">${d.steps.map((s,k)=>`<li><i>${String(k+1).padStart(2,'0')}</i>${s[0]}</li>`).join('')}</ol></div>
-</div><div class="s5-ft"><button class="btn" data-go="soon" data-a="${i}">${v.more} <span aria-hidden="true">→</span></button></div></div></div></div>`};
-const s5List=(ctx,openFirst)=>{const u=lang==='uk';return `<div class="s5-l">${SRV.map((_,i)=>s5Row(i,false,ctx)).join('')}</div>`};
-const secServ5=()=>{const v=s5(),sv=SVX[lang];return `<section class="s5"><div class="s5-top"><div>${secLab(v.lab)}<h2 class="s5-h">${v.h}</h2></div><div class="s5-tr"><span class="s5-cnt"><b class="num">0${SRV.length}</b>${v.num}</span><button class="tlink" data-go="oem">${v.all}<i aria-hidden="true">↗</i></button></div></div>
-<div class="s5-notes">${v.notes.map(n=>`<span>→ ${n}</span>`).join('')}</div>${s5List('home',false)}
-</section>`};
-document.addEventListener('click',e=>{const b=e.target.closest('.s5-s');if(!b)return;const it=b.parentNode,o=!it.classList.contains('open');if(o)it.parentNode.querySelectorAll('.s5-i.open').forEach(x=>{if(x===it)return;x.classList.remove('open');x.querySelector('.s5-s').setAttribute('aria-expanded','false');x.querySelector('.s5-b').setAttribute('inert','')});it.classList.toggle('open',o);b.setAttribute('aria-expanded',o);const r=it.querySelector('.s5-b');o?r.removeAttribute('inert'):r.setAttribute('inert','')});
-/* service page */
-soon=function(){const i=SRV[R.a]?+R.a:0,v=s5(),d=v.s[i],S=SRV[i],inc=x('th')[i],o=(i+1)%SRV.length;document.title=S[lang]+' — PLASTIZA';
-return `<div class="wrap x sp5"><div class="crumb" style="padding-top:28px"><button data-go="home">${t('home')}</button> / <button data-go="oem">${v.all}</button> / ${S[lang]}</div>
-<header class="sp5-hd"><span class="sp5-n num">${String(i+1).padStart(2,'0')}</span><h1 class="sp5-h">${S[lang]}</h1><div class="sp5-r"><p>${d.tl}</p><div class="sp5-meta">${d.meta.join(' ')}</div><div class="sp5-b"><button class="btn" data-scroll-lf>${v.calc}</button><button class="btn g" data-go="oem">${v.all}</button></div></div></header>
-<section class="sp5-s"><span class="s5-k">${v.about}</span><p class="sp5-lead">${S.d[lang]}</p></section>
-<section class="sp5-s"><span class="s5-k">${v.inc}</span><ul class="sp5-inc">${inc.map((r,k)=>`<li><i>${String(k+1).padStart(2,'0')}</i><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul></section>
-<section class="sp6"><div class="s5-top"><div>${secLab(v.how)}<h2 class="s5-h">${lang==='uk'?'Етапи<br>роботи':'How we<br>work'}</h2></div><div class="s5-tr"><span class="s5-cnt"><b class="num">0${d.steps.length}</b>${lang==='uk'?'етапів':'steps'}</span></div></div><ol class="sp6-st">${d.steps.map((s,k)=>`<li><span class="num">${String(k+1).padStart(2,'0')}</span><h3>${s[0]}</h3><p>${s[1]}</p></li>`).join('')}</ol></section>
-<section class="sp6 sp6-n"><div class="sp6-nh">${secLab(v.need)}<p>${lang==='uk'?'Чим повніша інформація — тим точніший і швидший розрахунок.':'The more complete the info, the faster and more accurate the quote.'}</p></div><ul class="sp6-l">${d.need.map((n,k)=>`<li><i aria-hidden="true">✓</i><span>${n}</span></li>`).join('')}</ul></section>
-${svcFaq(i)}<div id="sp5-lf">${leadForm('service-'+i)}</div>
-${svcOther(i)}<div class="svc-seo">${secSeo('svc'+i)}</div></div>`};
-document.addEventListener('click',e=>{if(!e.target.closest('[data-scroll-lf]'))return;const t=document.getElementById('sp5-lf');t&&t.scrollIntoView({behavior:'smooth',block:'start'})});
-/* services overview page */
-oemP=function(){const v=s5();return `<div class="wrap x"><div class="x-top"><p class="x-st">${x('srvSt')}</p></div><section class="s5 s5p"><div class="s5-notes">${v.notes.map(n=>`<span>→ ${n}</span>`).join('')}</div>${s5List('oem',true)}</section>${leadForm('services')}<div class="svc-seo">${secSeo('oem')}</div></div>`};
-
-/* catalog density toggle: PC 3/4, tablet 2/3, mobile 1/2 */
-var GD=(()=>{let d={pc:3,tab:2,mob:2};try{const v=JSON.parse(ls.g('gd')||'{}');['pc','tab','mob'].forEach(k=>{if(v[k])d[k]=v[k]})}catch(_){}return d})();
-function gdAttr(){return `data-pc="${GD.pc}" data-tab="${GD.tab}" data-mob="${GD.mob}"`}
-function gdIco(n){const w=20,g=2,c=(w-g*(n-1))/n;let r='';for(let i=0;i<n;i++)r+=`<rect x="${(c+g)*i+2}" y="4" width="${c}" height="${n>2?7:16}" rx="1.5"/>`+(n>2?`<rect x="${(c+g)*i+2}" y="13" width="${c}" height="7" rx="1.5"/>`:'');return `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${r}</svg>`}
-function gdCtl(){const u=lang==='uk',g=(bp,a,b)=>`<div class="gd gd-${bp}" role="group" aria-label="${u?'Карток у ряд':'Cards per row'}">${[a,b].map(n=>`<button type="button" data-gd="${bp}:${n}" aria-pressed="${GD[bp]===n}" aria-label="${n} ${u?'в ряд':'per row'}" title="${n} ${u?'в ряд':'per row'}">${gdIco(n)}</button>`).join('')}</div>`;return g('pc',3,4)+g('tab',2,3)+g('mob',1,2)}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-gd]');if(!b)return;const[bp,n]=b.dataset.gd.split(':');GD[bp]=+n;ls.s('gd',JSON.stringify(GD));document.querySelectorAll('.pgrid[data-pc]').forEach(g=>g.dataset[bp]=n);document.querySelectorAll(`[data-gd^="${bp}:"]`).forEach(x=>x.setAttribute('aria-pressed',x===b||x.dataset.gd===b.dataset.gd))});
-
-/* news ticker (admin-managed: text + link) */
-const TICK=[
-{uk:'Ціни напряму від виробника',en:'Prices direct from the manufacturer',go:'catalog',a:'all'},
-{uk:'+380 (96) 682-14-63',en:'+380 (96) 682-14-63',href:'tel:+380966821463'},
-{uk:'Лиття пластикових виробів на замовлення',en:'Custom plastic injection molding',go:'soon',a:'0'},
-{uk:'Каталог PDF — увесь асортимент',en:'PDF catalog — full range',go:'pdf',a:'desk'},
-{uk:'Пресформи під ваш виріб',en:'Molds built for your part',go:'soon',a:'1'},
-{uk:'Офіси у Львові та Києві',en:'Offices in Lviv and Kyiv',go:'contacts'},
-{uk:'Доставка по всій Україні та в Європу',en:'Delivery across Ukraine and to Europe',go:'delivery'},
-{uk:'Корисні статті в блозі',en:'Useful articles in the blog',go:'blog'}];
 function tickerH(){const L=lang==='uk'?'uk':'en',it=TICK.filter(x=>x.on!==false).map(x=>(w=>x.href?`<a class="tk-i" href="${x.href}">${w}</a>`:`<button class="tk-i" data-go="${x.go}"${x.a!=null?` data-a="${x.a}"`:''}>${w}</button>`)(`<span class="tk-w"><span>${x[L]}</span><span aria-hidden="true">${x[L]} ↗</span></span>`)).join('<i class="tk-s" aria-hidden="true">✦</i>')+'<i class="tk-s" aria-hidden="true">✦</i>';
 return `<div class="tk" role="region" aria-label="${L==='uk'?'Новини та пропозиції':'News and offers'}"><div class="tk-t"><div class="tk-r">${it}</div><div class="tk-r" aria-hidden="true">${it.replace(/<(a|button) /g,'<$1 tabindex="-1" ')}</div></div></div>`}
 
@@ -241,7 +99,7 @@ ${payBlock()}
 ${leadForm('delivery')}</div>`}
 
 /* Europe delivery map */
-var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611031730';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
+var EUMAP=null;function __euLoad(){if(window.__euL)return;window.__euL=1;var s=document.createElement('script');s.src='/js/eumap.js?v=202611031828';s.onload=__euRep;document.head.appendChild(s);new MutationObserver(__euRep).observe(document.getElementById('view'),{childList:true})}function __euRep(){if(!EUMAP)return;var x=document.querySelector('.eum-ld');if(!x)return;var t=document.createElement('div');t.innerHTML=euMap();var n=t.firstElementChild;if(n)x.replaceWith(n)}
 const CNAME={uk:{ALB:'Албанія',AND:'Андорра',AUT:'Австрія',BEL:'Бельгія',BIH:'Боснія і Герцеговина',BGR:'Болгарія',HRV:'Хорватія',CYP:'Кіпр',CZE:'Чехія',DNK:'Данія',EST:'Естонія',FIN:'Фінляндія',FRA:'Франція',DEU:'Німеччина',GRC:'Греція',HUN:'Угорщина',ISL:'Ісландія',IRL:'Ірландія',ITA:'Італія',KOS:'Косово',LVA:'Латвія',LIE:'Ліхтенштейн',LTU:'Литва',LUX:'Люксембург',MLT:'Мальта',MDA:'Молдова',MCO:'Монако',MNE:'Чорногорія',NLD:'Нідерланди',MKD:'Північна Македонія',NOR:'Норвегія',POL:'Польща',PRT:'Португалія',ROU:'Румунія',SMR:'Сан-Марино',SRB:'Сербія',SVK:'Словаччина',SVN:'Словенія',ESP:'Іспанія',SWE:'Швеція',CHE:'Швейцарія',UKR:'Україна',GBR:'Велика Британія',VAT:'Ватикан'},
 en:{ALB:'Albania',AND:'Andorra',AUT:'Austria',BEL:'Belgium',BIH:'Bosnia and Herzegovina',BGR:'Bulgaria',HRV:'Croatia',CYP:'Cyprus',CZE:'Czechia',DNK:'Denmark',EST:'Estonia',FIN:'Finland',FRA:'France',DEU:'Germany',GRC:'Greece',HUN:'Hungary',ISL:'Iceland',IRL:'Ireland',ITA:'Italy',KOS:'Kosovo',LVA:'Latvia',LIE:'Liechtenstein',LTU:'Lithuania',LUX:'Luxembourg',MLT:'Malta',MDA:'Moldova',MCO:'Monaco',MNE:'Montenegro',NLD:'Netherlands',MKD:'North Macedonia',NOR:'Norway',POL:'Poland',PRT:'Portugal',ROU:'Romania',SMR:'San Marino',SRB:'Serbia',SVK:'Slovakia',SVN:'Slovenia',ESP:'Spain',SWE:'Sweden',CHE:'Switzerland',UKR:'Ukraine',GBR:'United Kingdom',VAT:'Vatican'}};
 const NPC=['POL','MDA','LTU','CZE','ROU','DEU','SVK','LVA','EST','HUN','ITA','GBR','ESP','FRA','AUT','NLD'];
@@ -640,3 +498,314 @@ return bar2+`<div class="pdf-doc pq">${cover}${toc}${prods}${srv}${pay}${dlv}${e
 
 
 /* ===== product: "Застосування" schematic per product ===== */
+function apSvg(p,vi){const u=lang==='uk',v=p.v[vi]||p.v[0],vs=String(Array.isArray(v[0])?v[0][u?0:1]:v[0]);
+const nums=vs.match(/\d+/g)||[];const mm=u?'мм':'mm';
+const W=640,H=300,T=(x,y,t,a='start',c='ap-t')=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${t}</text>`;
+const dimV=(x,y1,y2,lab,side=1)=>`<path class="ap-d" d="M${x} ${y1}V${y2}M${x-5} ${y1+7}L${x} ${y1}L${x+5} ${y1+7}M${x-5} ${y2-7}L${x} ${y2}L${x+5} ${y2-7}M${x-12} ${y1}H${x+12}M${x-12} ${y2}H${x+12}"/>`+T(x+16*side,(y1+y2)/2+4,lab,side>0?'start':'end','ap-t ap-tb');
+const dimH=(y,x1,x2,lab)=>`<path class="ap-d" d="M${x1} ${y}H${x2}M${x1+7} ${y-5}L${x1} ${y}L${x1+7} ${y+5}M${x2-7} ${y-5}L${x2} ${y}L${x2-7} ${y+5}M${x1} ${y-10}V${y+10}M${x2} ${y-10}V${y+10}"/>`+T((x1+x2)/2,y-14,lab,'middle','ap-t ap-tb');
+const hatch=(x,y,w,h,id)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="ap-b"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${id})"/>`;
+const defs=`<defs><pattern id="aph" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V10" class="ap-hl"/></pattern><pattern id="apc" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="4" cy="6" r="1" class="ap-dot"/><circle cx="15" cy="15" r="1.3" class="ap-dot"/><circle cx="17" cy="4" r=".8" class="ap-dot"/></pattern></defs>`;
+let g='',cap='';const id=p.id;
+const rng=vs.split('/')[0].replace(/-/g,'–');const cover=nums.length?(id===2?nums.join(' / '):rng)+' '+mm:'';const bar=vs.includes('/')?(u?'арматура Ø ':'bar Ø ')+vs.split('/')[1].replace('-','–')+' '+mm:'';
+if([1,2,4,5].includes(id)){
+ // slab section
+ const base=225,ry=base-62;
+ g+=`<rect x="30" y="70" width="580" height="${base-70}" class="ap-c"/><rect x="30" y="70" width="580" height="${base-70}" fill="url(#apc)"/>`;
+ if(id===1){g+=`<path d="M30 ${base}H610" class="ap-l ap-mem"/>`;for(let i=0;i<46;i++){const x=34+i*12.6,y=base+10+((i*37)%24);g+=`<ellipse cx="${x}" cy="${y}" rx="${4+(i%3)}" ry="${3+(i%2)}" class="ap-l"/>`}g+=T(36,base+58,u?'Сипка основа: ґрунт, щебінь, пісок · плівка':'Loose base: soil, gravel, sand · membrane')}
+ else{g+=hatch(30,base,580,26,'aph')+T(36,base+46,u?'Тверда основа: бетон або опалубка':'Hard base: concrete or formwork deck')}
+ g+=`<path d="M30 ${ry-14}H610" class="ap-r ap-rl"/>`;for(let x=70;x<=590;x+=52)g+=`<circle cx="${x}" cy="${ry}" r="8" class="ap-r"/>`;
+ g+=`<path d="M30 ${ry-48}H610" class="ap-r ap-rl"/>`;for(let x=96;x<=590;x+=52)g+=`<circle cx="${x}" cy="${ry-34}" r="7" class="ap-r"/>`;
+ const cx=330;
+ if(id===1)g+=`<path class="ap-h" d="M${cx-58} ${base}L${cx-30} ${base-14}H${cx+30}L${cx+58} ${base}Z"/><path class="ap-h" d="M${cx-11} ${base-14}V${ry-6}H${cx-6}V${ry+4}M${cx+11} ${base-14}V${ry-6}H${cx+6}V${ry+4}"/>`;
+ if(id===2)g+=`<path class="ap-h" d="M${cx-26} ${base}L${cx-18} ${ry+2}H${cx-8}A8 8 0 0 0 ${cx+8} ${ry+2}H${cx+18}L${cx+26} ${base}Z"/><path class="ap-hl2" d="M${cx-10} ${base-14}a10 10 0 0 1 20 0"/>`;
+ if(id===4)g+=`<path class="ap-h" d="M${cx-20} ${base}L${cx-12} ${ry+4}C${cx-10} ${ry-12} ${cx+10} ${ry-12} ${cx+12} ${ry+4}L${cx+20} ${base}Z"/>`;
+ if(id===5)g+=`<path class="ap-h" d="M${cx-36} ${base}H${cx+36}L${cx+24} ${ry+10}H${cx+12}V${ry-10}H${cx-12}V${ry+10}H${cx-24}Z"/>`;
+ g+=`<circle cx="${cx}" cy="${ry}" r="8" class="ap-r ap-rf"/>`;
+ g+=dimV(560,ry+8,base,(u?'захисний шар ':'cover ')+cover,-1);if(bar)g+=T(604,base+(id===1?58:46),bar,'end','ap-t ap-tb');
+ g+=T(36,58,u?'Плита / стяжка (переріз)':'Slab / screed (section)','start','ap-t ap-tc');
+ cap={1:u?`«Настил» стоїть на сипкій основі: широка опора не дає йому занурюватися, а стійка тримає нижню сітку на висоті ${cover} — це і є захисний шар бетону під арматурою.`:`The chair sits on a loose base; its wide foot prevents sinking and keeps the bottom mesh ${cover} above the base — the concrete cover.`,
+ 2:u?`«Стійка» ставиться на тверду основу під нижню сітку плити. Ступінчаста висота (${cover}) дозволяє одним виробом отримати кілька варіантів захисного шару.`:`The chair stands on a hard base under the bottom mesh; stepped heights (${cover}) give several cover options with one part.`,
+ 4:u?`«Защіпка» защіпається на стрижень нижньої сітки й тримає його на висоті ${cover} над бетонною основою.`:`The clip snaps onto the bottom bar and holds it ${cover} above the base.`,
+ 5:u?`«Засувка» фіксує стрижень у пазу й тримає нижню сітку на висоті ${cover}; широка основа розподіляє навантаження каркаса.`:`The slider locks the bar in its slot and holds the mesh ${cover} above the base; the wide foot spreads the load.`}[id];
+}
+else if(id===3){
+ const bx=120,rx=bx+70;
+ g+=hatch(bx-30,40,30,230,'aph')+hatch(560,40,30,230,'aph');g+=`<rect x="${bx}" y="40" width="440" height="230" class="ap-c"/><rect x="${bx}" y="40" width="440" height="230" fill="url(#apc)"/>`;
+ g+=`<path d="M${rx} 30V280" class="ap-r ap-rl"/><path d="M${rx+60} 30V280" class="ap-r ap-rl"/>`;for(let y=70;y<=250;y+=60)g+=`<circle cx="${rx+30}" cy="${y}" r="6" class="ap-r"/>`;
+ const R=70,cy=155;g+=`<circle cx="${rx}" cy="${cy}" r="${R}" class="ap-h ap-hw"/><circle cx="${rx}" cy="${cy}" r="${R-12}" class="ap-hl2"/><circle cx="${rx}" cy="${cy}" r="12" class="ap-h"/>`;for(let a=0;a<12;a++){const t=a*Math.PI/6;g+=`<path class="ap-hl2" d="M${(rx+12*Math.cos(t)).toFixed(1)} ${(cy+12*Math.sin(t)).toFixed(1)}L${(rx+(R-12)*Math.cos(t)).toFixed(1)} ${(cy+(R-12)*Math.sin(t)).toFixed(1)}"/>`}
+ g+=`<path d="M${rx} 30V280" class="ap-r ap-rf2"/>`;
+ g+=dimH(26,bx,rx-3,(u?'захисний шар ':'cover ')+cover);if(bar)g+=T(rx+70,26,bar,'start','ap-t');
+ g+=T(bx-30,292,u?'Щит опалубки':'Formwork panel')+T(560,292,u?'Щит':'Panel')+T(rx+70,292,u?'Стіна / колона (вертикальний переріз)':'Wall / column (vertical section)');
+ cap=u?`«Зірочка» защіпається на вертикальний стрижень і впирається ободом у щит опалубки. Радіус колеса задає захисний шар ${cover} до поверхні стіни чи колони.`:`The wheel spacer clips onto a vertical bar and rolls against the formwork; its radius sets a ${cover} cover to the wall face.`;
+}
+else{
+ const x1=150,x2=490,y=150;
+ if(id===6||id===9){
+  g+=hatch(x1-26,40,26,220,'aph')+hatch(x2,40,26,220,'aph')+`<rect x="${x1}" y="40" width="${x2-x1}" height="220" class="ap-c"/><rect x="${x1}" y="40" width="${x2-x1}" height="220" fill="url(#apc)"/>`;
+  g+=`<path d="M60 ${y}H580" class="ap-r"/><path class="ap-l" d="M70 ${y-22}h22v44h-22zM548 ${y-22}h22v44h-22z"/><path class="ap-l" d="M${x1-26} ${y-30}h-18v60h18M${x2+26} ${y-30}h18v60h-18"/>`;
+  g+=`<rect x="${x1+20}" y="${y-9}" width="${x2-x1-40}" height="18" class="${id===9?'ap-h':'ap-l ap-tube'}"/>`;
+  g+=`<path class="${id===6?'ap-h':'ap-l ap-tube'}" d="M${x1} ${y-20}L${x1+22} ${y-11}V${y+11}L${x1} ${y+20}Z M${x2} ${y-20}L${x2-22} ${y-11}V${y+11}L${x2} ${y+20}Z"/>`;
+  g+=dimH(28,x1,x2,u?'товщина стіни = довжина труби':'wall thickness = tube length');
+  g+=T(x1-26,282,u?'Щит':'Panel')+T(x2+26,282,u?'Щит':'Panel','end')+T(320,282,u?'Стяжний гвинт у трубі (горизонтальний переріз)':'Tie rod inside the tube (plan section)','middle');
+  cap=id===9?(u?'«Труба» надягається на стяжний гвинт між щитами: тримає відстань між ними (товщину стіни) і не дає бетону схопити гвинт — після заливки його легко витягнути.':'The spacer tube slides over the tie rod between panels, keeping their spacing and protecting the rod so it can be pulled out after pouring.')
+   :(u?'«Конус» надягається на кінці труби Ø 22 мм біля щита: збільшує площу опори, не пускає бетон у трубу й формує акуратний вхід отвору.':'The cone fits on the ends of the Ø22 tube at the panel, widening the bearing area, keeping concrete out and forming a neat hole entry.');
+ } else {
+  g+=`<rect x="${x1}" y="40" width="${x2-x1}" height="220" class="ap-c"/><rect x="${x1}" y="40" width="${x2-x1}" height="220" fill="url(#apc)"/>`;
+  g+=`<rect x="${x1}" y="${y-9}" width="${x2-x1}" height="18" class="ap-l ap-tube"/>`;
+  const plug=(x,dir)=>id===7?`<path class="ap-h" d="M${x} ${y-14}h${dir*8}v28h${-dir*8}z M${x+dir*8} ${y-11}l${dir*8} 3v16l${-dir*8} 3zM${x+dir*16} ${y-9}l${dir*8} 3v12l${-dir*8} 3zM${x+dir*24} ${y-7}l${dir*8} 3v8l${-dir*8} 3z"/>`:`<path class="ap-h" d="M${x} ${y-13}h${dir*26}v26h${-dir*26}z"/>`;
+  g+=plug(x1,1)+plug(x2,-1);
+  g+=T(x1,28,u?'Стіна після демонтажу опалубки':'Wall after stripping')+T(x1-12,y+4,u?'фасад':'face','end')+T(x2+12,y+4,u?'фасад':'face');
+  g+=dimV(x1+(id===7?44:40),y-13,y+13,'Ø 24 '+mm);
+  cap=id===7?(u?'«Корок-ялинка» щільно забивається в отвір Ø 24 мм — у невикористані отвори щитів опалубки або в отвори стін після зняття опалубки. Ребра-«ялинка» не дають йому випасти.':'The fir-tree plug is driven into Ø24 holes — unused formwork holes or tie holes in the wall after stripping; its ribs hold it in place.')
+   :(u?'«Корок» закриває отвір Ø 24 мм від стяжного гвинта з обох боків стіни: не пускає вологу всередину й вирівнює поверхню під оздоблення.':'The plug seals the Ø24 tie hole on both faces of the wall, keeping moisture out and leaving a clean surface.');
+ }
+}
+return `<figure class="apx"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${u?'Схема застосування':'Application diagram'}">${defs}${g}</svg><figcaption>${cap}</figcaption></figure>`}
+const _product14=product;product=function(){let h=_product14();const {p,vi}=pvParse(R.a);if(!p)return h;const u=lang==='uk';
+const acc=`<details class="pda-i"><summary><span>${u?'Застосування':'Application'}</span><i aria-hidden="true"></i></summary>${apSvg(p,vi)}</details>`;
+const key=u?'Ціни та фасування':'Prices';let k=h.indexOf(key);if(k<0)k=h.indexOf(u?'Доставка та оплата</span>':'Delivery & payment</span>');if(k<0)return h;const d=h.lastIndexOf('<details',k);h=h.slice(0,d)+acc+h.slice(d);
+const pi=h.indexOf(key);if(pi>-1){const ds=h.lastIndexOf('<details',pi);const tag=h.slice(ds,h.indexOf('>',ds)+1);h=h.slice(0,ds)+tag.replace(/\sopen(="[^"]*")?/,'')+h.slice(ds+tag.length)}return h};
+/* PDF language independent of site language */
+var pdfLang=null;
+const _pdfPage3=pdfPage;pdfPage=function(){const site=lang,pl=pdfLang||site;const hs=_pdfPage3();if(pl===site)return hs;let hd;lang=pl;try{hd=_pdfPage3()}finally{lang=site}const a=hs.indexOf('<div class="pdf-doc'),b=hd.indexOf('<div class="pdf-doc');if(a<0||b<0)return hs;return hs.slice(0,a)+hd.slice(b).replace('<div class="pdf-doc','<div lang="'+pl+'" class="pdf-doc')};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(b){e.preventDefault();e.stopPropagation();if(b.dataset.pl!==(pdfLang||lang)){pdfLang=b.dataset.pl;const y=scrollY;render();scrollTo(0,y)}return}if(e.target.closest('[data-l]'))pdfLang=null},true);
+
+/* ===== Hero v6: content left, looping production video right ===== */
+const HV_SRC='/assets/hero/hero-loop.mp4',HV_POSTER='/assets/hero/poster.webp',HV_ANIM='/assets/hero/hero-m.webp';
+const hvSmall=()=>false;
+const _homeV6=home;home=function(){let h=_homeV6();const u=lang==='uk';
+const ring=(u?'ЛИТТЯ ПЛАСТИКУ • ПРЕСФОРМИ • ФІКСАТОРИ • ':'INJECTION MOLDING • MOLDS • SPACERS • ').repeat(1);
+const panel=`<div class="hv"><div class="hv-f">${hvSmall()?`<img class="hv-v hv-img" src="${HV_ANIM}" alt="" decoding="async" fetchpriority="high">`:`<img class="hv-v" src="${HV_POSTER}" alt="" fetchpriority="high" decoding="sync"><video class="hv-v" data-src="${HV_SRC}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video>`}<span class="hv-sh" aria-hidden="true"></span>
+<span class="hv-lb">[ ${u?'Власний цех':'Own production'} ]</span>
+<button class="hv-card" data-cap-go><span class="hv-ck">[ ${u?'Потужності':'Capacity'} ]</span><span class="hv-cn"><b><small>×</small>${CAP.n}</b><span class="hv-cl">${u?'термопласт&shy;автоматів<br>у нашому цеху':'injection molding<br>machines in our shop'}</span><span class="hv-cs">${u?'ТПА<br>у цеху':'IMMs<br>in our shop'}</span></span><img class="hv-ci" src="${String(CAP.img).replace('tpa-macropower-800.webp','tpa-macropower-340.webp')}" alt="" draggable="false"><i aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button></div>
+<button class="hv-ring" data-go="about" aria-label="${u?'Про виробництво':'About production'}"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="hvr" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#hvr" textLength="286" lengthAdjust="spacing">${ring}</textPath></text></svg><i class="hv-ra" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 14 14 6M7.5 6H14v6.5"/></svg></i></button></div>`;
+h=h.replace(/([^\s>]{1,40}) <span class="nw">([\s\S]*?<span class="hx-bar"><\/span><\/span>)/g,'<span class="h1l2">$1 <span class="nw">$2</span>');h=h.replace('<section class="hx">','<section class="hx hx2"><div class="hx-tex" aria-hidden="true"><i class="hx-fd"></i></div>');const k=h.indexOf('<div class="hx-sp"');h=k>-1?h.slice(0,k)+panel+h.slice(k):h.replace('<div class="hqi">',panel+'<div class="hqi">');
+const ms=`<div class="hqm"><span>${u?'або напишіть нам':'or message us'}</span><div>${[['WhatsApp','#25D366'],['Telegram','#229ED9'],['Viber','#7360F2']].map(([nm,cl])=>{const m=MSGR.find(x=>x[0]===nm);return `<a href="${m[1]}" target="_blank" rel="noopener" style="--mc:${cl}" aria-label="${nm}" title="${nm}">${m[2]}</a>`}).join('')}</div></div>`;
+h=h.replace(/<input name="name"[^>]*>/,`<input name="name" type="hidden" value="${u?'Консультація з головної':'Hero consultation'}">`);return h};
+
+/* PDF: one continuous page (electronic catalog, no page breaks) */
+document.addEventListener('click',e=>{if(!e.target.closest('[data-print]'))return;if(pdfDl(e))return;const d=document.querySelector('#view .pdf-doc');if(!d)return;e.preventDefault();e.stopPropagation();
+const r=d.getBoundingClientRect(),W=Math.ceil(r.width),H=Math.ceil(d.scrollHeight)+2;let ps=document.getElementById('pdfpage');if(!ps){ps=document.createElement('style');ps.id='pdfpage';document.head.appendChild(ps)}const old=ps.textContent;
+ps.textContent=`@page{size:${W}px ${H}px;margin:0}@media print{html.pq-cont #view .pdf-doc{width:${W}px!important;min-width:${W}px!important;max-width:${W}px!important}}`;
+document.documentElement.classList.add('pq-cont');const done=()=>{document.documentElement.classList.remove('pq-cont');ps.textContent=old;removeEventListener('afterprint',done)};addEventListener('afterprint',done);
+try{window.print()}catch(_){done()}},true);
+
+/* hero capacity card → about page, capacity section */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cap-go]');if(!b)return;e.preventDefault();e.stopPropagation();go('about');
+let n=0;const t=()=>{const c=document.querySelector('#view .cap');if(!c){if(++n<40)return setTimeout(t,50);return}const hh=(document.querySelector('.top')||{}).offsetHeight||64;setTimeout(()=>scrollTo({top:c.getBoundingClientRect().top+scrollY-hh-8,behavior:'smooth'}),120)};setTimeout(t,30)},true);
+
+/* ===== Phone mask + email/phone validation for all forms ===== */
+const isPh=el=>el&&el.tagName==='INPUT'&&(el.type==='tel'||el.name==='phone');
+function fmtPh(v){let d=v.replace(/\D/g,'');const intl=/^\s*\+/.test(v)&&d&&!'380'.startsWith(d.slice(0,3))&&!d.startsWith('380');
+if(intl){d=d.slice(0,15);return '+'+d}
+if(!d)return /\+/.test(v)?'+':'';if(d.startsWith('80'))d='3'+d;else if(d.startsWith('0'))d='38'+d;else if(!'380'.startsWith(d.slice(0,Math.min(3,d.length))))d='380'+d;d=d.slice(0,12);
+let o='+'+d.slice(0,3);if(d.length>3)o+=' ('+d.slice(3,5);if(d.length>5)o+=') '+d.slice(5,8);if(d.length>8)o+='-'+d.slice(8,10);if(d.length>10)o+='-'+d.slice(10,12);return o}
+document.addEventListener('beforeinput',e=>{const el=e.target;if(!isPh(el)||!e.data)return;if(/[^\d+\s()\-]/.test(e.data))e.preventDefault()},true);
+document.addEventListener('input',e=>{const el=e.target;if(!isPh(el))return;const prev=el.dataset.pv||'',pd=prev.replace(/\D/g,'');let v=el.value;
+if(e.inputType&&e.inputType.startsWith('delete')&&v.replace(/\D/g,'')===pd&&pd){const c=el.selectionStart||v.length;let i=c-1;while(i>=0&&!/\d/.test(v[i]))i--;if(i>=0)v=v.slice(0,i)+v.slice(i+1)}
+const f=el.dataset.cc?ccFmt(el,v):fmtPh(v);el.value=f;el.dataset.pv=f;el.removeAttribute('aria-invalid');try{el.setSelectionRange(f.length,f.length)}catch(_){}},true);
+document.addEventListener('focusin',e=>{const el=e.target;if(isPh(el)){el.setAttribute('inputmode','tel');if(!el.getAttribute('maxlength'))el.setAttribute('maxlength','20')}},true);
+const EMRE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+window.addEventListener('submit',e=>{const f=e.target;if(!(f instanceof HTMLFormElement))return;const u=lang==='uk';let msg='',bad=null;
+f.querySelectorAll('input').forEach(i=>{if(bad||i.type==='hidden'||i.hidden||i.offsetParent===null)return;const v=i.value.trim();if(!v)return;
+if(isPh(i)){const d=v.replace(/\D/g,'');const ok=i.dataset.cc?ccOk(i):(v.startsWith('+380')?d.length===12:d.length>=10&&d.length<=15);if(!ok){bad=i;const ex=i.dataset.cc?ccEx(i):'+380 (67) 123-45-67';msg=u?'Вкажіть повний номер телефону, наприклад '+ex+'.':'Enter a full phone number, e.g. '+ex+'.'}}
+else if(i.type==='email'&&!EMRE.test(v)){bad=i;msg=u?'Вкажіть коректний email, наприклад name@company.com.':'Enter a valid email, e.g. name@company.com.'}});
+if(!bad){ccPrefix(f);return}e.preventDefault();e.stopImmediatePropagation();bad.setAttribute('aria-invalid','true');const er=f.querySelector('.lf-err');if(er){er.textContent=msg;er.hidden=false}else{bad.setCustomValidity(msg);bad.reportValidity();bad.addEventListener('input',()=>bad.setCustomValidity(''),{once:true})}bad.focus()},true);
+/* ===== Application diagrams v2: technical drawing style ===== */
+function apSvg(p,vi){const u=lang==='uk',v=p.v[vi]||p.v[0],vs=String(Array.isArray(v[0])?v[0][u?0:1]:v[0]);
+const nums=vs.match(/\d+/g)||[],mm=u?'мм':'mm',id=p.id,nm=title(p);
+const W=640,H=330;
+const T=(x,y,t,a='start',c='aq-t')=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${t}</text>`;
+const arrow=(x,y,dx,dy)=>{const L=7,w=3.2,n=Math.hypot(dx,dy)||1,ux=dx/n,uy=dy/n;return `<path class="aq-ar" d="M${x} ${y}L${(x-ux*L-uy*w).toFixed(1)} ${(y-uy*L+ux*w).toFixed(1)}L${(x-ux*L+uy*w).toFixed(1)} ${(y-uy*L-ux*w).toFixed(1)}Z"/>`};
+const dimV=(x,y1,y2,lab,side=1,key=1)=>{const c=key?'aq-dk':'aq-d';return `<g class="${c}"><path d="M${x} ${y1}V${y2}M${x-14} ${y1}H${x+6}M${x-14} ${y2}H${x+6}"/>${arrow(x,y1,0,-1)}${arrow(x,y2,0,1)}</g>`+T(x+12*side,(y1+y2)/2+5,lab,side>0?'start':'end',key?'aq-t aq-tk':'aq-t')};
+const dimH=(y,x1,x2,lab,key=1)=>{const c=key?'aq-dk':'aq-d';return `<g class="${c}"><path d="M${x1} ${y}H${x2}M${x1} ${y-12}V${y+6}M${x2} ${y-12}V${y+6}"/>${arrow(x1,y,-1,0)}${arrow(x2,y,1,0)}</g>`+T((x1+x2)/2,y-9,lab,'middle',key?'aq-t aq-tk':'aq-t')};
+const co=(n,x,y,lx,ly)=>`<path class="aq-ld" d="M${x} ${y}L${lx} ${ly}"/><circle cx="${x}" cy="${y}" r="2.6" class="aq-ldd"/><circle cx="${lx}" cy="${ly}" r="11" class="aq-co${n===1?' aq-co1':''}"/>`+T(lx,ly+4.2,n,'middle','aq-con'+(n===1?' aq-con1':''));
+const brk=(x,y1,y2)=>{const m=(y1+y2)/2;return `<path class="aq-brk" d="M${x} ${y1-8}V${m-12}L${x-7} ${m-4}L${x+7} ${m+4}L${x} ${m+12}V${y2+8}"/>`};
+const defs=`<defs>
+<pattern id="aqc" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.1" class="aq-ag"/><circle cx="16" cy="17" r="1.4" class="aq-ag"/><circle cx="21" cy="6" r=".8" class="aq-ag"/><path d="M9 18l3.2-5.4 3.2 5.4z" class="aq-agt"/><path d="M19 23l2-3.4 2 3.4z" class="aq-agt"/></pattern>
+<pattern id="aqw" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" class="aq-hl"/></pattern>
+<pattern id="aqe" width="30" height="16" patternUnits="userSpaceOnUse"><path d="M2 14l6-6M6 14l6-6M10 14l6-6" class="aq-hl"/><ellipse cx="23" cy="6" rx="3.5" ry="2.4" class="aq-pb"/></pattern>
+<pattern id="aqg" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" class="aq-gr"/></pattern></defs>`;
+const conc=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="aq-cf"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#aqc)"/>`;
+const ply=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="aq-pf"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#aqw)"/><rect x="${x}" y="${y}" width="${w}" height="${h}" class="aq-po"/>`;
+let g=`<rect width="${W}" height="${H}" fill="url(#aqg)"/>`,cap='',ttl='',L=[];const cover=nums.length?(id===2?nums.join(' / '):vs.split('/')[0].replace(/-/g,'–'))+' '+mm:'';const bar=vs.includes('/')?vs.split('/')[1].replace('-','–'):'';
+const LG={fix:['fix',nm],bar:['bar',u?'Арматура (переріз / вздовж)':'Rebar (section / along)'],con:['con',u?'Бетон':'Concrete'],ply:['ply',u?'Щит опалубки':'Formwork panel'],soil:['soil',u?'Сипка основа + плівка':'Loose base + membrane'],deck:['ply',u?'Тверда основа / настил опалубки':'Hard base / formwork deck'],tie:['tie',u?'Стяжний гвинт і шайба':'Tie rod and waler plate'],tube:['tube',u?'Дистанційна труба':'Spacer tube'],hole:['tube',u?'Отвір від стяжки':'Tie hole']};
+if([1,2,4,5].includes(id)){
+ ttl=u?'Переріз плити':'Slab section';const base=252,top=86,ry=base-62,cx=320;
+ g+=conc(30,top,580,base-top)+`<path class="aq-edge" d="M30 ${top}H610M30 ${base}H610"/>`+brk(30,top,base)+brk(610,top,base);
+ if(id===1){g+=`<rect x="30" y="${base}" width="580" height="44" fill="url(#aqe)"/><path class="aq-mem" d="M30 ${base+2}H610"/>`}
+ else g+=ply(30,base,580,22);
+ // top mesh
+ g+=`<rect x="30" y="${top+30}" width="580" height="7" rx="3.5" class="aq-rb"/>`;for(let x=58;x<=600;x+=48)g+=`<circle cx="${x}" cy="${top+24}" r="6.5" class="aq-rs"/>`;
+ // bottom mesh
+ g+=`<rect x="30" y="${ry-4}" width="580" height="8" rx="4" class="aq-rb"/>`;for(let x=82;x<=600;x+=48)if(Math.abs(x-cx)>30)g+=`<circle cx="${x}" cy="${ry-11}" r="7" class="aq-rs"/>`;
+ // fixator
+ if(id===1)g+=`<path class="aq-fx" d="M${cx-64} ${base}L${cx-34} ${base-15}H${cx+34}L${cx+64} ${base}Z"/><path class="aq-fx" d="M${cx-13} ${base-15}V${ry+4}H${cx-17}V${ry-9}L${cx-8} ${ry-9}V${ry+4}H${cx+8}V${ry-9}L${cx+17} ${ry-9}V${ry+4}H${cx+13}V${base-15}Z"/><path class="aq-fxl" d="M${cx-30} ${base-7}H${cx+30}"/>`;
+ if(id===2)g+=`<path class="aq-fx" d="M${cx-30} ${base}L${cx-20} ${ry+5}H${cx-10}A10 10 0 0 0 ${cx+10} ${ry+5}H${cx+20}L${cx+30} ${base}Z"/><path class="aq-fxl" d="M${cx-24} ${base-16}H${cx+24}M${cx-22} ${base-32}H${cx+22}"/>`;
+ if(id===4)g+=`<path class="aq-fx" d="M${cx-24} ${base}L${cx-14} ${ry+6}C${cx-14} ${ry-14} ${cx+14} ${ry-14} ${cx+14} ${ry+6}L${cx+24} ${base}Z"/><path class="aq-fxl" d="M${cx} ${ry+14}V${base-8}"/>`;
+ if(id===5)g+=`<path class="aq-fx" d="M${cx-40} ${base}H${cx+40}L${cx+27} ${ry+12}H${cx+13}V${ry-12}H${cx-13}V${ry+12}H${cx-27}Z"/><path class="aq-fxl" d="M${cx-30} ${base-10}H${cx+30}"/>`;
+ g+=`<circle cx="${cx}" cy="${ry-11}" r="7" class="aq-rs"/>`;
+ g+=dimV(560,ry+4,base,(u?'захисний шар ':'cover ')+cover,-1,1);
+ if(bar)g+=T(82+48*6+14,ry-26,'Ø '+bar+' '+mm,'start','aq-t');
+ g+=co(1,cx-(id===1?44:id===5?30:22),base-8,cx-120,base-30)+co(2,130,ry-11,130,top+64)+co(3,470,top+60,470,top+60)+co(4,200,base+(id===1?24:11),200,base+(id===1?24:11));
+ L=[LG.fix,LG.bar,LG.con,id===1?LG.soil:LG.deck];
+ cap={1:u?`«Настил» стоїть на сипкій основі: широка опора не дає йому занурюватися, а стійка тримає нижню сітку на висоті ${cover} — це і є захисний шар бетону під арматурою.`:`The chair sits on a loose base; its wide foot prevents sinking and keeps the bottom mesh ${cover} above the base — the concrete cover.`,
+ 2:u?`«Стійка» ставиться на тверду основу під нижню сітку плити. Ступінчаста висота (${cover}) дозволяє одним виробом отримати кілька варіантів захисного шару.`:`The chair stands on a hard base under the bottom mesh; stepped heights (${cover}) give several cover options with one part.`,
+ 4:u?`«Защіпка» защіпається на стрижень нижньої сітки й тримає його на висоті ${cover} над основою.`:`The clip snaps onto the bottom bar and holds it ${cover} above the base.`,
+ 5:u?`«Засувка» фіксує стрижень у пазу й тримає нижню сітку на висоті ${cover}; широка основа розподіляє навантаження каркаса.`:`The slider locks the bar in its slot and holds the mesh ${cover} above the base; the wide foot spreads the load.`}[id];
+}
+else if(id===3){
+ ttl=u?'Вертикальний переріз стіни':'Wall vertical section';const px=70,pw=26,x2=570,top=40,bot=300,bx=px+pw+64,R=64,cy=170;
+ g+=ply(px,top,pw,bot-top)+ply(x2,top,pw,bot-top)+conc(px+pw,top,x2-px-pw,bot-top)+`<path class="aq-edge" d="M${px+pw} ${top}H${x2}M${px+pw} ${bot}H${x2}"/>`;
+ g+=`<rect x="${bx-4}" y="${top}" width="8" height="${bot-top}" rx="4" class="aq-rb"/><rect x="${bx+56}" y="${top}" width="8" height="${bot-top}" rx="4" class="aq-rb"/>`;for(let y=70;y<=280;y+=52)g+=`<circle cx="${bx+30}" cy="${y}" r="6.5" class="aq-rs"/>`;
+ g+=`<circle cx="${bx}" cy="${cy}" r="${R}" class="aq-fx"/><circle cx="${bx}" cy="${cy}" r="${R-10}" class="aq-con-bg"/>`;for(let a=0;a<12;a++){const t=a*Math.PI/6;g+=`<path class="aq-fxs" d="M${(bx+14*Math.cos(t)).toFixed(1)} ${(cy+14*Math.sin(t)).toFixed(1)}L${(bx+(R-10)*Math.cos(t)).toFixed(1)} ${(cy+(R-10)*Math.sin(t)).toFixed(1)}"/>`}
+ g+=`<circle cx="${bx}" cy="${cy}" r="15" class="aq-fx"/><rect x="${bx-4}" y="${cy-30}" width="8" height="60" rx="4" class="aq-rb"/>`;
+ g+=dimH(26,px+pw,bx-4,(u?'захисний шар ':'cover ')+cover,1);
+ if(bar)g+=T(bx+74,26,'Ø '+bar+' '+mm,'start','aq-t');
+ g+=co(1,bx+R*.71,cy-R*.71,bx+R+58,cy-R-4)+co(2,bx+60,276,bx+150,276)+co(3,470,120,470,120)+co(4,px+13,92,px+13,92);
+ L=[LG.fix,LG.bar,LG.con,LG.ply];
+ cap=u?`«Зірочка» защіпається на вертикальний стрижень і впирається ободом у щит опалубки. Радіус колеса задає захисний шар ${cover} до поверхні стіни чи колони.`:`The wheel spacer clips onto a vertical bar and rolls against the formwork; its radius sets a ${cover} cover to the wall face.`;
+}
+else{
+ const x1=160,x2=480,y=170,top=60,bot=280;
+ if(id===6||id===9){
+  ttl=u?'Горизонтальний переріз стіни':'Wall plan section';
+  g+=ply(x1-24,top,24,bot-top)+ply(x2,top,24,bot-top)+conc(x1,top,x2-x1,bot-top)+`<path class="aq-edge" d="M${x1} ${top}H${x2}M${x1} ${bot}H${x2}"/>`;
+  g+=`<rect x="${x1+20}" y="${y-10}" width="${x2-x1-40}" height="20" class="${id===9?'aq-fx':'aq-tb'}"/>`;
+  g+=`<path class="${id===6?'aq-fx':'aq-tb'}" d="M${x1} ${y-22}L${x1+22} ${y-12}V${y+12}L${x1} ${y+22}Z M${x2} ${y-22}L${x2-22} ${y-12}V${y+12}L${x2} ${y+22}Z"/>`;
+  g+=`<rect x="56" y="${y-3}" width="528" height="6" rx="3" class="aq-rb"/><path class="aq-tie" d="M${x1-24} ${y-32}h-14v64h14ZM${x2+24} ${y-32}h14v64h-14ZM${x1-38} ${y-14}h-22v28h22ZM${x2+38} ${y-14}h22v28h-22Z"/>`;
+  g+=dimH(36,x1,x2,u?'товщина стіни = довжина труби':'wall thickness = tube length',1);
+  g+=co(1,id===6?x1+10:320,id===6?y+16:y+8,id===6?x1+60:320,id===6?y+66:y+66)+co(2,id===6?320:x1+10,id===6?y+8:y+16,id===6?320:x1+60,y+66)+co(3,x2-60,bot-30,x2-60,bot-30)+co(4,x1-12,top+24,x1-12,top+24)+co(5,x1-49,y,x1-49,y+64);
+  L=id===6?[LG.fix,LG.tube,LG.con,LG.ply,LG.tie]:[LG.fix,['fix2',u?'Конус':'Cone'],LG.con,LG.ply,LG.tie];
+  if(id===6)L[1]=LG.tube;
+  cap=id===9?(u?'«Труба» надягається на стяжний гвинт між щитами: тримає відстань між ними (товщину стіни) і не дає бетону схопити гвинт — після заливки його легко витягнути.':'The spacer tube slides over the tie rod between panels, keeping their spacing and protecting the rod so it can be pulled out after pouring.')
+   :(u?'«Конус» надягається на кінці труби Ø 22 мм біля щита: збільшує площу опори, не пускає бетон у трубу й формує акуратний вхід отвору.':'The cone fits on the ends of the Ø22 tube at the panel, widening the bearing area, keeping concrete out and forming a neat hole entry.');
+ } else {
+  ttl=u?'Стіна після зняття опалубки':'Wall after stripping';
+  g+=conc(x1,top,x2-x1,bot-top)+`<path class="aq-edge" d="M${x1} ${top}V${bot}M${x2} ${top}V${bot}"/>`;
+  g+=`<rect x="${x1}" y="${y-12}" width="${x2-x1}" height="24" class="aq-tb"/>`;
+  const plug=(x,dir)=>id===7?`<path class="aq-fx" d="M${x-dir*6} ${y-17}h${dir*10}v34h${-dir*10}z M${x+dir*4} ${y-12}l${dir*9} 3v18l${-dir*9} 3zM${x+dir*13} ${y-11}l${dir*9} 3v16l${-dir*9} 3zM${x+dir*22} ${y-10}l${dir*9} 3v14l${-dir*9} 3z"/>`:`<path class="aq-fx" d="M${x-dir*4} ${y-16}h${dir*4}v4h${dir*26}v24h${-dir*26}v4h${-dir*4}z"/>`;
+  g+=plug(x1,1)+plug(x2,-1);
+  g+=T(x1-16,y+5,u?'фасад':'face','end','aq-t')+T(x2+16,y+5,u?'фасад':'face','start','aq-t');
+  g+=dimV(x1+60,y-12,y+12,'Ø 24 '+mm,1,1);
+  g+=co(1,x2-14,y+14,x2-60,y+70)+co(2,320,y+6,320,y+70)+co(3,400,top+36,400,top+36);
+  L=[LG.fix,LG.hole,LG.con];
+  cap=id===7?(u?'«Корок-ялинка» щільно забивається в отвір Ø 24 мм — у невикористані отвори щитів опалубки або в отвори стін після зняття опалубки. Ребра-«ялинка» не дають йому випасти.':'The fir-tree plug is driven into Ø24 holes — unused formwork holes or tie holes in the wall after stripping; its ribs hold it in place.')
+   :(u?'«Корок» закриває отвір Ø 24 мм від стяжного гвинта з обох боків стіни: не пускає вологу всередину й вирівнює поверхню під оздоблення.':'The plug seals the Ø24 tie hole on both faces of the wall, keeping moisture out and leaving a clean surface.');
+ }
+}
+const sw={fix:'<i class="aq-s aq-s-fix"></i>',fix2:'<i class="aq-s aq-s-fix"></i>',bar:'<i class="aq-s aq-s-bar"></i>',con:'<i class="aq-s aq-s-con"></i>',ply:'<i class="aq-s aq-s-ply"></i>',soil:'<i class="aq-s aq-s-soil"></i>',tie:'<i class="aq-s aq-s-tie"></i>',tube:'<i class="aq-s aq-s-tube"></i>'};
+const leg=`<ol class="aq-lg">${L.map((x,i)=>`<li><span class="aq-n${i===0?' aq-n1':''}">${i+1}</span>${sw[x[0]]||''}<span>${x[1]}</span></li>`).join('')}</ol>`;
+return `<figure class="apx aq"><div class="aq-hd"><span>${u?'Схема':'Diagram'} · ${ttl}</span><span>${u?'без масштабу':'not to scale'}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${(u?'Схема застосування: ':'Application diagram: ')+ttl}">${defs}${g}</svg>${leg}<figcaption>${cap}</figcaption></figure>`}
+
+
+/* UA headings: Unbounded is wider — tag headings and scale them to fit */
+const UH_SEL='#view h1:not(.sr),#view h2';
+function uhFit(){const on=false;document.querySelectorAll(UH_SEL).forEach(h=>{if(h.closest('.pdf-doc,.pa-b,.aq'))return;h.style.removeProperty('font-size');h.classList.remove('uh');if(!on)return;
+const fs=parseFloat(getComputedStyle(h).fontSize);if(fs<24)return;h.classList.add('uh');let k=.8;h.style.setProperty('font-size',(fs*k).toFixed(1)+'px','important');
+let n=0;while(n++<12&&h.scrollWidth>h.clientWidth+1&&k>.5){k-=.03;h.style.setProperty('font-size',(fs*k).toFixed(1)+'px','important')}})}
+new MutationObserver(()=>requestAnimationFrame(uhFit)).observe(document.getElementById('view'),{childList:true});
+let uhT;addEventListener('resize',()=>{clearTimeout(uhT);uhT=setTimeout(uhFit,120)});document.fonts&&document.fonts.ready.then(uhFit);
+
+/* hero H1 (desktop): shrink to fit the left column, never overlap the video */
+function hxFit(){const h=document.querySelector('#view .hx.hx2 #hxh');if(!h)return;h.style.removeProperty('font-size');if(innerWidth<1101)return;
+const col=h.closest('.hx-in'),cs=getComputedStyle(col),lim=col.getBoundingClientRect().left+col.clientWidth-parseFloat(cs.paddingRight);
+const right=()=>{const g=h.querySelector('.hxg-b')||h,w=document.createTreeWalker(g,NodeFilter.SHOW_TEXT);let m=0,t;while(t=w.nextNode()){if(t.parentElement.closest('.hx-dyn,.sr'))continue;const r=document.createRange();r.selectNodeContents(t);for(const b of r.getClientRects())if(b.width)m=Math.max(m,b.right)}return m};
+const L=h.getBoundingClientRect().left,R0=right(),fs=parseFloat(getComputedStyle(h).fontSize),room=lim-36-L;if(R0-L>room){h.style.setProperty('font-size',(fs*room/(R0-L)).toFixed(1)+'px','important')}}
+new MutationObserver(()=>requestAnimationFrame(hxFit)).observe(document.getElementById('view'),{childList:true});
+let hxT;addEventListener('resize',()=>{clearTimeout(hxT);hxT=setTimeout(hxFit,100)});document.fonts&&document.fonts.ready.then(hxFit);
+
+/* product page accordions: only one open at a time */
+document.addEventListener('toggle',e=>{const d=e.target;if(!(d instanceof HTMLDetailsElement)||!d.open)return;const g=d.closest('.pda');if(!g)return;g.querySelectorAll('details[open]').forEach(x=>{if(x!==d&&x.closest('.pda')===g)x.open=false})},true);
+
+/* ===== About hero v2: statement left, 3x2 grid right with video ===== */
+const _aboutHV=about;about=function(){let h=_aboutHV();const u=lang==='uk';
+const v=`<div class="pri-v">${hvSmall()?`<img class="pri-img" src="${HV_ANIM}" alt="" decoding="async">`:`<video data-src="${HV_SRC}" poster="${HV_POSTER}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none" aria-label="${u?'Відео з виробничого цеху':'Production floor video'}"></video>`}<span class="pri-vl">[ ${u?'Власний цех':'Own production'} ]</span></div>`;
+h=h.replace('<section class="pri pri-1">','<section class="pri pri-1 pri-hv">');const dsc=u?'Проєктуємо та виготовляємо пресформи, ллємо пластикові вироби під тиском і випускаємо власну лінійку фіксаторів арматури. Беремося за деталі будь-якої складності — від пробної партії до серійного виробництва — і доставляємо їх у будь-яку точку України та Європи.':'We design and build injection molds, mold plastic parts and produce our own line of rebar spacers. We take on parts of any complexity — from a trial batch to serial production — and deliver them anywhere in Ukraine and Europe.';
+const qf=`<div class="pri-q"><form class="hqf" novalidate aria-label="${u?'Отримати консультацію':'Request a call'}"><input name="name" type="hidden" value="${u?'Консультація зі сторінки виробництва':'Production page consultation'}"><input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${u?'Телефон':'Phone'}" autocomplete="tel"><button class="btn" type="submit">${u?'Отримати консультацію':'Request a call'}</button><p class="lf-err" role="alert" hidden></p></form></div>`;
+h=h.replace(/(<div class="pri-l">[\s\S]*?<\/p>)(<\/div>)/,'$1'+qf+'<p class="pri-d">'+dsc+'</p>$2');
+h=h.replace(/(<div class="pri-r pri-row">[\s\S]*?)(<\/div><\/section>)/,'$1'+v+'$2');return h};
+
+/* background videos: behave like a looping animated image (force muted autoplay, no play button) */
+function bgVideos(){document.querySelectorAll('#view .hv-v, #view .pri-v video').forEach(v=>{v.muted=true;v.defaultMuted=true;v.playsInline=true;v.setAttribute('muted','');v.controls=false;v.removeAttribute('controls');
+if(!v.dataset.bg){v.dataset.bg=1;v.addEventListener('pause',()=>{if(!document.hidden)setTimeout(()=>v.play().catch(()=>{}),50)})}
+if(v.paused){const p=v.play();p&&p.catch(()=>{})}})}
+new MutationObserver(()=>requestAnimationFrame(bgVideos)).observe(document.getElementById('view'),{childList:true});
+['touchstart','pointerdown','scroll','visibilitychange'].forEach(ev=>addEventListener(ev,()=>{if(!document.hidden)bgVideos()},{passive:true}));
+
+/* header icons: support headset + labelled menu */
+const ICO_HS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 13.5V12a7.5 7.5 0 0 1 15 0v1.5"/><rect x="3.5" y="13" width="4" height="6" rx="1.6"/><rect x="16.5" y="13" width="4" height="6" rx="1.6"/><path d="M18.5 19v.3c0 1.5-1.4 2.2-3.6 2.2H13"/><circle cx="12.2" cy="21.5" r=".9" fill="currentColor" stroke="none"/></svg>';
+const ICO_MENU='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7.5h16M4 12h16M4 16.5h10"/></svg>';
+function hdrIcons(){const q=document.getElementById('qcb'),m=document.getElementById('burger'),u=lang==='uk';
+if(q&&!q.dataset.hs){q.innerHTML=ICO_HS;q.dataset.hs=1}if(q)q.setAttribute('aria-label',u?'Зв’язатися з нами':'Contact us');
+if(m){m.classList.add('bm');m.innerHTML=ICO_MENU+`<span class="bm-t">${u?'Меню':'Menu'}</span>`;m.setAttribute('aria-label',u?'Меню':'Menu')}}
+hdrIcons();new MutationObserver(()=>hdrIcons()).observe(document.getElementById('view'),{childList:true});
+
+/* ===== Phone: country picker (iOS-style) + per-country mask ===== */
+const PCC=[["AD","376","### ###",6,9,0],["AE","971","## ### ####",9,9,1],["AF","93","## ### ####",9,9,2],["AG","1","##########",10,10,3],["AI","1","##########",10,10,4],["AL","355","## ### ####",9,9,5],["AM","374","## ######",8,8,6],["AO","244","### ### ###",9,9,7],["AR","54","# ## ####-####",10,11,8],["AS","1","##########",10,10,9],["AT","43","### ######",7,13,10],["AU","61","### ### ###",9,9,11],["AW","297","### ####",7,7,12],["AX","358","#########",6,10,13],["AZ","994","## ### ## ##",9,9,14],["BA","387","## ### ###",8,9,15],["BB","1","##########",10,10,16],["BD","880","####-######",10,10,17],["BE","32","### ## ## ##",9,9,18],["BF","226","## ## ## ##",8,8,19],["BG","359","## ### ###",8,9,20],["BH","973","#### ####",8,8,21],["BI","257","## ## ## ##",8,8,22],["BJ","229","## ## ## ## ##",10,10,23],["BL","590","#########",9,9,24],["BM","1","##########",10,10,25],["BN","673","### ####",7,7,26],["BO","591","########",8,8,27],["BR","55","## #####-####",10,11,28],["BS","1","##########",10,10,29],["BT","975","## ## ## ##",8,8,30],["BW","267","## ### ###",8,8,31],["BZ","501","###-####",7,7,32],["CA","1","(###) ###-####",10,10,33],["CC","61","#########",9,9,34],["CD","243","### ### ###",7,9,35],["CF","236","## ## ## ##",8,8,36],["CG","242","## ### ####",9,9,37],["CH","41","## ### ## ##",9,9,38],["CI","225","## ## ## ####",10,10,39],["CK","682","## ###",5,5,40],["CL","56","# #### ####",9,9,41],["CM","237","# ## ## ## ##",9,9,42],["CN","86","### #### ####",11,11,43],["CO","57","### #######",10,10,44],["CR","506","#### ####",8,8,45],["CU","53","# #######",8,8,46],["CV","238","### ## ##",7,7,47],["CW","599","# ### ####",7,8,48],["CX","61","#########",9,9,49],["CY","357","## ######",8,8,50],["CZ","420","### ### ###",9,9,51],["DE","49","#### #######",10,11,52],["DJ","253","## ## ## ##",8,8,53],["DK","45","## ## ## ##",8,8,54],["DM","1","##########",10,10,55],["DO","1","##########",10,10,56],["DZ","213","### ## ## ##",9,9,57],["EC","593","## ### ####",9,9,58],["EE","372","#### ####",7,8,59],["EG","20","## ########",10,10,60],["EH","212","#########",9,9,61],["ER","291","# ### ###",7,7,62],["ES","34","### ## ## ##",9,9,63],["ET","251","## ### ####",9,9,64],["FI","358","## #######",6,10,65],["FJ","679","### ####",7,7,66],["FK","500","#####",5,5,67],["FM","691","### ####",7,7,68],["FO","298","######",6,6,69],["FR","33","# ## ## ## ##",9,9,70],["GA","241","## ## ## ##",7,8,71],["GB","44","#### ######",10,10,72],["GD","1","##########",10,10,73],["GE","995","### ## ## ##",9,9,74],["GF","594","### ## ## ##",9,9,75],["GG","44","##########",10,10,76],["GH","233","## ### ####",9,9,77],["GI","350","########",8,8,78],["GL","299","## ## ##",6,6,79],["GM","220","### ####",7,7,80],["GN","224","### ## ## ##",9,9,81],["GP","590","### ## ## ##",9,9,82],["GQ","240","### ### ###",9,9,83],["GR","30","### ### ####",10,10,84],["GT","502","#### ####",8,8,85],["GU","1","##########",10,10,86],["GW","245","### ### ###",9,9,87],["GY","592","### ####",7,7,88],["HK","852","#### ####",8,8,89],["HN","504","####-####",8,8,90],["HR","385","## ### ####",8,9,91],["HT","509","## ## ####",8,8,92],["HU","36","## ### ####",9,9,93],["ID","62","###-###-###",9,12,94],["IE","353","## ### ####",9,9,95],["IL","972","##-###-####",9,9,96],["IM","44","##########",10,10,97],["IN","91","##### #####",10,10,98],["IO","246","### ####",7,7,99],["IQ","964","### ### ####",10,10,100],["IR","98","### ### ####",10,10,101],["IS","354","### ####",7,9,102],["IT","39","### ### ####",9,10,103],["JE","44","##########",10,10,104],["JM","1","##########",10,10,105],["JO","962","# #### ####",9,9,106],["JP","81","##-####-####",10,10,107],["KE","254","### ######",9,9,108],["KG","996","### ### ###",9,9,109],["KH","855","## ### ###",8,9,110],["KI","686","########",8,8,111],["KM","269","### ## ##",7,7,112],["KN","1","##########",10,10,113],["KP","850","### ### ####",10,10,114],["KR","82","##-####-####",9,10,115],["KW","965","### #####",8,8,116],["KY","1","##########",10,10,117],["KZ","7","##########",10,10,118],["LA","856","## ## ### ###",9,10,119],["LB","961","## ### ###",7,8,120],["LC","1","##########",10,10,121],["LI","423","### ### ###",7,9,122],["LK","94","## ### ####",9,9,123],["LR","231","## ### ####",7,9,124],["LS","266","#### ####",8,8,125],["LT","370","### #####",8,8,126],["LU","352","### ### ###",9,9,127],["LV","371","## ### ###",8,8,128],["LY","218","##-#######",9,9,129],["MA","212","# ## ## ## ##",9,9,130],["MC","377","# ## ## ## ##",8,9,131],["MD","373","### ## ###",8,8,132],["ME","382","## ### ###",8,8,133],["MF","590","#########",9,9,134],["MG","261","## ## ### ##",9,9,135],["MH","692","###-####",7,7,136],["MK","389","## ### ###",8,8,137],["ML","223","## ## ## ##",8,8,138],["MM","95","# ### ####",7,10,139],["MN","976","#### ####",8,8,140],["MO","853","#### ####",8,8,141],["MP","1","##########",10,10,142],["MQ","596","### ## ## ##",9,9,143],["MR","222","## ## ## ##",8,8,144],["MS","1","##########",10,10,145],["MT","356","#### ####",8,8,146],["MU","230","#### ####",8,8,147],["MV","960","###-####",7,7,148],["MW","265","### ## ## ##",9,9,149],["MX","52","### ### ####",10,10,150],["MY","60","##-### ####",9,10,151],["MZ","258","## ### ####",9,9,152],["NA","264","## ### ####",9,9,153],["NC","687","##.##.##",6,6,154],["NE","227","## ## ## ##",8,8,155],["NF","672","# #####",6,6,156],["NG","234","### ### ####",10,10,157],["NI","505","#### ####",8,8,158],["NL","31","# ########",9,11,159],["NO","47","## ## ## ##",8,8,160],["NP","977","###-#######",10,10,161],["NR","674","### ####",7,7,162],["NU","683","### ####",4,7,163],["NZ","64","## ### ####",8,10,164],["OM","968","#### ####",8,8,165],["PA","507","####-####",7,8,166],["PE","51","### ### ###",9,9,167],["PF","689","## ## ## ##",8,8,168],["PG","675","#### ####",8,8,169],["PH","63","### ### ####",10,10,170],["PK","92","### #######",10,10,171],["PL","48","### ### ###",9,9,172],["PM","508","## ## ##",6,9,173],["PR","1","##########",10,10,174],["PS","970","### ### ###",9,9,175],["PT","351","### ### ###",9,9,176],["PW","680","### ####",7,7,177],["PY","595","### ######",9,9,178],["QA","974","#### ####",8,8,179],["RE","262","### ## ## ##",9,9,180],["RO","40","### ### ###",9,9,181],["RS","381","## #######",8,10,182],["RW","250","### ### ###",9,9,183],["SA","966","## ### ####",9,9,184],["SB","677","## #####",5,7,185],["SC","248","# ### ###",7,7,186],["SD","249","## ### ####",9,9,187],["SE","46","## ### ## ##",9,9,188],["SG","65","#### ####",8,8,189],["SI","386","## ### ###",8,8,190],["SK","421","### ### ###",9,9,191],["SL","232","## ######",8,8,192],["SM","378","## ## ## ##",8,8,193],["SN","221","## ### ## ##",9,9,194],["SO","252","# #######",7,9,195],["SR","597","###-####",7,7,196],["SS","211","### ### ###",9,9,197],["ST","239","### ####",7,7,198],["SV","503","#### ####",8,8,199],["SX","1","##########",10,10,200],["SY","963","### ### ###",9,9,201],["SZ","268","#### ####",8,8,202],["TC","1","##########",10,10,203],["TD","235","## ## ## ##",8,8,204],["TG","228","## ## ## ##",8,8,205],["TH","66","## ### ####",9,9,206],["TJ","992","## ### ####",9,9,207],["TK","690","####",4,7,208],["TL","670","#### ####",8,8,209],["TM","993","## ######",8,8,210],["TN","216","## ### ###",8,8,211],["TO","676","### ####",7,7,212],["TR","90","### ### ## ##",10,10,213],["TT","1","##########",10,10,214],["TV","688","## ####",6,7,215],["TW","886","### ### ###",9,9,216],["TZ","255","### ### ###",9,9,217],["UA","380","(##) ###-##-##",9,9,218],["UG","256","### ######",9,9,219],["US","1","(###) ###-####",10,10,220],["UY","598","## ### ###",8,8,221],["UZ","998","## ### ## ##",9,9,222],["VA","39","##########",9,10,223],["VC","1","##########",10,10,224],["VE","58","###-#######",10,10,225],["VG","1","##########",10,10,226],["VI","1","##########",10,10,227],["VN","84","### ### ###",9,9,228],["VU","678","### ####",7,7,229],["WF","681","## ## ##",6,6,230],["WS","685","## #####",7,10,231],["XK","383","## ### ###",8,8,232],["YE","967","### ### ###",9,9,233],["YT","262","#########",9,9,234],["ZA","27","## ### ####",5,9,235],["ZM","260","## #######",9,9,236],["ZW","263","## ### ####",9,9,237]];
+const PRIO=['UA','PL','DE','IT','FR','ES','GB','US','CZ','SK','RO','MD','HU','AT','NL','BE','LT','LV','EE','CA','IL','TR','GE'];
+const prioIx=i=>{const k=PRIO.indexOf(i);return k<0?99:k};
+const ccOf=el=>PCC.find(c=>c[0]===el.dataset.cc)||PCC.find(c=>c[0]==='UA');
+const ccMax=c=>(c[2].match(/#/g)||[]).length;
+const ccLim=c=>Math.max(c[4],ccMax(c));
+let _dn={};const ccName=iso=>{const l=lang==='uk'?'uk':'en';try{_dn[l]=_dn[l]||new Intl.DisplayNames([l],{type:'region'});return _dn[l].of(iso)||iso}catch(_){return iso}};
+const ccFlag=c=>`<i class="phf" style="background-position:${(c[5]%16)*100/(16-1)}% ${Math.floor(c[5]/16)*100/(15-1)}%"></i>`;
+
+/* country search in any language */
+const ccNorm=v=>v.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’'`ʼ]/g,'');
+let _ccIx=null;
+function ccIndex(){if(_ccIx)return _ccIx;_ccIx={};const L=['uk','en','ru','pl','de','fr','es','it','pt','nl','cs','sk','ro','hu','bg','sr','hr','sl','lt','lv','et','fi','sv','da','no','el','tr','he','ar','fa','hi','zh','zh-Hant','ja','ko','ka','hy','az','kk','uz','be','vi','th','id','ms'];
+const dn=L.map(l=>{try{return new Intl.DisplayNames([l],{type:'region'})}catch(_){return null}}).filter(Boolean);
+const extra={US:'usa america сша америка',GB:'uk britain england великобританія англія британія',AE:'uae емірати оае',CZ:'czech republic чехія',KR:'korea корея',KP:'north korea',NL:'holland голландія',MD:'молдавія',CI:'ivory coast',TR:'turkey турція турция',MK:'macedonia македонія',SZ:'swaziland',CV:'cape verde',MM:'burma бірма',CD:'congo конго',CG:'congo конго'};
+PCC.forEach(c=>{const names=new Set();dn.forEach(d=>{try{const n=d.of(c[0]);if(n&&n!==c[0])names.add(n)}catch(_){}});if(extra[c[0]])names.add(extra[c[0]]);_ccIx[c[0]]=ccNorm([...names].join(' | '))});return _ccIx}
+function ccList(){const pr=PRIO.map(i=>PCC.find(c=>c[0]===i)).filter(Boolean);const loc=lang==='uk'?'uk':'en';const rest=PCC.filter(c=>!PRIO.includes(c[0])).sort((a,b)=>ccName(a[0]).localeCompare(ccName(b[0]),loc));return [pr,rest]}
+function ccFmt(el,v){
+if(/^\s*\+/.test(v)){const dd=v.replace(/\D/g,'');const cands=PCC.filter(x=>dd.startsWith(x[1])).sort((a,b)=>b[1].length-a[1].length||prioIx(a[0])-prioIx(b[0]));const m=cands[0];const amb=PCC.some(x=>x[1].startsWith(dd)&&x[1].length>dd.length);if(!m||amb)return '+'+dd.slice(0,4);if(m[1]!==ccOf(el)[1])ccSet(el,m[0])}
+const c=ccOf(el);let d=v.replace(/\D/g,'');const code=c[1];
+if(/^\s*\+/.test(v)&&d.startsWith(code))d=d.slice(code.length);else if(d.length>ccLim(c)&&d.startsWith(code))d=d.slice(code.length);
+if(c[0]==='UA'&&d.startsWith('0'))d=d.slice(1);
+d=d.slice(0,ccLim(c));let o='',k=0;for(const ch of c[2]){if(k>=d.length)break;if(ch==='#')o+=d[k++];else o+=ch}if(k<d.length)o+=d.slice(k);return o.replace(/[\s(\-]+$/,'')}
+function ccOk(el){const c=ccOf(el),n=el.value.replace(/\D/g,'').length;return n>=c[3]&&n<=ccLim(c)}
+function ccEx(el){const c=ccOf(el);let k=0;const ex='671234567890123';return '+'+c[1]+' '+c[2].replace(/#/g,()=>ex[k++%ex.length])}
+function ccPrefix(f){f.querySelectorAll('input[data-cc]').forEach(i=>{const v=i.value.trim();if(!v||v.startsWith('+'))return;const full='+'+ccOf(i)[1]+' '+v;i.value=full;setTimeout(()=>{if(i.value===full)i.value=v},0)})}
+function ccSet(el,iso){el.dataset.cc=iso;const w=el.closest('.phw');if(w)ccUpd(w)}
+function ccUpd(w){const el=w.querySelector('input'),b=w.querySelector('.phc'),c=ccOf(el);
+b.innerHTML=`${ccFlag(c)}<span>+${c[1]}</span><svg viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
+b.setAttribute('aria-label',(lang==='uk'?'Код країни: ':'Country code: ')+ccName(c[0])+' +'+c[1]);
+el.placeholder=c[2].replace(/#/g,'0');el.setAttribute('maxlength',c[2].length+4);
+const pad=()=>{if(!b.offsetWidth)return;if(innerWidth<=760&&typeof phCentre==='function'){phCentre(el);return}const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')};pad();requestAnimationFrame(pad)}
+function ccEnhance(root){(root||document).querySelectorAll('input[type=tel]:not([data-cc]),input[name=phone]:not([type=hidden]):not([data-cc])').forEach(el=>{
+el.dataset.cc='UA';el.classList.add('phw-i');if(el.value)el.value=ccFmt(el,el.value);
+const w=document.createElement('span');w.className='phw';el.parentNode.insertBefore(w,el);w.appendChild(el);
+const b=document.createElement('button');b.type='button';b.className='phc';b.setAttribute('aria-haspopup','listbox');b.setAttribute('aria-expanded','false');w.insertBefore(b,el);ccUpd(w)})}
+function ccRepad(){document.querySelectorAll('.phw').forEach(w=>{const el=w.querySelector('input'),b=w.querySelector('.phc');if(b&&b.offsetWidth){if(innerWidth<=760&&typeof phCentre==='function'){phCentre(el);return}const p=(b.offsetWidth+16)+'px';el.style.setProperty('padding-left',p,'important');el.style.setProperty('padding-right','16px','important')}})}
+let ccOpenEl=null;
+function ccClose(){const d=document.getElementById('phdd');if(d)d.remove();const sc=document.getElementById('phdscrim');if(sc)sc.remove();document.documentElement.classList.remove('phd-lock');if(ccOpenEl){ccOpenEl.setAttribute('aria-expanded','false');ccOpenEl=null}}
+function ccOpen(btn){ccClose();const w=btn.closest('.phw'),el=w.querySelector('input'),cur=ccOf(el),u=lang==='uk';ccOpenEl=btn;btn.setAttribute('aria-expanded','true');
+const [pr,rest]=ccList();
+const item=c=>`<li role="option" data-iso="${c[0]}" aria-selected="${c[0]===cur[0]}" tabindex="-1">${ccFlag(c)}<b>${c[0]}</b><span class="phd-n">${ccName(c[0])}</span><span class="phd-c">+${c[1]}</span></li>`;
+const d=document.createElement('div');d.id='phdd';d.className='phd';
+d.innerHTML=`<div class="phd-s"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5 17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input type="search" placeholder="${u?'Пошук країни або коду':'Search country or code'}" aria-label="${u?'Пошук країни':'Search country'}" autocomplete="off"></div><ul role="listbox">${pr.map(item).join('')}<li class="phd-sep" role="presentation"></li>${rest.map(item).join('')}</ul>`;
+(btn.closest('dialog[open]')||document.body).appendChild(d);
+const sheet=false;if(sheet&&window.visualViewport){const vv=visualViewport;const fitVV=()=>{if(!document.body.contains(d)){vv.removeEventListener('resize',fitVV);vv.removeEventListener('scroll',fitVV);return}const kb=Math.max(0,innerHeight-vv.height-vv.offsetTop);d.style.setProperty('bottom',kb+'px','important');d.style.setProperty('max-height',Math.min(560,vv.height*.85)+'px','important')};vv.addEventListener('resize',fitVV);vv.addEventListener('scroll',fitVV)}if(sheet){d.classList.add('phd-sheet');const sc=document.createElement('div');sc.className='phd-scrim';sc.id='phdscrim';document.body.insertBefore(sc,d);document.documentElement.classList.add('phd-lock')}
+const pos=()=>{if(sheet)return;const r=w.getBoundingClientRect(),vh=innerHeight,below=vh-r.bottom-16,above=r.top-16,up=below<240&&above>below+40;const H=Math.round(Math.min(380,Math.max(200,up?above:below)));
+d.style.width=Math.min(Math.max(r.width,320),innerWidth-24)+'px';d.style.maxHeight=H+'px';d.style.left=Math.min(Math.max(12,r.left),innerWidth-12-d.offsetWidth)+'px';
+d.style.top=(up?r.top-8-d.offsetHeight:r.bottom+8)+'px';d.classList.toggle('up',up)};
+pos();
+const sel=d.querySelector('[aria-selected=true]');const ul=d.querySelector('ul');if(sel)ul.scrollTop=Math.max(0,sel.offsetTop-ul.clientHeight/2);
+const q=d.querySelector('input');if(matchMedia('(hover:hover)').matches)q.focus({preventScroll:true});
+q.addEventListener('input',()=>{const t=ccNorm(q.value.trim()).replace(/^\+/,'');const ix=ccIndex();d.querySelectorAll('li[data-iso]').forEach(li=>{const c=PCC.find(x=>x[0]===li.dataset.iso);li.hidden=!!t&&!((ix[c[0]]||'').includes(t)||c[0].toLowerCase()===t||c[1].startsWith(t))});d.querySelector('.phd-sep').hidden=!!t;pos()});
+d.addEventListener('click',e=>{const li=e.target.closest('li[data-iso]');if(!li)return;ccSet(el,li.dataset.iso);el.value=ccFmt(el,el.value);el.dataset.pv=el.value;ccClose();el.focus()});
+d.addEventListener('keydown',e=>{const items=[...d.querySelectorAll('li[data-iso]:not([hidden])')];const i=items.indexOf(document.activeElement);
+if(e.key==='ArrowDown'){e.preventDefault();(items[i+1]||items[0]).focus()}else if(e.key==='ArrowUp'){e.preventDefault();(i>0?items[i-1]:q).focus()}
+else if(e.key==='Enter'&&document.activeElement.dataset&&document.activeElement.dataset.iso){e.preventDefault();document.activeElement.click()}
+else if(e.key==='Escape'){ccClose();btn.focus()}});
+d._pos=pos}
+document.addEventListener('click',e=>{const b=e.target.closest('.phc');if(b){e.preventDefault();e.stopPropagation();ccOpenEl===b?ccClose():ccOpen(b);return}if(!e.target.closest('#phdd'))ccClose()},true);
+addEventListener('resize',()=>{const d=document.getElementById('phdd');if(d&&d._pos)d._pos();ccRepad()});
+addEventListener('scroll',e=>{const d=document.getElementById('phdd');if(d&&!d.contains(e.target)&&d._pos)d._pos()},true);
+ccEnhance();new MutationObserver(()=>{ccEnhance();requestAnimationFrame(ccRepad)}).observe(document.body,{childList:true,subtree:true});
+document.addEventListener('reset',e=>setTimeout(()=>e.target.querySelectorAll&&e.target.querySelectorAll('.phw input').forEach(el=>ccSet(el,'UA')),0),true);
+
+/* mobile: optically centre the phone number in the whole field without touching the country chip */
+const _phCv=document.createElement('canvas').getContext('2d');

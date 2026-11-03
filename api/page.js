@@ -4,6 +4,7 @@
 import { SHELL } from './_shell.js';
 import { rtParse, rtIndex, rtPath, rtMeta, rtAll, rtKey, rtPageNames } from './_routes.js';
 import { SITE_DEF } from './_site.js';
+import { BLOG3 } from './_blog3.js';
 import { PRE, PRE_T, PRE_D } from './_pre.js';
 import { LQ } from './_lq.js';
 import { CR_T, CR_X, CR_P } from './_crit.js';
@@ -28,6 +29,14 @@ async function loadDb() {
   try {
     const r = await sql(`SELECT key, value FROM settings WHERE key LIKE 'site.%' OR key = 'redirects'`);
     const o = {}; r.forEach((x) => (o[x.key] = x.value));
+    if (Array.isArray(o['site.posts']) && !o['site.blog3']) {
+      try {
+        const ps = o['site.posts'].map((p) => { const x = p && BLOG3[p.id]; if (!x) return p; const n = { ...p, t: x.t, e: x.e, b: x.b }; delete n.min; return n; });
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.posts', $1::jsonb, now()) ON CONFLICT (key) DO UPDATE SET value = $1::jsonb, updated_at = now()`, [JSON.stringify(ps)]);
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.blog3', 'true'::jsonb, now()) ON CONFLICT (key) DO NOTHING`);
+        o['site.posts'] = ps; o['site.blog3'] = true;
+      } catch (e) { console.error('blog3', e); }
+    }
     cache = { at: Date.now(), rows: o };
     return o;
   } catch (e) { console.error('page db', e); return cache.rows || {}; }
