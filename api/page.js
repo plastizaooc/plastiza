@@ -7,6 +7,7 @@ import { SITE_DEF } from './_site.js';
 import { BLOG3 } from './_blog3.js';
 import { BLOG4, BLOG4_DATES } from './_blog4.js';
 import { BLOG5 } from './_blog5.js';
+import { blog6Post, blog6Seo } from './_blog6.js';
 import { PRE, PRE_T, PRE_D } from './_pre.js';
 import { LQ } from './_lq.js';
 import { CR_T, CR_X, CR_P } from './_crit.js';
@@ -58,6 +59,15 @@ async function loadDb() {
         await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.blog5', 'true'::jsonb, now()) ON CONFLICT (key) DO NOTHING`);
         o['site.posts'] = ps; o['site.blog5'] = true;
       } catch (e) { console.error('blog5', e); }
+    }
+    if (Array.isArray(o['site.posts']) && o['site.blog5'] && !o['site.blog6']) {
+      try {
+        const ps = o['site.posts'].map(blog6Post), seo = blog6Seo(o['site.seo']);
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.posts', $1::jsonb, now()) ON CONFLICT (key) DO UPDATE SET value = $1::jsonb, updated_at = now()`, [JSON.stringify(ps)]);
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.seo', $1::jsonb, now()) ON CONFLICT (key) DO UPDATE SET value = $1::jsonb, updated_at = now()`, [JSON.stringify(seo)]);
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.blog6', 'true'::jsonb, now()) ON CONFLICT (key) DO NOTHING`);
+        o['site.posts'] = ps; o['site.seo'] = seo; o['site.blog6'] = true;
+      } catch (e) { console.error('blog6', e); }
     }
     cache = { at: Date.now(), rows: o };
     return o;
