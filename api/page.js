@@ -88,6 +88,7 @@ function head(m, L, D, origin) {
   const alt = m.k === '404' ? '' : [['uk', 'uk'], ['en', 'en'], ['x-default', 'uk']].map(([hl, l]) => `<link rel="alternate" hreflang="${hl}" href="${esc(origin + rtPath(m.R, l, D))}">`).join('\n');
   return `<title>${esc(meta.t)}</title>
 <meta name="description" content="${esc(meta.d)}">
+<meta name="google-site-verification" content="sK2QP8q2GfJXxoteN7eyVCbSYngD-Fa9siBJucCNZ5k">
 <meta name="robots" content="${INDEXING && m.k !== '404' ? 'index, follow' : 'noindex, nofollow'}">
 ${m.k === '404' ? '' : `<link rel="canonical" href="${esc(here)}">`}
 ${alt}
