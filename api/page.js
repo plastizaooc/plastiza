@@ -92,6 +92,7 @@ function head(m, L, D, origin) {
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1P1X61KEVP"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1P1X61KEVP');</script>
 <meta name="robots" content="${INDEXING && m.k !== '404' ? 'index, follow' : 'noindex, nofollow'}">
+${m.k === 'faq' && D.faqs && D.faqs.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: D.faqs.map((f) => ({ '@type': 'Question', name: (f.q && (f.q[L] || f.q.uk)) || '', acceptedAnswer: { '@type': 'Answer', text: strip((f.a && (f.a[L] || f.a.uk)) || '') } })) }).replace(/</g, '\\u003c')}</script>` : ''}
 ${m.k === '404' ? '' : `<link rel="canonical" href="${esc(here)}">`}
 ${alt}
 <meta property="og:locale" content="${L === 'en' ? 'en_US' : 'uk_UA'}">
