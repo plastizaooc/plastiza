@@ -89,6 +89,8 @@ function head(m, L, D, origin) {
   return `<title>${esc(meta.t)}</title>
 <meta name="description" content="${esc(meta.d)}">
 <meta name="google-site-verification" content="sK2QP8q2GfJXxoteN7eyVCbSYngD-Fa9siBJucCNZ5k">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1P1X61KEVP"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1P1X61KEVP');</script>
 <meta name="robots" content="${INDEXING && m.k !== '404' ? 'index, follow' : 'noindex, nofollow'}">
 ${m.k === '404' ? '' : `<link rel="canonical" href="${esc(here)}">`}
 ${alt}
