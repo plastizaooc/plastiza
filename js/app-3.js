@@ -79,26 +79,26 @@ const rqT=()=>lang==='uk'?{
  h:'Запит на розрахунок',sub:'Залиште контакти та оберіть продукцію — менеджер розрахує вартість і зв’яжеться з вами в робочий час.',
  nm:'Ім’я або компанія',list:'Сформуйте перелік продукції',add:'Додати продукцію',or:'або',
  file:'Прикріпіть специфікацію чи кошторис',fileh:'PDF, Excel, Word або фото — до 4 МБ',
- send:'Надіслати запит',cancel:'Скасувати',packs:'уп.',pack:(n,u)=>`${n} ${u} в упаковці`,rm:'Прибрати',
- pick:'Оберіть продукцію',pickh:'Позначте потрібні розміри та вкажіть кількість упаковок.',apply:'Додати обране',back:'Назад',
+ send:'Надіслати запит',cancel:'Скасувати',packs:'уп.',mu:'м.',cut:'Відрізаємо метрами',pack:(n,u)=>`${n} ${u} в упаковці`,rm:'Прибрати',
+ pick:'Оберіть продукцію',pickh:'Позначте потрібні розміри та вкажіть кількість упаковок (труба — у метрах).',apply:'Додати обране',back:'Назад',
  empty:'Перелік поки порожній',sel:n=>`Обрано: ${n}`,
  errN:'Вкажіть ім’я або назву компанії.',errP:'Вкажіть номер телефону.',errL:'Додайте продукцію до переліку або прикріпіть файл.',ok:'Дякуємо! Запит надіслано — менеджер зв’яжеться з вами в робочий час.',
- total:(n,p)=>`${n} поз. · ${p} уп.`}:{
+ total:(n,p,m)=>`${n} поз.`+(p?` · ${p} уп.`:'')+(m?` · ${m} м`:'')}:{
  h:'Request a quote',sub:'Leave your contacts and pick the products — a manager will price your order and get back to you during working hours.',
  nm:'Name or company',list:'Build your product list',add:'Add products',or:'or',
  file:'Attach a specification or bill of quantities',fileh:'PDF, Excel, Word or photo — up to 4 MB',
- send:'Send request',cancel:'Cancel',packs:'packs',pack:(n,u)=>`${n} ${u} per pack`,rm:'Remove',
- pick:'Choose products',pickh:'Tick the sizes you need and set the number of packs.',apply:'Add selected',back:'Back',
+ send:'Send request',cancel:'Cancel',packs:'packs',mu:'m',cut:'Cut to length, by the metre',pack:(n,u)=>`${n} ${u} per pack`,rm:'Remove',
+ pick:'Choose products',pickh:'Tick the sizes you need and set the number of packs (tube — in metres).',apply:'Add selected',back:'Back',
  empty:'Your list is empty',sel:n=>`Selected: ${n}`,
  errN:'Enter your name or company.',errP:'Enter your phone number.',errL:'Add products to the list or attach a file.',ok:'Thank you! Your request has been sent — a manager will contact you during working hours.',
- total:(n,p)=>`${n} items · ${p} packs`};
+ total:(n,p,m)=>`${n} items`+(p?` · ${p} packs`:'')+(m?` · ${m} m`:'')};
 const rqKey=(id,vi)=>id+'-'+vi;
 function rqItemsHtml(){const T=rqT();if(!RQ.items.length)return `<p class="rq-empty">${T.empty}</p>`;
  const ids=[...new Set(RQ.items.map(x=>x.id))];
- return ids.map(id=>{const p=P.find(x=>x.id===id);return `<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${RQ.items.map((it,i)=>[it,i]).filter(([it])=>it.id===id).map(([it,i])=>{const v=p.v[it.vi];return `<div class="rq-ch rq-sel" data-i="${i}"><div class="rq-cl"><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small><button type="button" class="rq-x" data-rq-rm aria-label="${T.rm}"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></div><span class="rq-q rq-ps"><button type="button" data-rq-d="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${it.q}" aria-label="${T.packs}"><button type="button" data-rq-d="1" aria-label="+">+</button><span>${T.packs}</span></span></div>`}).join('')}</div></div>`}).join('')+
- `<p class="rq-sum">${T.total(RQ.items.length,RQ.items.reduce((a,b)=>a+(+b.q||0),0))}</p>`}
+ return ids.map(id=>{const p=P.find(x=>x.id===id);return `<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${RQ.items.map((it,i)=>[it,i]).filter(([it])=>it.id===id).map(([it,i])=>{const v=p.v[it.vi];return `<div class="rq-ch rq-sel" data-i="${i}"><div class="rq-cl"><span class="rq-sz">${sz(v)}</span><small>${p.u==='m'?T.cut:T.pack(v[2],un(p))}</small><button type="button" class="rq-x" data-rq-rm aria-label="${T.rm}"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></div><span class="rq-q rq-ps"><button type="button" data-rq-d="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${it.q}" aria-label="${p.u==='m'?T.mu:T.packs}"><button type="button" data-rq-d="1" aria-label="+">+</button><span>${p.u==='m'?T.mu:T.packs}</span></span></div>`}).join('')}</div></div>`}).join('')+
+ `<p class="rq-sum">${(()=>{const isM=b=>(P.find(x=>x.id===b.id)||{}).u==='m';return T.total(RQ.items.length,RQ.items.filter(b=>!isM(b)).reduce((a,b)=>a+(+b.q||0),0),RQ.items.filter(isM).reduce((a,b)=>a+(+b.q||0),0))})()}</p>`}
 function rqPickHtml(){const T=rqT(),have=new Set(RQ.items.map(x=>rqKey(x.id,x.vi)));
- return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<div class="rq-ch"><label class="rq-cl"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${T.pack(v[2],un(p))}</small></label><span class="rq-q rq-ps"><button type="button" data-rq-pd="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${(RQ.items.find(x=>rqKey(x.id,x.vi)===rqKey(p.id,vi))||{q:1}).q}" aria-label="${T.packs}"><button type="button" data-rq-pd="1" aria-label="+">+</button><span>${T.packs}</span></span></div>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
+ return `<div class="rq-pk-h"><button type="button" class="rq-back" data-rq-back>← ${T.back}</button><b>${T.pick}</b><p>${T.pickh}</p></div><div class="rq-pk-l">${P.map(p=>`<div class="rq-pp"><div class="rq-pp-h"><img src="${IMGS[p.id]}" alt=""><b>${title(p)}</b></div><div class="rq-pp-v">${p.v.map((v,vi)=>`<div class="rq-ch"><label class="rq-cl"><input type="checkbox" value="${rqKey(p.id,vi)}" ${have.has(rqKey(p.id,vi))?'checked':''}><span class="rq-cb"></span><span class="rq-sz">${sz(v)}</span><small>${p.u==='m'?T.cut:T.pack(v[2],un(p))}</small></label><span class="rq-q rq-ps"><button type="button" data-rq-pd="-1" aria-label="−">−</button><input type="number" inputmode="numeric" min="1" value="${(RQ.items.find(x=>rqKey(x.id,x.vi)===rqKey(p.id,vi))||{q:1}).q}" aria-label="${p.u==='m'?T.mu:T.packs}"><button type="button" data-rq-pd="1" aria-label="+">+</button><span>${p.u==='m'?T.mu:T.packs}</span></span></div>`).join('')}</div></div>`).join('')}</div><div class="rq-pk-f"><span class="rq-cnt"></span><button type="button" class="btn" data-rq-apply>${T.apply}</button></div>`}
 function rqHtml(){const T=rqT();return `<form class="rq" novalidate><div class="rq-main"><div class="rq-h"><h3>${T.h}</h3><button type="button" class="ic x" data-rq-close aria-label="${T.cancel}">✕</button></div>
 <div class="rq-ct"><input name="name" required placeholder="${T.nm}" aria-label="${T.nm}" autocomplete="name">
 <input name="phone" type="tel" required placeholder="+380 (00) 000-00-00" aria-label="${lang==='uk'?'Телефон':'Phone'}" autocomplete="tel"></div>
@@ -133,7 +133,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('#rqd .rq');if(!
  if(!f.phone.value.trim()){er.textContent=T.errP;er.hidden=false;f.phone.setAttribute('aria-invalid','true');f.phone.focus();return}
  if(!RQ.items.length&&!files.length){er.textContent=T.errL;er.hidden=false;return}er.hidden=true;
  const ph=f.phone.value.trim(),full=ph.startsWith('+')?ph:('+'+(typeof ccOf==='function'?ccOf(f.phone)[1]:'380')+' '+ph);
- pushLead({name:nm,phone:full,type:'quote',items:RQ.items.map(it=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return {product:title(p),size:sz(v),packs:+it.q,perPack:v[2]+' '+un(p)}}),files:files.map(x=>x.name),source:leadSource('quote-modal'),okText:T.ok});
+ pushLead({name:nm,phone:full,type:'quote',items:RQ.items.map(it=>{const p=P.find(x=>x.id===it.id),v=p.v[it.vi];return p.u==='m'?{product:title(p),size:sz(v),packs:+it.q,perPack:'1 м',unit:'m'}:{product:title(p),size:sz(v),packs:+it.q,perPack:v[2]+' '+un(p)}}),files:files.map(x=>x.name),source:leadSource('quote-modal'),okText:T.ok});
  document.getElementById('rqd').close()});
 
 

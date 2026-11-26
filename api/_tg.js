@@ -93,15 +93,16 @@ export function leadText(d, id) {
   if (Array.isArray(d.items) && d.items.length) {
     L.push('');
     L.push('<b>📦 Перелік продукції</b>');
-    let packs = 0;
+    let packs = 0, metres = 0;
     d.items.forEach((it, i) => {
+      if (it.unit === 'm') { metres += +it.packs || 0; L.push(`${i + 1}. ${esc(it.product)} <b>${esc(it.size)}</b> — ${esc(it.packs)} м`); return; }
       const per = parseFloat(String(it.perPack || '').replace(',', '.'));
       const unit = String(it.perPack || '').replace(/^[\d\s.,]+/, '').trim() || 'шт';
       const total = per && it.packs ? ` = ${(per * it.packs).toLocaleString('uk-UA')} ${esc(unit)}` : '';
       packs += +it.packs || 0;
       L.push(`${i + 1}. ${esc(it.product)} <b>${esc(it.size)}</b> — ${esc(it.packs)} уп. × ${esc(it.perPack)}${total}`);
     });
-    L.push(`<i>Разом: ${d.items.length} поз., ${packs} уп.</i>`);
+    L.push(`<i>Разом: ${d.items.length} поз.${packs ? `, ${packs} уп.` : ''}${metres ? `, ${metres} м` : ''}</i>`);
   }
   if (d.message) {
     L.push('');
