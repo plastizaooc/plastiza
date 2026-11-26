@@ -1,6 +1,6 @@
 # PLASTIZA — сайт
 
-> ⚠️ **ТИМЧАСОВИЙ ДОМЕН plastiza.org — індексацію вимкнено.** Сторінки віддаються з `noindex, nofollow` (meta від `api/page.js` + заголовок X-Robots-Tag у vercel.json). При переході на основний домен клієнта: у Vercel додати змінну `SITE_INDEXING=1` і оновити `SITE_URL`, прибрати X-Robots-Tag з vercel.json, додати `Sitemap: https://<домен>/sitemap.xml` у robots.txt, подати сайт у Google Search Console.
+> **Індексацію відкрито 26.11.2026 на plastiza.org.** Сторінки віддаються з `index, follow` (meta від `api/page.js`), robots.txt містить Sitemap. Закрити знову: змінна `SITE_INDEXING=0` у Vercel. При переході на основний домен: оновити `SITE_URL` і Sitemap у robots.txt, налаштувати 301-редиректи сторінка-в-сторінку з plastiza.org і «Зміну адреси» в Google Search Console.
 
 ## Як працює сайт
 

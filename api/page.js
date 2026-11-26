@@ -18,7 +18,7 @@ function critCss(key) {
 }
 import { sql, hasDb } from './_db.js';
 
-const INDEXING = process.env.SITE_INDEXING === '1'; // ⚠️ тимчасовий домен: індексацію вимкнено
+const INDEXING = process.env.SITE_INDEXING !== '0'; // індексацію відкрито 26.11.2026; SITE_INDEXING=0 — закрити
 const ORIGIN = () => (process.env.SITE_URL || 'https://plastiza.org').replace(/\/$/, '');
 const KEYS = { 'site.prods': 'prods', 'site.posts': 'posts', 'site.faqs': 'faqs', 'site.tick': 'tick', 'site.contacts': 'contacts', 'site.seo': 'seo', 'site.texts': 'texts' };
 
