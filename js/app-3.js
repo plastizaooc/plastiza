@@ -471,15 +471,58 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
  document.addEventListener('click',e=>{const r=e.target.closest&&e.target.closest('[data-rs]');if(r){const s=r.closest('.pa3-rel').querySelector('.pa3-rs'),c=s.firstElementChild;if(!c)return;s.scrollBy({left:(+r.dataset.rs)*(c.getBoundingClientRect().width+12),behavior:'smooth'})}});
 })();
 /*FIXJS17-END*/
-/*FIXJS18-START*//*@BEFORE-BOOT*/
-/* 03.11 (лише артефакт): стаття блогу на ПК — ліва половина зафіксована (крихти, заголовок, підзаголовок, тег, дата, фото 4:3),
-   права половина — текст статті, гортається. Нижче — «Вам також може бути цікаво» і форма у звичайному вигляді */
+/*FIXJS19-START*//*@BEFORE-BOOT*/
+/* 26.11: стаття блогу v4 — за структурою SEO-статті: картка-герой (мітка, заголовок, лід, чипи, автор, фото 4:3),
+   картка тексту зі змістом зліва (липкий, активний пункт) і розділами з номерами, кроки з бейджами, підказки,
+   FAQ-акордеон, підсумкова картка з кнопками, «Поділитися». Стиль і кольори — як у нашій SEO-секції. */
 (function(){
- const _pp18=postPage;postPage=function(){let h=_pp18.apply(this,arguments);
-  const m=h.match(/<figure class="pa3-f">([\s\S]*?)<\/figure>/);if(!m)return h;
-  return h.replace('<article class="pa pa3">','<article class="pa pa3 pa4">').replace('</div></header>',`</div><figure class="pa4-f">${m[1]}</figure></header>`)};
+ const _pp19=postPage;
+ const st=s=>String(s).replace(/<[^>]+>/g,'');
+ const q=s=>st(s).replace(/"/g,'&quot;');
+ const pl=(n,u)=>u?(n%10===1&&n%100!==11?'розділ':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?'розділи':'розділів'):(n===1?'section':'sections');
+ const two=n=>String(n).padStart(2,'0');
+ function cta(s,u){let o;try{o=JSON.parse(s)}catch(_){return ''}
+  const bs=o.b.map(([lab,k,g,a,h])=>k==='rfq'?`<button type="button" class="btn" data-rfq="${q(o.t)}">${lab} <span aria-hidden="true">→</span></button>`
+   :`<a class="btn g" href="${h}" data-go="${g}"${a?` data-a="${a}"`:''}>${lab} <span aria-hidden="true">↗</span></a>`).join('');
+  return `<div class="pb-cta" role="note"><div><b>${o.t}</b><p>${o.d}</p></div><div class="pb-cb">${bs}</div></div>`}
+ function blk([tg,tx],u){
+  if(tg==='cta')return cta(tx,u);
+  if(tg==='ol')return `<ol class="pb-steps">${tx}</ol>`;
+  if(tg==='ul')return `<ul class="pb-ul">${tx}</ul>`;
+  if(tg==='blockquote')return `<div class="pb-tip"><b>${u?'Важливо':'Key point'}:</b> ${st(tx)}</div>`;
+  if(tg==='h3')return `<h3>${tx}</h3>`;
+  if(tg==='p')return `<p>${tx}</p>`;return ''}
+ function faq(bl,u){let out='',cur=null;const fl=()=>{if(cur){out+=`<details class="pb-q"${out?'':' open'}><summary><span>${cur.q}</span><i aria-hidden="true"></i></summary><div>${cur.a.join('')}</div></details>`;cur=null}};
+  bl.forEach(b=>{if(b[0]==='h3'){fl();cur={q:b[1],a:[]}}else if(cur)cur.a.push(blk(b,u));else out+=blk(b,u)});fl();return out}
+ postPage=function(){const h0=_pp19.apply(this,arguments);const p=POSTS.find(x=>x.id==R.a);if(!p)return h0;
+  const L=LI(),u=lang==='uk';const bl=(p.b&&(p.b[L]&&p.b[L].length?p.b[L]:p.b[0]))||[];
+  const intro=[],secs=[];bl.forEach(b=>{if(b[0]==='h2')secs.push({h:b[1],b:[]});else(secs.length?secs[secs.length-1].b:intro).push(b)});
+  const n=secs.length,isF=t=>/Часті питання|FAQ/i.test(st(t)),isE=t=>/Висновок|Conclusion/i.test(st(t));
+  const body=secs.map((s,i)=>{const id='pb-s'+(i+1),hd=`<h2 id="${id}"><span class="pb-n">${two(i+1)}</span>${s.h}</h2>`;
+   if(isE(s.h))return `<section class="pb-sec pb-end">${hd}${s.b.map(b=>blk(b,u)).join('')}<div class="pb-tags"><span>${u?'Теги':'Tags'}:</span><button type="button" data-go="blog">${p.tag[L]}</button><button type="button" data-go="catalog" data-a="all">${u?'каталог продукції':'product catalog'}</button><button type="button" data-go="oem">${u?'послуги виробництва':'manufacturing services'}</button></div><div class="pb-cb"><button type="button" class="btn" data-rfq="${q(p.t[L])}">${u?'Запросити розрахунок':'Request a quote'} <span aria-hidden="true">→</span></button><button type="button" class="btn g" data-go="catalog" data-a="all">${u?'Перейти в каталог':'Go to catalog'} <span aria-hidden="true">↗</span></button></div></section>`;
+   return `<section class="pb-sec${isF(s.h)?' pb-faq':''}">${hd}${isF(s.h)?faq(s.b,u):s.b.map(b=>blk(b,u)).join('')}</section>`}).join('');
+  const toc=`<details class="pb-toc"${matchMedia('(min-width:1181px)').matches?' open':''}><summary><span class="pb-tl">${u?'Зміст':'Contents'}</span><i aria-hidden="true"></i></summary><ol>${secs.map((s,i)=>`<li><button type="button" data-pbt="pb-s${i+1}"><span class="pb-tn">${two(i+1)}</span><span class="pb-tt">${st(s.h)}</span></button></li>`).join('')}</ol></details>`;
+  const share=`<div class="pb-sh"><span>${u?'Поділитися':'Share'}:</span><button type="button" data-pbs="tg">Telegram</button><button type="button" data-pbs="vb">Viber</button><button type="button" data-pbs="fb">Facebook</button><button type="button" data-pbs="cp">${u?'Копіювати посилання':'Copy link'}</button></div>`;
+  const rel=(h0.match(/<section class="pa3-rel"[\s\S]*?<\/section>/)||[''])[0];
+  const lf=(()=>{const i=h0.indexOf('</section>',h0.indexOf('pa3-rel'));const j=h0.lastIndexOf('</div>');return i>-1&&j>i?h0.slice(i+10,j):leadForm('post')})();
+  return `<div class="wrap x pb"><nav class="pb-cr" aria-label="${u?'Навігація':'Breadcrumbs'}"><span><button type="button" data-go="home">${u?'Головна':'Home'}</button><i aria-hidden="true">/</i><button type="button" data-go="blog">${cx('blogH')}</button><i aria-hidden="true">/</i><span>${p.tag[L]}</span></span><button type="button" class="pb-bk" data-go="blog">${u?'До блогу':'Back to blog'} <span aria-hidden="true">→</span></button></nav>
+<article class="pa pb-a"><header class="pb-hero"><div class="pb-hl"><span class="sv-lab">${u?'Блог':'Blog'}</span><h1 class="pb-t">${p.t[L]}</h1><p class="pb-e">${p.e[L]}</p><div class="pb-ch"><time datetime="${p.date}">${fmtD(p.date)}</time><span>${n} ${pl(n,u)}</span><span>${p.tag[L]}</span></div><div class="pb-au"><i aria-hidden="true">PL</i><div><b>PLASTIZA</b><small>${u?'Власне виробництво у Львові · фіксатори та лиття пластику':'In-house production in Lviv · spacers and plastic molding'}</small></div></div></div><figure class="pb-hf"><img src="${IMGS[p.img]}" alt="${q(p.t[L])}" decoding="async"></figure></header>
+<div class="pb-bd"><div class="pb-side">${toc}<button type="button" class="btn pb-sc" data-rfq="${q(p.t[L])}">${u?'Запросити розрахунок':'Request a quote'} <span aria-hidden="true">→</span></button></div><div class="pb-main">${intro.length?`<div class="pb-in">${intro.map(b=>blk(b,u)).join('')}</div>`:''}${body}${share}</div></div></article>${rel}${lf}</div>`};
+ /* зміст: перехід до розділу, активний пункт; «Поділитися» */
+ document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-pbt]');
+  if(t){const el=document.getElementById(t.dataset.pbt);if(!el)return;e.preventDefault();const tb=document.querySelector('header.top');
+   scrollTo({top:el.getBoundingClientRect().top+scrollY-(tb?tb.offsetHeight:64)-24,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+   if(!matchMedia('(min-width:1181px)').matches){const d=t.closest('details');d&&d.removeAttribute('open')}return}
+  const s=e.target.closest&&e.target.closest('[data-pbs]');if(!s)return;const url=location.href.split('#')[0],ti=document.title;
+  if(s.dataset.pbs==='cp'){const done=()=>{const o=s.textContent;s.textContent=lang==='uk'?'Скопійовано ✓':'Copied ✓';setTimeout(()=>s.textContent=o,1600)};
+   try{navigator.clipboard.writeText(url).then(done,()=>{})}catch(_){}return}
+  const m={tg:`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(ti)}`,vb:`viber://forward?text=${encodeURIComponent(ti+' '+url)}`,fb:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}[s.dataset.pbs];
+  if(m)window.open(m,'_blank','noopener')});
+ let raf=0;addEventListener('scroll',()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;const n=document.querySelector('#view .pb-toc');if(!n)return;let id=null;
+  document.querySelectorAll('#view .pb-main h2[id]').forEach(h=>{if(h.getBoundingClientRect().top<innerHeight*.3)id=h.id});
+  n.querySelectorAll('[data-pbt]').forEach(b=>b.classList.toggle('on',b.dataset.pbt===id))})},{passive:true});
 })();
-/*FIXJS18-END*/
+/*FIXJS19-END*/
 /*FIXJS9-START*//*@BEFORE-BOOT*/
 /* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
 (function(){
