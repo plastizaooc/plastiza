@@ -1591,17 +1591,23 @@ REDIR.length=0;
 function md2h9(t){return esc(t||'').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,(m,a,u)=>{u=u.replace(/&amp;/g,'&');const ext=/^https?:/.test(u);return `<a href="${esc(u)}"${ext?' target="_blank" rel="noopener"':''}>${a}</a>`}).replace(/\n/g,'<br>')}
 function h2md9(h){const d=document.createElement('div');d.innerHTML=h||'';const w=n=>n.nodeType===3?n.textContent:n.nodeType!==1?'':n.tagName==='BR'?'\n':n.tagName==='A'?`[${[...n.childNodes].map(w).join('')}](${n.getAttribute('href')||''})`:/^(B|STRONG)$/.test(n.tagName)?`**${[...n.childNodes].map(w).join('')}**`:[...n.childNodes].map(w).join('');return [...d.childNodes].map(w).join('').trim()}
 function bOut9(x,L){const out=[];(x.blocks||[]).forEach(b=>{const v=(b.x||'').trim();
- if(b.t==='h2'||b.t==='h3'){if(v)out.push([b.t,esc(v)])}else if(b.t==='list'){const li=v.split('\n').map(s=>s.trim()).filter(Boolean);if(li.length)out.push(['ul',li.map(s=>'<li>'+md2h9(s)+'</li>').join('')])}
- else if(b.t==='quote'){if(v)out.push(['blockquote',md2h9(v)])}else if(b.t==='img'){if(v)out.push(['figure',`<img src="${esc(v)}" alt="${esc(b.alt||'')}" loading="lazy">`])}
+ if(b.t==='h2'||b.t==='h3'){if(v)out.push([b.t,esc(v)])}else if(b.t==='list'){const li=v.split('\n').map(s=>s.trim()).filter(Boolean);if(li.length)out.push([b.ol?'ol':'ul',li.map(s=>'<li>'+md2h9(s)+'</li>').join('')])}
+ else if(b.t==='quote'){if(v)out.push(['blockquote','<p>'+md2h9(v)+'</p>'])}else if(b.t==='img'){if(v)out.push(['figure',`<img src="${esc(v)}" alt="${esc(b.alt||'')}" loading="lazy">`])}
  else if(b.t==='cta3'){if(v)out.push(['cta',v])}else if(b.t==='cta'){if(v&&b.u)out.push(['p',`<a class="btn" href="${esc(b.u)}">${esc(v)}</a>`])}else if(v)out.push(['p',md2h9(v)])});
  const fq=(x.faq||[]).filter(f=>(f.q||'').trim());if(fq.length){out.push(['h2',L==='en'?'Frequently asked questions':'Часті запитання']);fq.forEach(f=>{out.push(['h3',esc(f.q)]);out.push(['p',md2h9(f.a)])})}return out}
+/* синхронізація: site.posts (сайт) — джерело правди; adm.blog дає лише поля адмінки */
+var BL_RAW9={};function blSync9(){const A=BL_RAW9.adm,P=BL_RAW9.posts;if(!A||!P)return;const am={};A.forEach(x=>am[x.id]=x);
+ const key=q=>JSON.stringify([q.st,q.date,q.t,q.e,q.b,q.img||'',q.tag]);
+ BL=P.map(p=>{const a=am[p.id];if(a){try{if(key(admToPost(a))===key(p))return a}catch(_){}}const n=postToAdm(p);if(a){['uk','en'].forEach(L=>{if(a[L]&&n[L]){n[L].alt=a[L].alt||'';n[L].seo=a[L].seo||n[L].seo}})}return n});BL_ADM=true}
+/* незмінена стаття зберігається байт-у-байт (без втрат посилань і розмітки) */
+var ORIG9={};const snapK9=o=>JSON.stringify([o.st,o.date,o.tag,o.img,['uk','en'].map(L=>o[L]&&[o[L].t,o[L].e,o[L].slug,o[L].blocks,o[L].faq])]);
 function postToAdm(p){const lg=i=>({t:(p.t||[])[i]||'',e:(p.e||[])[i]||'',slug:(p.slug&&p.slug[i?'en':'uk'])||'',alt:'',seo:{t:'',d:''},faq:[],
- blocks:((p.b||[])[i]||[]).map(([tg,tx])=>tg==='h2'||tg==='h3'?{t:tg,x:strip9(tx)}:tg==='ul'||tg==='ol'?{t:'list',x:[...String(tx).matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m=>h2md9(m[1])).join('\n')}:tg==='cta'?{t:'cta3',x:String(tx)}:tg==='blockquote'?{t:'quote',x:h2md9(tx)}:tg==='figure'?{t:'img',x:(String(tx).match(/src="([^"]+)"/)||[])[1]||'',alt:(String(tx).match(/alt="([^"]*)"/)||[])[1]||''}:{t:'p',x:h2md9(tx)})});
+ blocks:((p.b||[])[i]||[]).map(([tg,tx])=>tg==='h2'||tg==='h3'?{t:tg,x:strip9(tx)}:tg==='ul'||tg==='ol'?{t:'list',ol:tg==='ol'?1:0,x:[...String(tx).matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m=>h2md9(m[1])).join('\n')}:tg==='cta'?{t:'cta3',x:String(tx)}:tg==='blockquote'?{t:'quote',x:h2md9(tx)}:tg==='figure'?{t:'img',x:(String(tx).match(/src="([^"]+)"/)||[])[1]||'',alt:(String(tx).match(/alt="([^"]*)"/)||[])[1]||''}:{t:'p',x:h2md9(tx)})});
  const o={id:p.id,st:p.st||'pub',date:p.date||TODAY,tag:p.tag||['',''],img:p.img||'',rel:[],uk:lg(0),en:lg(1)};
- const m=SEOD.meta['b'+p.id];if(m){['uk','en'].forEach(L=>{if(m[L])o[L].seo={t:m[L].t||'',d:m[L].d||''}})}return o}
+ const m=SEOD.meta['b'+p.id];if(m){['uk','en'].forEach(L=>{if(m[L])o[L].seo={t:m[L].t||'',d:m[L].d||''}})}ORIG9[p.id]={p:JSON.parse(JSON.stringify(p)),k:snapK9(o)};return o}
 const words9=x=>[x.t,x.e,...(x.blocks||[]).map(b=>b.x||''),...(x.faq||[]).map(f=>f.q+' '+f.a)].join(' ').split(/\s+/).filter(Boolean).length;
 const hasEn9=b=>!!(b.en.t.trim()||b.en.blocks.some(x=>(x.x||'').trim()));
-function admToPost(b){const u=b.uk,e=hasEn9(b)?b.en:b.uk;return {id:b.id,st:b.st,date:b.date,min:Math.max(1,Math.round(words9(u)/180)),tag:[b.tag[0]||'',b.tag[1]||b.tag[0]||''],t:[u.t,e.t||u.t],e:[u.e,e.e||u.e],b:[bOut9(u,'uk'),bOut9(e,'en')],img:b.img||'',slug:{uk:u.slug||'',en:b.en.slug||''}}}
+function admToPost(b){const O=ORIG9[b.id];if(O&&O.k===snapK9(b))return JSON.parse(JSON.stringify(O.p));const u=b.uk,e=hasEn9(b)?b.en:b.uk;return {id:b.id,st:b.st,date:b.date,min:Math.max(1,Math.round(words9(u)/180)),tag:[b.tag[0]||'',b.tag[1]||b.tag[0]||''],t:[u.t,e.t||u.t],e:[u.e,e.e||u.e],b:[bOut9(u,'uk'),bOut9(e,'en')],img:b.img||'',slug:{uk:u.slug||'',en:b.en.slug||''}}}
 BL=SD.posts.map(postToAdm);
 
 /* ---------- дані для адрес ---------- */
@@ -1622,8 +1628,8 @@ Object.assign(SECN,{'site.prods':'Товари','adm.blog':'Блог','site.post
 ['contacts','ticker','faq','seo','content','products','blog'].forEach(k=>delete SETK[k]);
 Object.assign(SETK,{
  'site.prods':[()=>PR,v=>{if(Array.isArray(v)&&v.length){PR=v;PR.forEach(p=>{p.tg=p.tg||[];p.vimg=p.vimg||[];p.sp=p.sp||[];p.d=p.d||{uk:'',en:''}})}}],
- 'adm.blog':[()=>BL,v=>{if(Array.isArray(v)){BL=v;BL_ADM=true}}],
- 'site.posts':[()=>BL.map(admToPost),v=>{if(Array.isArray(v)&&!BL_ADM)BL=v.map(postToAdm)}],
+ 'adm.blog':[()=>BL,v=>{if(Array.isArray(v)){BL_RAW9.adm=v;BL=v;BL_ADM=true;blSync9()}}],
+ 'site.posts':[()=>BL.map(admToPost),v=>{if(Array.isArray(v)){BL_RAW9.posts=v;if(!BL_ADM)BL=v.map(postToAdm);blSync9()}}],
  'site.faqs':[()=>FQS,v=>{if(Array.isArray(v)&&v.length)FQS=v}],
  'site.tick':[()=>TKS,v=>{if(Array.isArray(v)&&v.length)TKS=v}],
  'site.contacts':[()=>CTS,v=>{if(v&&typeof v==='object')CTS=Object.assign(cl9(SD.contacts),v)}],
