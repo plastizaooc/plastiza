@@ -523,6 +523,43 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
   n.querySelectorAll('[data-pbt]').forEach(b=>b.classList.toggle('on',b.dataset.pbt===id))})},{passive:true});
 })();
 /*FIXJS19-END*/
+/*FIXJS13-START*//*@BEFORE-BOOT*/
+/* 03.11: бічне меню — «Послуги» розгортається акордеоном: «Усі послуги» (загальна сторінка) + три послуги з переходом на їхні сторінки */
+(function(){let OPEN=null;
+ /* меню перебудовується при кожному переході — доповнюємо його щоразу, коли з’являється пункт «Послуги» */
+ function acc(){try{
+  const nav=document.querySelector('#side .sm-n'),b=nav&&nav.querySelector('.sm-i[data-go="oem"]');if(!b)return;const u=lang==='uk';
+  const here=R.p==='oem'||R.p==='soon';if(OPEN===null)OPEN=here;
+  const svc=(typeof SRV!=='undefined'?SRV:[]).slice(0,3).map((s,i)=>`<li><button class="sm-si" data-go="soon" data-a="${i}"${R.p==='soon'&&+R.a===i?' aria-current="page"':''}>${s[lang]||s.uk}<i aria-hidden="true">→</i></button></li>`).join('');
+  const w=document.createElement('div');w.className='sm-acc'+(OPEN?' open':'');
+  w.innerHTML=`<button class="sm-i sm-acc-b" type="button" aria-expanded="${OPEN}" aria-controls="sm-svc"${here?' aria-current="page"':''}>${b.innerHTML}<em class="sm-chev" aria-hidden="true"></em></button><div class="sm-acc-p" id="sm-svc"><ul><li><button class="sm-si sm-all" data-go="oem"${R.p==='oem'?' aria-current="page"':''}>${u?'Усі послуги':'All services'}<i aria-hidden="true">→</i></button></li>${svc}</ul></div>`;
+  b.replaceWith(w)}catch(e){}}
+ const sd=document.getElementById('side');if(sd)new MutationObserver(acc).observe(sd,{childList:true,subtree:true});acc();
+ document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('.sm-acc-b');if(!t)return;e.preventDefault();OPEN=!OPEN;const w=t.parentElement;w.classList.toggle('open',OPEN);t.setAttribute('aria-expanded',OPEN)});
+})();
+/*FIXJS13-END*/
+/*FIXJS21-START*//*@BEFORE-BOOT*/
+/* 26.11: сторінки послуг — перший екран (варіант Б, у стилі сайту): ліворуч мітка, великий заголовок, підзаголовок, теги, кнопки; праворуч фото/відео в рамці, як на головній */
+function svcHero21(h,i,u,A){
+ const s=h.indexOf('<header class="sp5-hd');if(s<0||i<0||i>2)return h;const e=h.indexOf('</header>',s)+9;if(e<9)return h;
+ const hd=h.slice(s,e),cm=/<div class="crumb"[^>]*>([\s\S]*?)<\/div>/;let pre=h.slice(0,s),cr='';
+ const m=hd.match(cm)||pre.match(cm);if(m){cr=m[1];pre=pre.replace(cm,'')}
+ const g=re=>{const x=hd.match(re);return x?x[1]:''};
+ const n=g(/<span class="sp5-n num">([^<]*)<\/span>/),t=g(/<h1 class="sp5-h">([\s\S]*?)<\/h1>/),p=g(/<p>([\s\S]*?)<\/p>/),meta=g(/<div class="sp5-meta">([^<]*)<\/div>/),b=g(/(<div class="sp5-b">[\s\S]*?<\/div>)/);
+ const q=x=>String(x).replace(/"/g,'&quot;');
+ const ALT=[u?'Термопластавтомат і гранули пластику — лиття пластикових виробів під тиском':'Injection molding machine and plastic pellets — plastic injection molding','',u?'Склад із палетами будівельних матеріалів для комплектації об’єктів':'Warehouse with pallets of construction materials for site supply'];
+ const LB=[u?'Власне лиття <i>•</i> Львів':'Own molding <i>•</i> Lviv',u?'Пресформа <i>•</i> збирання й розбирання':'Mold <i>•</i> assembly and disassembly',u?'Склад <i>•</i> відвантаження на об’єкт':'Warehouse <i>•</i> site delivery'];
+ const IMG=['svc-cast.jpg','','svc-build.jpg'];
+ const med=i===1
+  ?`<video class="sh22-v" src="${A}assets/hero/mold-loop.mp4" poster="${A}assets/hero/mold-poster.jpg" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata" aria-label="${u?'Відео: пресформа для лиття пластику в зібраному й розібраному вигляді':'Video: plastic injection mold assembled and disassembled'}"></video>`
+  :`<img class="sh22-v" src="${A}assets/hero/${IMG[i]}" alt="${q(ALT[i])}" width="1040" height="1040" fetchpriority="high" decoding="async">`;
+ const chips=String(meta).split(/\s*\/\s*/).filter(Boolean).map(x=>`<span>${x}</span>`).join('<i aria-hidden="true">/</i>');
+ const crumb=cr?`<div class="crumb sh22-cr">${cr}</div>`:'';
+ const hero=`${crumb}<header class="sh22"><div class="sh22-l"><div class="sh22-k"><span class="sv-lab">${u?'Послуги':'Services'}</span><span class="sh22-n num">${n||'0'+(i+1)} <i>/</i> 03</span></div><div class="sh22-b"><h1 class="sh22-t">${t}</h1>${p?`<p class="sh22-p">${p}</p>`:''}${chips?`<div class="sh22-ch">${chips}</div>`:''}${b}</div></div><div class="sh22-m"><div class="hv-f">${med}<span class="hv-sh" aria-hidden="true"></span><span class="hv-lb">[ ${LB[i]} ]</span></div></div></header>`;
+ return pre+hero+h.slice(e)}
+(function(){const _soon21=soon;soon=function(){const h=_soon21();try{return svcHero21(h,+R.a,lang==='uk','/')}catch(e){return h}}})();
+/*FIXJS21-END*/
+
 /*FIXJS9-START*//*@BEFORE-BOOT*/
 /* 02.11 — сторінка «Виробництво»: відеокартка з плашкою ТПА, три компактні картки, рівні відступи; лічильники без обрізання */
 (function(){

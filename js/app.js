@@ -1,6 +1,11 @@
 function hrf(p,a){try{return rtPath({p:p,a:a},lang,rtD())}catch(e){return '#'}}
 /* посилання з data-go: SPA-перехід без перезавантаження; Ctrl/⌘/Shift-клік — нова вкладка */
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-go][href]');if(!a)return;if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button){e.stopPropagation();return}e.preventDefault()},true);
+/* кнопки з data-go (меню, «хлібні крихти», кнопки переходу): коліщатко миші або Ctrl/⌘-клік — відкрити сторінку в новій вкладці */
+(function(){function nu(e){var b=e.target.closest&&e.target.closest('[data-go]');if(!b||b.closest('a[href]')||b.closest('form'))return null;var u=hrf(b.getAttribute('data-go'),b.hasAttribute('data-a')?b.getAttribute('data-a'):undefined);return u&&u!=='#'?u:null}
+ document.addEventListener('mousedown',function(e){if(e.button===1&&nu(e))e.preventDefault()},true);
+ document.addEventListener('auxclick',function(e){if(e.button!==1)return;var u=nu(e);if(u){e.preventDefault();window.open(u,'_blank')}},true);
+ document.addEventListener('click',function(e){if(e.button||!(e.ctrlKey||e.metaKey))return;var u=nu(e);if(u){e.preventDefault();e.stopPropagation();window.open(u,'_blank')}},true)})();
 /* PLASTIZA — логіка сайту (маршрутизація, рендер сторінок, дані каталогу, форми, анімації).
    Шляхи до зображень — відносні, з папки assets/img/. */
 const $=s=>document.querySelector(s),root=document.documentElement;
