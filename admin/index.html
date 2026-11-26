@@ -578,7 +578,7 @@ if(e.target.closest('[data-savect]')){ctRead();const bad=CT.edrpou&&!/^\d{8}$/.t
 
 function vAnalytics(){const src=count(l=>srcKind(l.src)),pg=count(l=>srcLine(l.src)),how=count(l=>l.how==='messenger'?`Месенджер · ${l.msgr}`:l.how==='call'?'Дзвінок':'Email'),frm=count(l=>FORMS[l.src.form]);
 const prod=count(l=>l.src.kind==='product'?l.src.title:'—').filter(r=>r[0]!=='—');const st=['new','work','kp','done'].map(k=>[ST[k][0],L.filter(l=>l.st===k).length]);
-return hdr('Аналітика','Заявки за останні 14 днів: звідки приходять, через які форми та як рухаються статусами.',demo)+
+return hdr('Аналітика','Відвідування сайту та заявки: звідки приходять люди, що дивляться і як рухаються заявки.',demo)+
 `<div class="isl grid g-a"><div class="card"><div class="card-h"><h2>Динаміка заявок</h2><small>за днями</small></div>${lineChart(DAYS)}</div><div class="card"><div class="card-h"><h2>Воронка статусів</h2></div>${hbars(st)}</div></div>
 <div class="isl grid g3 sec"><div class="card"><div class="card-h"><h2>Тип сторінки</h2></div>${hbars(src)}</div><div class="card"><div class="card-h"><h2>Спосіб зв’язку</h2></div>${hbars(how)}</div><div class="card"><div class="card-h"><h2>Форма</h2></div>${hbars(frm)}</div></div>
 <div class="isl grid g2 sec"><div class="card"><div class="card-h"><h2>Товари, з яких пишуть</h2></div>${hbars(prod)}</div><div class="card"><div class="card-h"><h2>Усі сторінки-джерела</h2></div>${hbars(pg)}</div></div>
@@ -2228,4 +2228,46 @@ body.has-bk .ebar{bottom:96px}
 
 </script>
 
+<script>
+/* ---------- Аналітика: відвідування (власний лічильник без cookies, /api/hit) ---------- */
+var VIS9={days:30,data:null,busy:false,err:''};
+function visDemo9(n){const d=[];for(let i=n-1;i>=0;i--){const dt=new Date(TY,TM,TD-i),u=Math.round(18+12*Math.sin(i/3)+((i*7)%9));d.push({d:dt.toISOString().slice(0,10),u,v:Math.round(u*2.3)})}
+ const V=d.reduce((a,x)=>a+x.v,0),U=d.reduce((a,x)=>a+x.u,0);return {days:n,daily:d,tot:{v:V,u:U,s:Math.round(U*.9)},since:'—',
+ pages:[['/',.32],['/katalog',.18],['/fiksator-nastyl',.1],['/blog',.08],['/lyttia-plastyku',.06]].map(([k,f])=>({k,n:Math.round(V*f)})),
+ srcs:[['Google',.55],['Прямий захід',.25],['Google Ads',.12],['Facebook',.05]].map(([k,f])=>({k,n:Math.round(U*f)})),
+ devs:[['Телефон',.62],['Комп’ютер',.35],['Планшет',.03]].map(([k,f])=>({k,n:Math.round(U*f)})),langs:[{k:'uk',n:Math.round(V*.93)},{k:'en',n:Math.round(V*.07)}]}}
+function visLoad9(){if(VIS9.busy)return;if(!LIVE){VIS9.data=visDemo9(VIS9.days);return}VIS9.busy=true;VIS9.err='';
+ api('visits.stats',{days:VIS9.days}).then(r=>{VIS9.data=r}).catch(e=>{VIS9.err=e.message}).finally(()=>{VIS9.busy=false;if(VIEW==='analytics')render()})}
+function visName9(p){if(p==='/'||p==='/en'||p==='/en/')return p==='/'?'Головна':'Головна (EN)';try{const D=DA9(),m=rtParse(p,D,rtIndex(D));if(m&&m.R&&m.R.p!=='404'){const n=name9(rtKey(m.R));if(n&&n!=='home')return n+(m.L==='en'?' (EN)':'')}}catch(_){}try{return decodeURIComponent(p)}catch(_){return p}}
+function visChart9(rows){const W=1000,H=260,pl=34,pb=26,pt=12,n=rows.length,mx=Math.max(1,...rows.map(r=>r.v)),top=Math.max(4,Math.ceil(mx/4)*4),sx=(W-pl-24)/Math.max(1,n-1),y=v=>pt+(H-pt-pb)*(1-v/top);
+ const line=k=>rows.map((r,i)=>(i?'L':'M')+(pl+i*sx).toFixed(1)+' '+y(r[k]).toFixed(1)).join(' ');const st=Math.ceil(n/8);
+ const lab=r=>{const p=r.d.split('-');return +p[2]+'.'+p[1]};
+ const grid=[0,top/2,top].map(v=>`<line class="gl" x1="${pl}" x2="${W-10}" y1="${y(v)}" y2="${y(v)}"/><text x="${pl-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join('');
+ const xl=rows.map((r,i)=>(n-1-i)%st?'':`<text x="${pl+i*sx}" y="${H-8}" text-anchor="middle">${lab(r)}</text>`).join('');
+ const hit=rows.map((r,i)=>`<rect x="${pl+i*sx-sx/2}" y="${pt}" width="${Math.max(sx,2)}" height="${H-pt-pb}" fill="transparent"><title>${lab(r)}: ${r.v} перегл., ${r.u} відвід.</title></rect>`).join('');
+ return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Відвідування за днями">${grid}<path d="${line('v')} L ${pl+(n-1)*sx} ${H-pb} L ${pl} ${H-pb} Z" fill="var(--acc)" opacity=".08"/><path d="${line('v')}" fill="none" stroke="var(--acc)" stroke-width="2.5" stroke-linejoin="round"/><path d="${line('u')}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round" opacity=".7"/>${xl}${hit}</svg>
+ <div class="muted" style="display:flex;gap:16px;font-size:12.5px;font-weight:600;margin-top:6px"><span><i style="display:inline-block;width:14px;height:3px;background:var(--acc);vertical-align:middle;margin-right:6px"></i>Перегляди</span><span><i style="display:inline-block;width:14px;border-top:2px dashed var(--ink);opacity:.7;vertical-align:middle;margin-right:6px"></i>Відвідувачі</span></div>`}
+function vVisits9(){const D=VIS9.data;
+ const per=`<div style="display:flex;gap:6px;flex-wrap:wrap">${[[7,'7 днів'],[30,'30 днів'],[90,'90 днів'],[365,'Рік']].map(([n,l])=>`<button class="btn ${VIS9.days===n?'':'s'} sm" data-visd9="${n}">${l}</button>`).join('')}</div>`;
+ const head=`<div class="isl sec" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:20px">Відвідування сайту</h2>${per}</div>`;
+ if(!D)return head+`<div class="isl"><div class="card" style="padding:22px">${VIS9.err?'⚠️ '+esc(VIS9.err):'Завантаження…'}</div></div>`;
+ const t=D.tot||{v:0,u:0,s:0},dl=D.daily||[],td=dl.at(-1)||{v:0,u:0},pp=t.u?(t.v/t.u).toFixed(1):'0';
+ const r=a=>(a||[]).map(x=>[x.k,x.n]);const empty=!t.v;
+ return head+`<div class="isl grid g4">
+<div class="card kpi"><span class="k">Перегляди сторінок</span><span class="v">${t.v}</span><span class="d muted">за ${D.days} дн.</span></div>
+<div class="card kpi"><span class="k">Відвідувачі</span><span class="v">${t.u}</span><span class="d muted">унікальні за день</span></div>
+<div class="card kpi"><span class="k">Сьогодні</span><span class="v">${td.u}</span><span class="d up">${td.v} переглядів</span></div>
+<div class="card kpi"><span class="k">Сторінок на відвідувача</span><span class="v">${pp}</span><span class="d muted">у середньому</span></div></div>
+<div class="isl grid sec"><div class="card"><div class="card-h"><h2>Динаміка відвідувань</h2><small>${D.days} дн.</small></div>${visChart9(dl)}</div></div>
+${empty?`<p class="muted" style="font-size:13px;margin-top:10px">Поки що немає даних за цей період. Лічильник рахує з ${esc(D.since||'моменту запуску')}.</p>`:`<div class="isl grid g2 sec"><div class="card"><div class="card-h"><h2>Популярні сторінки</h2><small>перегляди</small></div>${hbars((D.pages||[]).map(x=>[visName9(x.k),x.n]))}</div>
+<div class="card"><div class="card-h"><h2>Звідки приходять</h2><small>входи на сайт</small></div>${hbars(r(D.srcs))}</div></div>
+<div class="isl grid g2 sec"><div class="card"><div class="card-h"><h2>Пристрої</h2><small>відвідувачі</small></div>${hbars(r(D.devs))}</div>
+<div class="card"><div class="card-h"><h2>Мова сайту</h2><small>перегляди</small></div>${hbars((D.langs||[]).map(x=>[x.k==='en'?'Англійська':'Українська',x.n]))}</div></div>`}
+<p class="muted" style="font-size:12.5px;margin-top:10px">Власний лічильник сайту: без cookies, IP не зберігається, боти й адмінка не враховуються. Дані з ${esc(D.since||'—')}. Детальніша статистика — у <a href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics</a> і <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Search Console</a>.</p>
+<div class="isl sec"><h2 style="margin:8px 0 0;font-size:20px">Заявки</h2></div>`}
+(function(){const _vA=vAnalytics;vAnalytics=function(){if(!VIS9.data&&!VIS9.busy)visLoad9();
+ let h=_vA().replace(/<p class="muted"[^>]*>Відвідуваність і пошукові запити[\s\S]*?<\/p>/,'');const i=h.indexOf('</div></div>');if(i<0)return h;
+ h=h.slice(0,i+12)+vVisits9()+h.slice(i+12);return h.replace(/(<div class="top"><div><h1>Аналітика<\/h1><p>)[^<]*/,'$1Відвідування сайту й заявки: скільки людей заходить, що дивляться, звідки приходять і скільки з них пишуть.')}})();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-visd9]');if(!b)return;VIS9.days=+b.dataset.visd9;VIS9.data=null;visLoad9();render()});
+</script>
 </body></html>

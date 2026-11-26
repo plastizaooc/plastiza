@@ -171,6 +171,23 @@ const OPS = {
     return { days };
   },
 
+  async 'visits.stats'({ days }) {
+    const n = Math.min(365, Math.max(7, parseInt(days, 10) || 30));
+    const K = `(at AT TIME ZONE 'Europe/Kyiv')`, W = `${K} >= date_trunc('day', now() AT TIME ZONE 'Europe/Kyiv') - make_interval(days => $1::int - 1)`;
+    const [daily, pages, srcs, devs, langs, tot, first] = await Promise.all([
+      sql(`SELECT to_char(d, 'YYYY-MM-DD') AS d, count(p.id)::int AS v, count(DISTINCT p.vh)::int AS u
+        FROM generate_series(date_trunc('day', now() AT TIME ZONE 'Europe/Kyiv') - make_interval(days => $1::int - 1), date_trunc('day', now() AT TIME ZONE 'Europe/Kyiv'), interval '1 day') d
+        LEFT JOIN pv p ON date_trunc('day', p.at AT TIME ZONE 'Europe/Kyiv') = d GROUP BY d ORDER BY d`, [n]),
+      sql(`SELECT path AS k, count(*)::int AS n FROM pv WHERE ${W} GROUP BY path ORDER BY n DESC LIMIT 15`, [n]),
+      sql(`SELECT src AS k, count(*)::int AS n FROM pv WHERE ${W} AND src <> '' GROUP BY src ORDER BY n DESC LIMIT 12`, [n]),
+      sql(`SELECT dev AS k, count(DISTINCT vh)::int AS n FROM pv WHERE ${W} GROUP BY dev ORDER BY n DESC`, [n]),
+      sql(`SELECT lang AS k, count(*)::int AS n FROM pv WHERE ${W} GROUP BY lang ORDER BY n DESC`, [n]),
+      sql(`SELECT count(*)::int AS v, count(DISTINCT (vh, date_trunc('day', ${K})))::int AS u, count(*) FILTER (WHERE src <> '')::int AS s FROM pv WHERE ${W}`, [n]),
+      sql(`SELECT to_char(min(at) AT TIME ZONE 'Europe/Kyiv', 'DD.MM.YYYY') AS f FROM pv`),
+    ]);
+    return { days: n, daily, pages, srcs, devs, langs, tot: tot[0], since: first[0] && first[0].f };
+  },
+
   /* ---------- clients ---------- */
   async 'clients.list'() { return { overrides: await sql('SELECT * FROM clients') }; },
   async 'clients.save'(a, req, me) {

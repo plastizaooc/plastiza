@@ -117,6 +117,7 @@ function head(m, L, D, origin) {
 <meta name="google-site-verification" content="sK2QP8q2GfJXxoteN7eyVCbSYngD-Fa9siBJucCNZ5k">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1P1X61KEVP"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1P1X61KEVP');</script>
+<script>(function(){try{if(navigator.webdriver||!navigator.sendBeacon)return;var last='',f=1;function h(){var p=location.pathname;if(p===last||/^\\/admin/.test(p))return;last=p;var o={p:p,l:document.documentElement.lang==='en'?'en':'uk'};if(f){o.q=location.search;o.r=document.referrer;f=0}navigator.sendBeacon('/api/hit',new Blob([JSON.stringify(o)],{type:'text/plain'}))}var ps=history.pushState;history.pushState=function(){var x=ps.apply(this,arguments);setTimeout(h,0);return x};addEventListener('popstate',function(){setTimeout(h,0)});h()}catch(e){}})()</script>
 <meta name="robots" content="${INDEXING && m.k !== '404' ? 'index, follow' : 'noindex, nofollow'}">
 ${m.k === 'faq' && D.faqs && D.faqs.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: D.faqs.map((f) => ({ '@type': 'Question', name: (f.q && (f.q[L] || f.q.uk)) || '', acceptedAnswer: { '@type': 'Answer', text: strip((f.a && (f.a[L] || f.a.uk)) || '') } })) }).replace(/</g, '\\u003c')}</script>` : ''}
 ${m.k === '404' ? '' : `<link rel="canonical" href="${esc(here)}">`}
