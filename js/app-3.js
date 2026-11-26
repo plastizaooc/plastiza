@@ -429,7 +429,7 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
   vl:'Warehouse & dispatch',cta:'Discuss cooperation'}};
  function why(){const u=lang==='uk',W=WHY[u?'uk':'en'];
   return `<div class="bd w wy-bd"><div class="wrap"><section class="wy" aria-label="${W.lab}"><div class="wy-top"><div>${secLab(W.lab)}<h2 class="s5-h">${W.h}</h2></div><div class="wy-tr"><p class="wy-p">${W.p}</p></div></div>
-  <ol class="wy-cards">${W.it.map((x,i)=>`<li class="wy-c"><span class="wy-n">${String(i+1).padStart(2,'0')}</span><b>${x[0]}</b><p>${x[1]}</p></li>`).join('')}</ol></section></div></div>`}
+  <ol class="wy-cards">${W.it.map((x,i)=>`<li class="wy-c"><span class="wy-n">${String(i+1).padStart(2,'0')}</span><h3 class="hz">${x[0]}</h3><p>${x[1]}</p></li>`).join('')}</ol></section></div></div>`}
  const _home16=home;home=function(){let h=_home16();const i=h.indexOf('class="cfb"');const j=i>-1?h.indexOf('<div class="bd',i):-1;return j>-1?h.slice(0,j)+why()+h.slice(j):h};
 })();
 /*FIXJS16-END*/
@@ -492,7 +492,7 @@ pushLead=function(data){_pushLead0(data);if(/^file:/.test(location.href))return;
   if(tg==='blockquote')return `<div class="pb-tip"><b>${u?'Важливо':'Key point'}:</b> ${st(tx)}</div>`;
   if(tg==='h3')return `<h3>${tx}</h3>`;
   if(tg==='p')return `<p>${tx}</p>`;return ''}
- function faq(bl,u){let out='',cur=null;const fl=()=>{if(cur){out+=`<details class="pb-q"${out?'':' open'}><summary><span>${cur.q}</span><i aria-hidden="true"></i></summary><div>${cur.a.join('')}</div></details>`;cur=null}};
+ function faq(bl,u){let out='',cur=null;const fl=()=>{if(cur){out+=`<details class="pb-q"${out?'':' open'}><summary><h3 class="hz pb-qh">${cur.q}</h3><i aria-hidden="true"></i></summary><div>${cur.a.join('')}</div></details>`;cur=null}};
   bl.forEach(b=>{if(b[0]==='h3'){fl();cur={q:b[1],a:[]}}else if(cur)cur.a.push(blk(b,u));else out+=blk(b,u)});fl();return out}
  postPage=function(){const h0=_pp19.apply(this,arguments);const p=POSTS.find(x=>x.id==R.a);if(!p)return h0;
   const L=LI(),u=lang==='uk';const bl=(p.b&&(p.b[L]&&p.b[L].length?p.b[L]:p.b[0]))||[];

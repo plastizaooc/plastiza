@@ -72,11 +72,15 @@ ${(p.sp || []).length ? `<h2>${u ? 'Характеристики' : 'Specificati
     if (po) body = `<article><h1>${esc(po.t[i] || po.t[0])}</h1><p><time datetime="${esc(po.date)}">${esc(po.date)}</time></p><p>${esc(po.e[i] || po.e[0])}</p>${((po.b && (po.b[i] && po.b[i].length ? po.b[i] : po.b[0])) || []).map(([tg, tx]) => (/^(p|h2|h3|h4|ul|ol|blockquote|figure)$/.test(tg) ? `<${tg}>${safeHtml(tx)}</${tg}>` : '')).join('')}</article>`;
   } else if (k === 'catalog' || k === 'cat_rebar' || k === 'cat_form') {
     const c = k === 'cat_rebar' ? 'rebar' : k === 'cat_form' ? 'form' : null;
-    body = `<h1>${esc(h1)}</h1><p>${esc(meta.d)}</p><ul>${D.prods.filter((p) => !c || p.cat === c).map((p) => `<li>${a({ p: 'product', a: p.id + '-0' }, p.n[L] || p.n.uk)}</li>`).join('')}</ul>`;
+    body = `<h1>${esc(h1)}</h1><p>${esc(meta.d)}</p>${D.prods.filter((p) => !c || p.cat === c).map((p) => `<section><h2>${a({ p: 'product', a: p.id + '-0' }, p.n[L] || p.n.uk)}</h2><p>${esc((p.d && (p.d[L] || p.d.uk)) || '')}</p></section>`).join('')}`;
   } else if (k === 'blog') {
-    body = `<h1>${esc(h1)}</h1><p>${esc(meta.d)}</p><ul>${D.posts.map((p) => `<li>${a({ p: 'post', a: String(p.id) }, p.t[i] || p.t[0])}</li>`).join('')}</ul>`;
+    body = `<h1>${esc(h1)}</h1><p>${esc(meta.d)}</p>${D.posts.map((p) => `<article><h2>${a({ p: 'post', a: String(p.id) }, p.t[i] || p.t[0])}</h2><p>${esc(p.e[i] || p.e[0])}</p></article>`).join('')}`;
   } else if (k === 'faq') {
     body = `<h1>${esc(h1)}</h1>${D.faqs.map((f) => `<h2>${esc((f.q && (f.q[L] || f.q.uk)) || '')}</h2><p>${esc(strip((f.a && (f.a[L] || f.a.uk)) || ''))}</p>`).join('')}`;
+  } else if (k === 'home' || k === 'oem') {
+    const SV = u ? ['Лиття пластикових виробів', 'Виготовлення пресформ', 'Комплектація будівельних об’єктів'] : ['Plastic injection molding', 'Mold making', 'Construction site supply'];
+    const hs = k === 'oem' ? 'h2' : 'h3';
+    body = `<h1>${esc(h1)}</h1><p>${esc(meta.d)}</p>${k === 'home' ? `<h2>${u ? 'Послуги виробництва' : 'Manufacturing services'}</h2>` : ''}${SV.map((t, j) => `<${hs}>${a({ p: 'soon', a: j }, t)}</${hs}>`).join('')}${k === 'home' ? `<h2>${u ? 'Продукція' : 'Products'}</h2>${D.prods.map((p) => `<h3>${a({ p: 'product', a: p.id + '-0' }, p.n[L] || p.n.uk)}</h3>`).join('')}<h2>${u ? 'Блог' : 'Blog'}</h2>${D.posts.map((p) => `<h3>${a({ p: 'post', a: String(p.id) }, p.t[i] || p.t[0])}</h3>`).join('')}` : ''}`;
   } else {
     body = `<h1>${esc(h1)}</h1><p>${esc(meta.d)}</p>`;
   }
