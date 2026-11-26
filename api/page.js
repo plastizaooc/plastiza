@@ -5,6 +5,7 @@ import { SHELL } from './_shell.js';
 import { rtParse, rtIndex, rtPath, rtMeta, rtAll, rtKey, rtPageNames } from './_routes.js';
 import { SITE_DEF } from './_site.js';
 import { BLOG3 } from './_blog3.js';
+import { BLOG4, BLOG4_DATES } from './_blog4.js';
 import { PRE, PRE_T, PRE_D } from './_pre.js';
 import { LQ } from './_lq.js';
 import { CR_T, CR_X, CR_P } from './_crit.js';
@@ -36,6 +37,16 @@ async function loadDb() {
         await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.blog3', 'true'::jsonb, now()) ON CONFLICT (key) DO NOTHING`);
         o['site.posts'] = ps; o['site.blog3'] = true;
       } catch (e) { console.error('blog3', e); }
+    }
+    if (Array.isArray(o['site.posts']) && !o['site.blog4']) {
+      try {
+        const ps = o['site.posts'].map((p) => (p && BLOG4_DATES[p.id] ? { ...p, date: BLOG4_DATES[p.id] } : p));
+        BLOG4.forEach((n) => { if (!ps.some((p) => p && String(p.id) === String(n.id))) ps.push(n); });
+        ps.sort((a, b) => String(b && b.date).localeCompare(String(a && a.date)));
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.posts', $1::jsonb, now()) ON CONFLICT (key) DO UPDATE SET value = $1::jsonb, updated_at = now()`, [JSON.stringify(ps)]);
+        await sql(`INSERT INTO settings(key, value, updated_at) VALUES('site.blog4', 'true'::jsonb, now()) ON CONFLICT (key) DO NOTHING`);
+        o['site.posts'] = ps; o['site.blog4'] = true;
+      } catch (e) { console.error('blog4', e); }
     }
     cache = { at: Date.now(), rows: o };
     return o;
